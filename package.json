@@ -1,0 +1,30 @@
+{
+  "name": "transcar",
+  "version": "1.0.0",
+  "description": "project for transcar private company",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delimce/transcar.git"
+  },
+  "keywords": [
+    "transcar",
+    "lumen",
+    "laravel"
+  ],
+  "author": "delimce",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/delimce/transcar/issues"
+  },
+  "homepage": "https://github.com/delimce/transcar#readme",
+  "devDependencies": {
+    "laravel-mix": "^2.1.11"
+  }
+}
