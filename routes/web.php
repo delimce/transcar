@@ -14,3 +14,7 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['namespace' => 'Transcar'], function () use ($router) {
+    $router->get('/login', ['as' => 'app.login', 'uses' => 'BasicController@login']);
+});
