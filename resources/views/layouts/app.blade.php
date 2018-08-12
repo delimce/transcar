@@ -12,5 +12,6 @@
     <!-- Content here -->
 </div>
 <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 
 .login-box {
+    padding: 20px;
     margin: 50px auto 0 auto;
     min-width: 400px;
     width: 480px;
@@ -11,7 +12,8 @@ footer span {
     display: block;
 }
 
-footer a {
+.logo-dev {
     background: url('../img/logoDev2.png') no-repeat;
     background-size: 300px 100px;
+    display: inline-block;
 }

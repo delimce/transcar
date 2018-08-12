@@ -15,6 +15,12 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+/******VIEWS********/
 $router->group(['namespace' => 'Transcar'], function () use ($router) {
     $router->get('/login', ['as' => 'app.login', 'uses' => 'BasicController@login']);
+});
+
+/******SERVICES********/
+$router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use ($router) {
+    $router->post('/doLogin', 'BasicController@doLogin');
 });

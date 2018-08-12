@@ -16,10 +16,13 @@
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">
         <span>Desarrollado por:</span>
-        <a href="http://www.develemento.com.ve"> devElemento.com.ve</a>
+        <a href="http://www.develemento.com.ve">
+            <div class="logo-dev">&nbsp;</div>
+        </a>
     </div>
     <!-- Copyright -->
 </footer>
 <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
 </body>
 </html>
