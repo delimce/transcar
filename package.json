@@ -1,37 +1,26 @@
 {
   "name": "transcar",
   "version": "1.0.0",
-  "description": "project for transcar private company",
+  "description": "transcar app for private company",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "hot": "NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/delimce/transcar.git"
-  },
-  "keywords": [
-    "transcar",
-    "lumen",
-    "laravel"
-  ],
+  "keywords": [],
   "author": "delimce",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/delimce/transcar/issues"
-  },
-  "homepage": "https://github.com/delimce/transcar#readme",
   "devDependencies": {
-    "axios": "^0.17",
+    "laravel-mix": "^2.1.11"
+  },
+  "dependencies": {
     "bootstrap": "^4.1.3",
-    "bootstrap-sass": "^3.3.7",
-    "cross-env": "^5.1",
-    "jquery": "^3.2",
-    "laravel-mix": "^2.1.11",
-    "lodash": "^4.17.4",
+    "jquery": "^3.3.1",
     "popper.js": "^1.14.4"
   }
 }
