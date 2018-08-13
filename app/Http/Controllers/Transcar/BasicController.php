@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Transcar;
 
 use App\Models\User;
 use App\Models\UserLog;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
