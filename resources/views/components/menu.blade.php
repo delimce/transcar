@@ -6,7 +6,7 @@
             </a>
         </li>
         <li>
-            <a href="#">Dashboard</a>
+            <a href="{!! url('home') !!}">Inicio</a>
         </li>
         <li>
             <a href="#">Shortcuts</a>
@@ -24,7 +24,7 @@
             <a href="#">Services</a>
         </li>
         <li>
-            <a href="#">Cerrar Sesión</a>
+            <a href="{!! url('logout') !!}">Cerrar Sesión</a>
         </li>
     </ul>
 </div>
