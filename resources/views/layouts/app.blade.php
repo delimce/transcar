@@ -8,9 +8,25 @@
     <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}">
 </head>
 <body>
-<div class="container">
-    <!-- Content here -->
+<!-- Content here -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    @component("components.menu",['person' => ''])
+    @endcomponent
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            @yield('content')
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
 </div>
+<!-- /#wrapper -->
+<!-- Menu Toggle Script -->
 <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
 </body>

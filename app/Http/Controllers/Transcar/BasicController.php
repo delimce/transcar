@@ -26,6 +26,11 @@ class BasicController extends BaseController
         return view('pages.login');
     }
 
+    public function home()
+    {
+        return view('pages.home');
+    }
+
     public function doLogin(Request $req)
     {
         $user = User::where('usuario', $req->input('user'))->first();

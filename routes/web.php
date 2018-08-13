@@ -11,13 +11,12 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
 /******VIEWS********/
 $router->group(['namespace' => 'Transcar'], function () use ($router) {
+    $router->get('/', ['as' => 'app.in', 'uses' => 'BasicController@index']);
     $router->get('/login', ['as' => 'app.login', 'uses' => 'BasicController@login']);
+    $router->get('/home', ['as' => 'app.home', 'uses' => 'BasicController@home']);
+
 });
 
 /******SERVICES********/
