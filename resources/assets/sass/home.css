@@ -114,3 +114,22 @@ body {
         margin-right: 0;
     }
 }
+
+/*navbar*/
+
+.navbar{
+    background-color: #3523cd;
+    color: #f8fafc;
+}
+.navbar-right{
+    text-align: right;
+}
+
+.navbar a{
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.navbar a:hover{
+    color: #999999;
+}
