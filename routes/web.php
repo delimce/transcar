@@ -20,6 +20,8 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->get('/home', ['as' => 'app.home', 'uses' => 'BasicController@home']);
         $router->get('/logout', 'HomeController@logout');
+        $router->get('/account', 'UserController@index');
+
     });
 
 });
@@ -27,9 +29,10 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
 /******SERVICES********/
 $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use ($router) {
     $router->post('/doLogin', 'BasicController@doLogin');
-    ///users
-    $router->group(['prefix' => 'user'], function () use ($router) {
+    ///user
+    $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
         $router->post('/', 'UserController@createUser');
+        $router->put('/password', 'UserController@changePassword');
     });
 
 });

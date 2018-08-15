@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Transcar </title>
+    <title>Transcar - @yield('title')</title>
     <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}">
 </head>
 <body>
@@ -18,7 +18,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li><span class="glyphicon glyphicon-user"></span>{{session()->get("myUser")->nombre}}</li>
             <li>
-                <a href="{!! url('logout') !!}"><span class="glyphicon glyphicon-log-in"></span> Editar datos</a>
+                <a href="{!! url('account') !!}"><span class="glyphicon glyphicon-log-in"></span> Editar datos</a>
                 &nbsp;|&nbsp;
                 <a href="{!! url('logout') !!}"><span class="glyphicon glyphicon-log-in"></span> Cerrar</a>
             </li>

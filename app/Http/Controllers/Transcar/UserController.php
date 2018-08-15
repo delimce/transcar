@@ -27,6 +27,11 @@ class UserController extends BaseController
             $this->user = User::findOrFail($myUser->id);
     }
 
+    public function index()
+    {
+        return view('pages.account', ['data' => $this->user]);
+    }
+
 
     /**create user
      * @param Request $req
@@ -58,6 +63,32 @@ class UserController extends BaseController
         $user->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Usuario creado con éxito']);
+
+    }
+
+
+    public function changePassword(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'pass' => 'required|min:5',
+            'pass2' => 'required|min:5'
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        if ($req->input('pass') === $req->input('pass2')) {
+            $this->user->password = Hash::make($req->input('pass'));
+            $this->user->save();
+            return response()->json(['status' => 'ok', 'message' => 'clave cambiada con éxito']);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'los campos de clave tienen valores  diferentes'], 400);
+        }
+
 
     }
 
