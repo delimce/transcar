@@ -66,6 +66,38 @@ class UserController extends BaseController
 
     }
 
+    public function editUser(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'nombre' => 'required|min:3',
+            'apellido' => 'min:3',
+            'email' => 'required|email',
+            'usuario' => 'required|min:4',
+        ], ['required' => 'El campo :attribute es requerido',
+            'email' => 'El campo :attribute debe ser un Email bien formado',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $this->user->nombre = $req->input('nombre');
+        $this->user->usuario = $req->input('usuario');
+        $this->user->email = $req->input('email');
+        if ($req->has('apellido'))
+            $this->user->apellido = $req->input('apellido');
+        $this->user->save();
+
+        $req->session()->get("myUser")->nombre = $req->input('nombre');
+
+        return response()->json(['status' => 'ok', 'message' => 'datos guardados con éxito']);
+
+
+    }
+
 
     public function changePassword(Request $req)
     {

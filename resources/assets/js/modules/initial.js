@@ -37,3 +37,15 @@ $('#form_pass').submit(function (event) {
     });
     event.preventDefault();
 })
+
+$('#form_user').submit(function (event) {
+    // Get the form instance
+    const $form = $('#form_user');
+    axios.put(api_url + 'api/user/edit', $form.serialize())
+        .then(function (response) {
+            showSuccess(response.data.message, 2000)
+        }).catch(function (error) {
+        showAlert(error.response.data.message);
+    });
+    event.preventDefault();
+})

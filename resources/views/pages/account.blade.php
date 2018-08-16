@@ -13,7 +13,7 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-data" role="tabpanel" aria-labelledby="nav-data-tab">
 
-            <form>
+            <form id="form_user">
                 <div class="row">
                     <div class="col-md-11 mx-auto">
                         <div class="form-group required row">
@@ -30,8 +30,7 @@
                                 <input type="text" class="form-control" id="apellido" name="apellido"
                                        placeholder="Apellido"
                                        value="{{$data->apellido}}"
-                                       autocomplete="my-lastname"
-                                       required>
+                                       autocomplete="my-lastname">
                             </div>
                         </div>
 

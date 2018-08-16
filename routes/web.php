@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
     $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
         $router->post('/', 'UserController@createUser');
         $router->put('/password', 'UserController@changePassword');
+        $router->put('/edit', 'UserController@editUser');
     });
 
 });
