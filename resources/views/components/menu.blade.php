@@ -1,9 +1,7 @@
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
-            <a href="#">
                 Menu Principal
-            </a>
         </li>
         <li>
             <a href="{!! url('home') !!}">Inicio</a>
@@ -17,11 +15,17 @@
         <li>
             <a href="#">Events</a>
         </li>
-        <li>
-            <a href="#">About</a>
+        <li class="sidebar-brand">
+           Administración
         </li>
         <li>
-            <a href="#">Services</a>
+            <a href="#">Producción</a>
+        </li>
+        <li>
+            <a href="#">Cargos y Personal</a>
+        </li>
+        <li>
+            <a href="#">Sistema</a>
         </li>
         <li>
             <a href="{!! url('logout') !!}">Cerrar Sesión</a>
