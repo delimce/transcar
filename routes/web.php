@@ -21,6 +21,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/home', ['as' => 'app.home', 'uses' => 'BasicController@home']);
         $router->get('/logout', 'HomeController@logout');
         $router->get('/account', 'UserController@index');
+        $router->get('/system', 'AdminController@index');
 
     });
 

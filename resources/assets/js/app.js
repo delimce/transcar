@@ -1,7 +1,7 @@
-import 'bootstrap';
+import 'bootstrap/dist/js/bootstrap.min';
 import 'popper.js';
-import 'bootstrap4-notify';
+import 'bootstrap4-notify/bootstrap-notify.min.js';
 
 window.api_url = process.env.MIX_API_URL;
-window.$ = window.jQuery = require('jquery');
-window.axios = require('axios');
+global.axios = require('axios');
+global.$ = global.jQuery = require('jquery');

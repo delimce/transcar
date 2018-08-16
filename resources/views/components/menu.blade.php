@@ -25,7 +25,7 @@
             <a href="#">Cargos y Personal</a>
         </li>
         <li>
-            <a href="#">Sistema</a>
+            <a href="{!! url('system') !!}">Sistema</a>
         </li>
         <li>
             <a href="{!! url('logout') !!}">Cerrar Sesión</a>
