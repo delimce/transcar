@@ -1,7 +1,7 @@
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
-                Menu Principal
+                Menú Principal
         </li>
         <li>
             <a href="{!! url('home') !!}">Inicio</a>
