@@ -27,7 +27,8 @@ class AdminController extends BaseController
 
     public function index()
     {
-        return view('pages.system');
+        $users = User::all();
+        return view('pages.system', ['users' => $users]);
     }
 
 }

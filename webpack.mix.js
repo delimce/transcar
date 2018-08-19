@@ -13,10 +13,16 @@ let mix = require('laravel-mix');
 mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 
+//modules
 mix.scripts([
     'resources/assets/js/commons.js',
     'resources/assets/js/modules/initial.js'
 ], 'public/js/modules.js');
+
+//vendor libs
+mix.scripts([
+    'node_modules/bootstrap-table/dist/bootstrap-table.min.js'
+], 'public/js/vendor.js');
 
 mix.copyDirectory('resources/assets/img', 'public/images');
 

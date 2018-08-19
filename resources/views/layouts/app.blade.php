@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Transcar - @yield('title')</title>
     <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}">
+    <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ url('js/vendor.js') }}"></script>
 </head>
 <body>
 
@@ -28,7 +30,7 @@
 <!-- Content here -->
 <div id="wrapper">
     <!-- Sidebar -->
-@component("components.menu",['person' => ''])
+@component("components.menu",['person' => session()->get("myUser")])
 @endcomponent
 <!-- /#sidebar-wrapper -->
 
@@ -41,9 +43,13 @@
     <!-- /#page-content-wrapper -->
 
 </div>
+
+
 <!-- /#wrapper -->
 <!-- Menu Toggle Script -->
-<script type="text/javascript" src="{{ url('js/app.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
+<script>
+    $(function () {  @stack('scripts-ready') });
+</script>
 </body>
 </html>
