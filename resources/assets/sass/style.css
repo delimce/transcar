@@ -20,8 +20,10 @@ footer span {
 }
 
 .logo-dev {
-    background: url('../img/logoDev2.png') no-repeat;
-    background-size: 300px 100px;
+    background: url('../img/logoDev2.png') no-repeat center center;
+    background-size:132px 99px;
+    width: 132px;
+    height: 99px;
     display: inline-block;
 }
 

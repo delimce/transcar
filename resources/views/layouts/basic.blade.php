@@ -17,7 +17,7 @@
     <div class="footer-copyright text-center py-3">
         <span>Desarrollado por:</span>
         <a href="http://www.develemento.com.ve">
-            <div class="logo-dev">&nbsp;</div>
+            <div class="logo-dev"></div>
         </a>
     </div>
     <!-- Copyright -->

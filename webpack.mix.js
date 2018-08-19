@@ -11,10 +11,12 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/assets/sass/app.scss', 'public/css').options({
+    processCssUrls: false
+});
 
 //modules
-mix.scripts([
+mix.babel([
     'resources/assets/js/commons.js',
     'resources/assets/js/modules/initial.js'
 ], 'public/js/modules.js');
@@ -24,7 +26,7 @@ mix.scripts([
     'node_modules/bootstrap-table/dist/bootstrap-table.min.js'
 ], 'public/js/vendor.js');
 
-mix.copyDirectory('resources/assets/img', 'public/images');
+mix.copyDirectory('resources/assets/img', 'public/img', false);
 
 
 // Full API
