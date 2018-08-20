@@ -18,7 +18,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
 //modules
 mix.babel([
     'resources/assets/js/commons.js',
-    'resources/assets/js/modules/initial.js'
+    'resources/assets/js/modules/initial.js',
+    'resources/assets/js/modules/system.js'
 ], 'public/js/modules.js');
 
 //vendor libs

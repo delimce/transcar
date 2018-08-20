@@ -36,6 +36,28 @@ input{
     max-width: 400px;
 }
 
+label{
+    font-weight: bold;
+}
+
 .tab-pane{
     padding: 25px 0 10px 0;
 }
+
+.tab-pane a{
+    padding-left: 8px;
+    padding-bottom: 9px;
+}
+
+/*modal*/
+.modal-header{
+    padding-left: 25px;
+}
+.modal-footer{
+   padding-right: 10px;
+}
+
+#user-form{
+    display: none;
+}
+
