@@ -24,7 +24,8 @@ mix.babel([
 
 //vendor libs
 mix.scripts([
-    'node_modules/bootstrap-table/dist/bootstrap-table.min.js'
+    'node_modules/bootstrap-table/dist/bootstrap-table.min.js',
+    'node_modules/jquery-confirm/dist/jquery-confirm.min.js'
 ], 'public/js/vendor.js');
 
 mix.copyDirectory('resources/assets/img', 'public/img', false);

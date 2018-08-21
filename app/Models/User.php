@@ -29,4 +29,9 @@ class User extends Model
     {
         return $this->hasMany('App\Models\Cn2\UserLog','usuario_id');
     }
+
+    public function profile()
+    {
+        return $this->belongsTo('App\Models\UserProfile','perfil_id');
+    }
 }

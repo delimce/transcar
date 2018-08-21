@@ -10,6 +10,12 @@ h2{
     display: inline;
 }
 
+.sub-title{
+    font-weight: bold;
+    font-size: 17px;
+    padding: 12px 0 7px 41px;
+}
+
 .page-header{
     padding-bottom: 20px;
 }
@@ -21,9 +27,9 @@ footer span {
 
 .logo-dev {
     background: url('../img/logoDev2.png') no-repeat center center;
-    background-size:132px 99px;
-    width: 132px;
-    height: 99px;
+    background-size:113px 80px;
+    width: 113px;
+    height: 80px;
     display: inline-block;
 }
 
@@ -58,6 +64,10 @@ label{
 }
 
 #user-form{
+    display: none;
+}
+
+#delete{
     display: none;
 }
 

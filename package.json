@@ -27,6 +27,7 @@
     "bootstrap4-notify": "^4.0.3",
     "bootstrap4c-custom-switch": "^1.0.9",
     "jquery": "^3.3.1",
+    "jquery-confirm": "^3.3.2",
     "popper.js": "^1.14.4"
   }
 }

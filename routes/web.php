@@ -22,7 +22,6 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/logout', 'HomeController@logout');
         $router->get('/account', 'UserController@index');
         $router->get('/system', 'AdminController@index');
-
     });
 
 });
@@ -32,9 +31,12 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
     $router->post('/doLogin', 'BasicController@doLogin');
     ///user
     $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
-        $router->post('/', 'UserController@createUser');
+        $router->get('all/', 'UserController@getUserList');
+        $router->get('/{user_id}', 'UserController@getUserById');
+        $router->post('/', 'UserController@createOrUpdateUser');
         $router->put('/password', 'UserController@changePassword');
         $router->put('/edit', 'UserController@editUser');
+        $router->delete('/{user_id}', 'UserController@deleteUserById');
     });
 
 });

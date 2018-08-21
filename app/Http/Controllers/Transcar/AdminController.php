@@ -27,7 +27,7 @@ class AdminController extends BaseController
 
     public function index()
     {
-        $users = User::all();
+        $users = User::where("id","!=",$this->user->id)->with('profile')->get();
         return view('pages.system', ['users' => $users]);
     }
 
