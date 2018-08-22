@@ -22,7 +22,10 @@
             <a href="#">Producción</a>
         </li>
         <li>
-            <a href="#">Cargos y Personal</a>
+            <a href="#">Personal</a>
+        </li>
+        <li>
+            <a href="{!! url('areaRole') !!}">Areas y Cargos</a>
         </li>
         <li>
             <a href="{!! url('system') !!}">Sistema</a>

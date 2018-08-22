@@ -27,7 +27,7 @@ class User extends Model
 
     public function logs()
     {
-        return $this->hasMany('App\Models\Cn2\UserLog','usuario_id');
+        return $this->hasMany('App\Models\UserLog','usuario_id');
     }
 
     public function profile()
