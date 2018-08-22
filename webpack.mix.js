@@ -19,7 +19,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.babel([
     'resources/assets/js/commons.js',
     'resources/assets/js/modules/initial.js',
-    'resources/assets/js/modules/system.js'
+    'resources/assets/js/modules/system.js',
+    'resources/assets/js/modules/admin-area-role.js'
 ], 'public/js/modules.js');
 
 //vendor libs

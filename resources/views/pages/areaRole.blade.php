@@ -17,7 +17,7 @@
         <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
 
             <div id="area-list-container">
-                <a id="to-user-form" href="#">[+] Crear Area</a>
+                <a id="to-area-form" href="#">[+] Crear Area</a>
                 <table id="area-list" class="table table-striped cn-grid">
                     <thead>
                     <tr>
@@ -37,11 +37,11 @@
                     </tbody>
                 </table>
             </div>
-            @include('pages.parts.user_form')
+            @include('pages.parts.area_form')
         </div>
         <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
             <div id="role-list-container">
-                <a id="to-user-form" href="#">[+] Crear Cargo</a>
+                <a id="to-role-form" href="#">[+] Crear Cargo</a>
                 <table id="role-list" class="table table-striped cn-grid">
                     <thead>
                     <tr>

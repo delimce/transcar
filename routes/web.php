@@ -9,7 +9,7 @@
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
-*/
+ */
 
 /******VIEWS********/
 $router->group(['namespace' => 'Transcar'], function () use ($router) {
@@ -23,7 +23,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/account', 'UserController@index');
         $router->get('/system', 'AdminController@index');
         $router->get('/areaRole', 'AdminController@areaRoleIndex');
-    
+
     });
 
 });
@@ -31,19 +31,33 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
 /******SERVICES********/
 $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use ($router) {
     $router->post('/doLogin', 'BasicController@doLogin');
-    ///user
-    $router->group(['prefix' => 'user', 'middleware' => 'auth'], function () use ($router) {
-        $router->get('all/', 'UserController@getUserList');
-        $router->get('/{user_id}', 'UserController@getUserById');
-        $router->post('/', 'UserController@createOrUpdateUser');
-        $router->put('/password', 'UserController@changePassword');
-        $router->put('/edit', 'UserController@editUser');
-        $router->delete('/{user_id}', 'UserController@deleteUserById');
-    });
 
-    ////config
-    $router->group(['prefix' => 'config', 'middleware' => 'auth'], function () use ($router) {
-        $router->put('/', 'AdminController@saveConfig');
+     ////config
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+       
+          ///users
+        $router->group(['prefix' => 'user'], function () use ($router) {
+            $router->get('all/', 'UserController@getUserList');
+            $router->get('/{user_id}', 'UserController@getUserById');
+            $router->post('/', 'UserController@createOrUpdateUser');
+            $router->put('/password', 'UserController@changePassword');
+            $router->put('/edit', 'UserController@editUser');
+            $router->delete('/{user_id}', 'UserController@deleteUserById');
+        });
+
+        ////config
+        $router->group(['prefix' => 'config'], function () use ($router) {
+            $router->put('/', 'AdminController@saveConfig');
+        });
+
+        ////areas
+        $router->group(['prefix' => 'area'], function () use ($router) {
+            $router->get('/all', 'AdminController@getAreas');
+            $router->post('/', 'AdminController@createOrUpdateArea');
+            $router->get('/{area_id}', 'AdminController@getAreaById');
+            $router->delete('/{area_id}', 'AdminController@deleteAreaById');
+        });
+
     });
 
 });

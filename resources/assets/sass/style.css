@@ -63,11 +63,11 @@ label{
    padding-right: 10px;
 }
 
-#user-form{
+#user-form, #area-form{
     display: none;
 }
 
-#delete{
+#delete, #delete-area{
     display: none;
 }
 

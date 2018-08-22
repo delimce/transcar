@@ -11,7 +11,7 @@ $("#to-user-list").click(function () {
 //functions
 const toggle_user_list = function (mode = true) {
     if (mode) {
-        reloadUserList();
+        reloadList('api/user/all','#users-list');
         $("#users-list-container").show();
         $("#user-form").hide();
         $("#user_form")[0].reset();
@@ -20,17 +20,6 @@ const toggle_user_list = function (mode = true) {
         $("#users-list-container").hide();
         $("#user-form").show();
     }
-}
-
-const reloadUserList = function () {
-    axios.get(api_url + 'api/user/all')
-        .then(function (response) {
-            $('#users-list').bootstrapTable('removeAll').bootstrapTable('load', {
-                data: response.data.list
-            });
-        }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
 }
 
 // Forms

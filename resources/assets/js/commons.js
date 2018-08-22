@@ -65,3 +65,14 @@ const showSuccess = function (message, time = false) {
         },
     });
 }
+
+const reloadList = function (url,list_id) {
+    axios.get(api_url + url)
+        .then(function (response) {
+            $(list_id).bootstrapTable('removeAll').bootstrapTable('load', {
+                data: response.data.list
+            });
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+}
