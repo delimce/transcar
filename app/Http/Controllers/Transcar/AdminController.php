@@ -9,8 +9,10 @@
 namespace App\Http\Controllers\Transcar;
 
 use App\Models\User;
+use App\Models\Config;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+
 
 class AdminController extends BaseController
 {
@@ -28,7 +30,17 @@ class AdminController extends BaseController
     public function index()
     {
         $users = User::where("id","!=",$this->user->id)->with('profile')->get();
-        return view('pages.system', ['users' => $users]);
+        $config = Config::first();
+        return view('pages.system', ["users" => $users, "config"=> $config]);
+    }
+
+    public function saveConfig(Request $req){
+
+        $config = Config::find(1); ///only reg
+        $config->iva = $req->input('iva');
+        $config->caja_paleta = $req->input('cajas');
+        $config->save();
+        return response()->json(['status' => 'ok', 'message' => 'Configuracion guardada con éxito']);
     }
 
 }

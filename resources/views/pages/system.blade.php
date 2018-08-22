@@ -8,8 +8,8 @@
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab"
                aria-controls="nav-users" aria-selected="true">Usuarios</a>
-            <a class="nav-item nav-link" id="nav-pass-tab" data-toggle="tab" href="#nav-pass" role="tab"
-               aria-controls="nav-pass" aria-selected="false">Configuración</a>
+            <a class="nav-item nav-link" id="nav-config-tab" data-toggle="tab" href="#nav-config" role="tab"
+               aria-controls="nav-config" aria-selected="false">Configuración</a>
         </div>
     </nav>
 
@@ -43,8 +43,38 @@
             </div>
             @include('pages.parts.user_form')
         </div>
-        <div class="tab-pane fade" id="nav-pass" role="tabpanel" aria-labelledby="nav-pass-tab">
+        <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
+            <div id="config-container">
+                <form id="config_form">
+                        <div class="row">
+                                <div class="col-md-11 mx-auto">
+                                        <div class="form-group required row">
+                                                <div class="col-sm-6">
+                                                    <label for="iva" class="control-label">impuesto</label>
+                                                <input type="number" value="{{$config->iva}}" class="form-control" id="iva" name="iva"
+                                                           placeholder="impuesto iva"
+                                                           autocomplete="impuesto"
+                                                           required>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label for="cajas" class="control-label">Cajas por paleta</label>
+                                                    <input type="number" value="{{$config->caja_paleta}}" class="form-control" id="cajas" name="cajas"
+                                                           placeholder="cajas por paleta"
+                                                           autocomplete="cajas">
+                                                </div>
+                                            </div>
 
+                                            <div class="form-group required row">
+                                                    <div class="col-sm-6">
+                                                        <button id="save_config" class="btn btn-primary" type="submit">
+                                                            Guardar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                </div>
+                        </div>
+                </form>
+            </div>
         </div>
     </div>
 

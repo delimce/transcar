@@ -46,6 +46,18 @@ $("#user_form").submit(function (event) {
     event.preventDefault();
 });
 
+$("#config_form").submit(function (event) {
+    const $form = $('#config_form');
+    axios.put(api_url + 'api/config', $form.serialize())
+        .then(function (response) {
+            showSuccess(response.data.message, 2000)
+        }).catch(function (error) {
+            console.log(error)
+        showAlert(error.response.data.message)
+    });
+    event.preventDefault();
+});
+
 //behavior
 $('#users-list').on('click-cell.bs.table', function (field, value, row, $element) {
     toggle_user_list(false);

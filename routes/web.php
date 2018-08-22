@@ -39,4 +39,9 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         $router->delete('/{user_id}', 'UserController@deleteUserById');
     });
 
+    ////config
+    $router->group(['prefix' => 'config', 'middleware' => 'auth'], function () use ($router) {
+        $router->put('/', 'AdminController@saveConfig');
+    });
+
 });
