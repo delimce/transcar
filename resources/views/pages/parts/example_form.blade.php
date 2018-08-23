@@ -1,4 +1,5 @@
 <div id="area-form">
+        <a id="to-area-list" href="#">Volver a la lista</a>
         <div class="sub-title">&nbsp;</div>
         <form id="user_form" data-record="">
                 <div class="row">

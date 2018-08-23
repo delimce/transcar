@@ -59,7 +59,7 @@
                 <div class="form-group required row">
                     <div class="col-sm-6">
                         <label for="profile" class="control-label">Perfil de usuario</label>
-                        <select name="profile" class="selectpicker" data-width="90%">
+                        <select name="profile" data-style="btn-primary" class="selectpicker" data-width="90%">
                             <option value="2" title="Operador">Operador, Carga de produccion</option>
                             <option value="3" title="Supervisor">Supervisor, Carga de producción y
                                 asistencia

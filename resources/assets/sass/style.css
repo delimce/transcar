@@ -42,8 +42,14 @@ input{
     max-width: 400px;
 }
 
+input.currency {
+    text-align: right;
+    padding-right: 15px;
+}
+
 label{
     font-weight: bold;
+    text-transform: capitalize;
 }
 
 .tab-pane{
@@ -63,11 +69,11 @@ label{
    padding-right: 10px;
 }
 
-#user-form, #area-form{
+#user-form, #area-form, #role-form{
     display: none;
 }
 
-#delete, #delete-area{
+#delete, #delete-area, #delete-role{
     display: none;
 }
 

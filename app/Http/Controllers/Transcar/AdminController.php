@@ -48,8 +48,6 @@ class AdminController extends BaseController
         return response()->json(['status' => 'ok', 'message' => 'Configuracion guardada con éxito']);
     }
 
-    /****************areas method***************** */
-
     public function areaRoleIndex()
     {
         $areas = Area::all();
@@ -57,15 +55,19 @@ class AdminController extends BaseController
         return view('pages.areaRole', ["areas" => $areas, "roles" => $roles]);
     }
 
+    /****************areas method***************** */
 
-    public function getAreas(){
+
+    public function getAreas()
+    {
 
         $areas = Area::all();
         return response()->json(['status' => 'ok', 'list' => $areas->toArray()]);
 
     }
 
-    public function getAreaById($area_id){
+    public function getAreaById($area_id)
+    {
 
         $area = Area::find($area_id);
         return response()->json(['status' => 'ok', 'area' => $area]);
@@ -101,10 +103,87 @@ class AdminController extends BaseController
 
     public function deleteAreaById($area_id)
     {
-        $area = Area::findOrFail($area_id);
-        $areaTitle = $area->titulo;
-        $area->delete();
-        return response()->json(['status' => 'ok', 'message' => "Area: $areaTitle borrada con éxito"]);
+
+        try {
+            $area = Area::findOrFail($area_id);
+            $areaTitle = $area->titulo;
+            $area->delete();
+            return response()->json(['status' => 'ok', 'message' => "Area: $areaTitle borrada con éxito"]);
+        } catch (\PDOException $ex) {
+            return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee cargos asociados'], 500);
+        }
+    }
+
+
+    /*************roles methods ********************/
+
+    public function getRoles()
+    {
+        $roles = Role::all();
+        $rolesArray = array();
+        $roles->each(function ($item) use (&$rolesArray) {
+            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->titulo);
+        });
+        return response()->json(['status' => 'ok', 'list' => $rolesArray]);
+    }
+
+    public function getRoleById($role_id)
+    {
+
+        $role = Role::find($role_id);
+        return response()->json(['status' => 'ok', 'role' => $role]);
+    }
+
+    public function createOrUpdateRole(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'nombre' => 'required|min:3',
+            'descripcion' => 'required|min:3',
+            'sueldo' => 'required|numeric',
+            'area' => 'required|numeric',
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $role = new Role();
+        if ($req->has('role_id')) {
+            $role = Role::findOrFail($req->input('role_id'));
+        }
+
+        if ($req->has('asistencia')) {
+            $role->asistencia = $req->input('asistencia');
+        }
+
+        if ($req->has('produccion')) {
+            $role->produccion = $req->input('produccion');
+        }
+
+        if ($req->has('hora_extra')) {
+            $role->hora_extra = $req->input('hora_extra');
+        }
+
+        $role->nombre = $req->input('nombre');
+        $role->descripcion = $req->input('descripcion');
+        $role->sueldo = $req->input('sueldo');
+        $role->area_id = $req->input('area');
+        $role->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Cargo guardado con éxito']);
+
+    }
+
+    public function deleteRoleById($role_id)
+    {
+        $item = Role::findOrFail($role_id);
+        $title = $item->nombre;
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
 
     }
 
