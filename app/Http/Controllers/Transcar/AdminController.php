@@ -16,6 +16,8 @@ use App\Models\User;
 use App\Models\Config;
 use App\Models\Area;
 use App\Models\Role;
+use App\Models\Table;
+use App\Models\Line;
 
 
 class AdminController extends BaseController
@@ -53,6 +55,13 @@ class AdminController extends BaseController
         $areas = Area::all();
         $roles = Role::all();
         return view('pages.areaRole', ["areas" => $areas, "roles" => $roles]);
+    }
+
+    public function tableLineIndex()
+    {
+        $tables = Table::all();
+        $lines = Line::all();
+        return view('pages.tableLine', ["tables" => $tables, "lines" => $lines]);
     }
 
     /****************areas method***************** */
@@ -184,6 +193,62 @@ class AdminController extends BaseController
         $title = $item->nombre;
         $item->delete();
         return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
+
+    }
+
+
+    /*************table methods ********************/
+
+
+    public function getTables()
+    {
+
+        $tables = Table::all();
+        return response()->json(['status' => 'ok', 'list' => $tables]);
+
+    }
+
+    public function getTableById($table_id)
+    {
+
+        $table = Table::find($table_id);
+        return response()->json(['status' => 'ok', 'table' => $table]);
+    }
+
+    public function createOrUpdateTable(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'titulo' => 'required|min:3',
+            'ubicacion' => 'required|min:3',
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $table = new Table();
+        if ($req->has('table_id')) {
+            $table = Table::findOrFail($req->input('table_id'));
+        }
+
+        $table->titulo = $req->input('titulo');
+        $table->ubicacion = $req->input('ubicacion');
+        $table->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Mesa guardada con éxito']);
+
+    }
+
+    public function deleteTableById($table_id)
+    {
+        $item = Table::findOrFail($table_id);
+        $title = $item->titulo;
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
 
     }
 

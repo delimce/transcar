@@ -23,6 +23,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/account', 'UserController@index');
         $router->get('/system', 'AdminController@index');
         $router->get('/areaRole', 'AdminController@areaRoleIndex');
+        $router->get('/tableLine', 'AdminController@tableLineIndex');
 
     });
 
@@ -64,6 +65,14 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->post('/', 'AdminController@createOrUpdateRole');
             $router->get('/{role_id}', 'AdminController@getRoleById');
             $router->delete('/{role_id}', 'AdminController@deleteRoleById');
+        });
+
+        ////tables
+        $router->group(['prefix' => 'table'], function () use ($router) {
+            $router->get('/all', 'AdminController@getTables');
+            $router->post('/', 'AdminController@createOrUpdateTable');
+            $router->get('/{table_id}', 'AdminController@getTableById');
+            $router->delete('/{table_id}', 'AdminController@deleteTableById');
         });
 
     });

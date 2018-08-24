@@ -25,6 +25,9 @@
             <a href="#">Personal</a>
         </li>
         <li>
+            <a href="{!! url('tableLine') !!}">Mesas y Líneas</a>
+        </li>
+        <li>
             <a href="{!! url('areaRole') !!}">Areas y Cargos</a>
         </li>
         <li>

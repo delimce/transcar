@@ -69,11 +69,11 @@ label{
    padding-right: 10px;
 }
 
-#user-form, #area-form, #role-form{
+#user-form, #area-form, #role-form, #table-form, #line-form{
     display: none;
 }
 
-#delete, #delete-area, #delete-role{
+#delete, #delete-area, #delete-role, #delete-table, #delete-line{
     display: none;
 }
 
