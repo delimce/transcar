@@ -21,14 +21,14 @@
                 </div>
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="mesa" class="control-label">Mesa</label><br>
-                        <select name="mesa" class="selectpickerTable" data-width="90%">
+                        <label for="mesa"  class="control-label">Mesa</label><br>
+                        <select name="mesa" data-style="form-select" class="selectpickerTable" data-width="90%">
                         </select>
 
                     </div>
                     <div class="col-sm-6">
                         <label for="jefe" class="control-label">jefe mesa</label>
-                        <select name="jefe" class="selectpicker" data-width="90%">
+                        <select name="jefe" data-style="form-select" class="selectpicker" data-width="90%">
                         </select>
                     </div>
                 </div>

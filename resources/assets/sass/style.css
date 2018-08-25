@@ -38,6 +38,14 @@ form{
     display: block;
 }
 
+.form-select{
+    background-color: #fff;
+}
+
+.bootstrap-select{
+    border: 1px solid #c3c3c3;
+}
+
 input{
     max-width: 400px;
 }
