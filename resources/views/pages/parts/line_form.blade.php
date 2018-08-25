@@ -39,7 +39,7 @@
                             Guardar
                         </button>
                         &nbsp;
-                        <button id="delete-table" class="btn btn-danger" type="button">
+                        <button id="delete-line" class="btn btn-danger" type="button">
                             Borrar
                         </button>
                     </div>

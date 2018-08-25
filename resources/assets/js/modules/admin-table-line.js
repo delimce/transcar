@@ -160,3 +160,22 @@ $('#delete-table').confirm({
         }
     }
 });
+
+$('#delete-line').confirm({
+    title: 'Borrar Línea',
+    content: 'Esta seguro que desea borrar esta Línea?',
+    buttons: {
+        confirm: function () {
+            let line_id = $("#line_form").data("record");
+            axios.delete(api_url + 'api/line/' + line_id)
+                .then(function (response) {
+                    showSuccess(response.data.message, 2000)
+                    toggle_line_list();
+                }).catch(function (error) {
+                showAlert(error.response.data.message)
+            });
+        },
+        cancel: function () {
+        }
+    }
+});

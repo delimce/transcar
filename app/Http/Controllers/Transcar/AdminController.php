@@ -245,11 +245,14 @@ class AdminController extends BaseController
 
     public function deleteTableById($table_id)
     {
-        $item = Table::findOrFail($table_id);
-        $title = $item->titulo;
-        $item->delete();
-        return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
-
+        try {
+            $item = Table::findOrFail($table_id);
+            $title = $item->titulo;
+            $item->delete();
+            return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
+        } catch (\PDOException $ex) {
+            return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee líneas asociadas'], 500);
+        }
     }
 
     /****************lines method***************** */
@@ -298,6 +301,15 @@ class AdminController extends BaseController
         $line->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
+
+    }
+
+    public function deleteLineById($table_id)
+    {
+        $item = Line::findOrFail($table_id);
+        $title = $item->titulo;
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
 
     }
 
