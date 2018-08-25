@@ -23,6 +23,7 @@
     <!-- Copyright -->
 </footer>
 <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/vendor.js') }}"></script>
 <script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
 </body>
 </html>

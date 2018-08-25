@@ -28,6 +28,7 @@ $app->withEloquent();
 
 $app->configure('database');
 $app->configure('session');
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,7 @@ $app->singleton(
  $app->middleware([
     App\Http\Middleware\ExampleMiddleware::class,
      \Illuminate\Session\Middleware\StartSession::class,
+     \Barryvdh\Cors\HandleCors::class,
  ]);
 
 $app->bind(\Illuminate\Session\SessionManager::class, function () use ($app) {
@@ -76,6 +78,7 @@ $app->withFacades(true, [
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'cors' => \Barryvdh\Cors\HandleCors::class,
  ]);
 
 /*
