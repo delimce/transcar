@@ -73,4 +73,6 @@
 @push('scripts-ready')
     $('#area-list').bootstrapTable();
     $('#role-list').bootstrapTable();
+    ///loading area list to select
+    reloadAreaSelectBox();
 @endpush

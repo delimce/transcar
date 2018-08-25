@@ -61,7 +61,6 @@
                     <div class="col-sm-6">
                         <label for="area" class="control-label">Area</label><br>
                         <select name="area" class="selectpicker" data-width="90%">
-
                         </select>
                     </div>
                 </div>

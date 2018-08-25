@@ -56,14 +56,14 @@
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>{{str_limit($item->titulo,70)}}</td>
-                            <td>{{str_limit($item->descripcion,100)}}</td>
-                            <td>{{str_limit($item->mesa->titulo,100)}}</td>
+                            <td>{{str_limit($item->descripcion,60)}}</td>
+                            <td>{{str_limit($item->table->titulo,100)}}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
-            @include('pages.parts.role_form')
+            @include('pages.parts.line_form')
         </div>
 
     </div>
@@ -73,4 +73,5 @@
 @push('scripts-ready')
     $('#table-list').bootstrapTable();
     $('#line-list').bootstrapTable();
+    reloadTableSelectBox();
 @endpush

@@ -252,5 +252,54 @@ class AdminController extends BaseController
 
     }
 
+    /****************lines method***************** */
+
+    public function getLines()
+    {
+        $items = Line::all();
+        $linesArray = array();
+        $items->each(function ($item) use (&$linesArray) {
+            $linesArray[] = array("id" => $item->id, "titulo" => $item->titulo, "descripcion" => $item->descripcion, "mesa" => $item->table->titulo);
+        });
+
+        return response()->json(['status' => 'ok', 'list' => $linesArray]);
+    }
+
+    public function getLineById($line_id)
+    {
+        $item = Line::find($line_id);
+        return response()->json(['status' => 'ok', 'line' => $item]);
+    }
+
+    public function createOrUpdateLine(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'titulo' => 'required|min:3',
+            'descripcion' => 'required|min:3',
+            'mesa' => 'required|numeric',
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $line = new Line();
+        if ($req->has('line_id')) {
+            $line = Line::findOrFail($req->input('line_id'));
+        }
+
+        $line->titulo = $req->input('titulo');
+        $line->descripcion = $req->input('descripcion');
+        $line->mesa_id = $req->input('mesa');
+        $line->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
+
+    }
+
 
 }

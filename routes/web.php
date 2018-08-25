@@ -33,10 +33,10 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
 $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use ($router) {
     $router->post('/doLogin', 'BasicController@doLogin');
 
-     ////authenticated users
+    ////authenticated users
     $router->group(['middleware' => 'auth'], function () use ($router) {
-       
-          ///users
+
+        ///users
         $router->group(['prefix' => 'user'], function () use ($router) {
             $router->get('all/', 'UserController@getUserList');
             $router->get('/{user_id}', 'UserController@getUserById');
@@ -59,8 +59,8 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->delete('/{area_id}', 'AdminController@deleteAreaById');
         });
 
-         ////roles
-         $router->group(['prefix' => 'role'], function () use ($router) {
+        ////roles
+        $router->group(['prefix' => 'role'], function () use ($router) {
             $router->get('/all', 'AdminController@getRoles');
             $router->post('/', 'AdminController@createOrUpdateRole');
             $router->get('/{role_id}', 'AdminController@getRoleById');
@@ -73,6 +73,14 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->post('/', 'AdminController@createOrUpdateTable');
             $router->get('/{table_id}', 'AdminController@getTableById');
             $router->delete('/{table_id}', 'AdminController@deleteTableById');
+        });
+
+        ////lines
+        $router->group(['prefix' => 'line'], function () use ($router) {
+            $router->get('/all', 'AdminController@getLines');
+            $router->post('/', 'AdminController@createOrUpdateLine');
+            $router->get('/{line_id}', 'AdminController@getLineById');
+            $router->delete('/{line_id}', 'AdminController@deleteLineById');
         });
 
     });

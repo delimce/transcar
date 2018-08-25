@@ -42,8 +42,6 @@ const toggle_role_list = function (mode = true) {
     } else {
         $("#role-list-container").hide();
         $("#role-form").show();
-        ///loading area list to select
-        reloadAreaSelectBox()
     }
 }
 
@@ -97,7 +95,6 @@ $('#area-list').on('click-cell.bs.table', function (field, value, row, $element)
     toggle_area_list(false);
     $('#delete-area').show();
     $('#area_form').data('record', $element.id); //element id
-    reloadAreaSelectBox()
     $('.sub-title').html('Editar Area');
     axios.get(api_url + 'api/area/' + $element.id)
         .then(function (response) {
