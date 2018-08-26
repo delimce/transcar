@@ -6,17 +6,17 @@
                         <div class="col-md-11 mx-auto">
                                 <div class="form-group required row">
                                         <div class="col-sm-6">
-                                            <label for="titulo" class="control-label">titulo</label>
-                                            <input type="text" class="form-control" id="titulo" name="titulo"
-                                                   placeholder="titulo"
-                                                   autocomplete="my-title"
+                                            <label for="nombre" class="control-label">Nombre</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre"
+                                                   placeholder="nombre"
+                                                   autocomplete="my-area-name"
                                                    required>
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="descripcion" class="control-label">descripcion</label>
                                             <input type="text" class="form-control" id="descripcion" name="descripcion"
                                                    placeholder="descripcion"
-                                                   autocomplete="my-desc">
+                                                   autocomplete="my-area-desc">
                                         </div>
                                 </div>
 

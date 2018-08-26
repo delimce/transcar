@@ -22,7 +22,7 @@
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
-                        <th data-field="titulo" data-sortable="true" scope="col">Nombre</th>
+                        <th data-field="nombre" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="descripcion" data-sortable="true" scope="col">Descripción</th>
                     </tr>
                     </thead>
@@ -30,7 +30,7 @@
                     @foreach($areas as $item)
                         <tr>
                             <td>{{$item->id}}</td>
-                            <td>{{str_limit($item->titulo,70)}}</td>
+                            <td>{{str_limit($item->nombre,70)}}</td>
                             <td>{{str_limit($item->descripcion,100)}}</td>
                         </tr>
                     @endforeach
@@ -57,7 +57,7 @@
                             <td>{{$item->id}}</td>
                             <td>{{str_limit($item->nombre,70)}}</td>
                             <td>{{str_limit($item->descripcion,100)}}</td>
-                            <td>{{str_limit($item->area->titulo,100)}}</td>
+                            <td>{{str_limit($item->area->nombre,100)}}</td>
                         </tr>
                     @endforeach
                     </tbody>

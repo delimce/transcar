@@ -53,7 +53,7 @@ const reloadAreaSelectBox = function () {
             let data = response.data.list;
             let len = data.length;
             for(let i=0;i<len;i++){
-                options += '<option value=' + data[i].id + '>' + data[i].titulo + '</option>';
+                options += '<option value=' + data[i].id + '>' + data[i].nombre + '</option>';
             }
             $('.selectpickerArea').empty();
             $('.selectpickerArea').append(options);
@@ -99,7 +99,7 @@ $('#area-list').on('click-cell.bs.table', function (field, value, row, $element)
     axios.get(api_url + 'api/area/' + $element.id)
         .then(function (response) {
             const datai = response.data.area;
-            $("#area_form input[name=titulo]").val(datai.titulo);
+            $("#area_form input[name=nombre]").val(datai.nombre);
             $("#area_form input[name=descripcion]").val(datai.descripcion);
 
             ///append id to form

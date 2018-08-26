@@ -25,6 +25,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/areaRole', 'AdminController@areaRoleIndex');
         $router->get('/tableLine', 'AdminController@tableLineIndex');
         $router->get('/people', 'AdminController@personIndex');
+        $router->get('/bonus', 'AdminController@bonusIndex');
 
     });
 
@@ -67,6 +68,14 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->post('/', 'AdminController@createOrUpdateRole');
             $router->get('/{role_id}', 'AdminController@getRoleById');
             $router->delete('/{role_id}', 'AdminController@deleteRoleById');
+        });
+
+        ////bonus
+        $router->group(['prefix' => 'bonus'], function () use ($router) {
+            $router->get('/all', 'AdminController@getBonus');
+            $router->post('/', 'AdminController@createOrUpdateBonus');
+            $router->get('/{bonus_id}', 'AdminController@getBonusById');
+            $router->delete('/{bonus_id}', 'AdminController@deleteBonusById');
         });
 
         ////tables

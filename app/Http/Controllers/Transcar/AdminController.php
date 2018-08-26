@@ -20,6 +20,7 @@ use App\Models\Role;
 use App\Models\Table;
 use App\Models\Line;
 use App\Models\Person;
+use App\Models\Bonus;
 
 
 class AdminController extends BaseController
@@ -72,6 +73,12 @@ class AdminController extends BaseController
         return view('pages.persons', ["persons" => $persons]);
     }
 
+    public function bonusIndex()
+    {
+        $bonus = Bonus::all();
+        return view('pages.bonus', ["bonus" => $bonus]);
+    }
+
     /****************areas method***************** */
 
 
@@ -94,7 +101,7 @@ class AdminController extends BaseController
     {
 
         $validator = Validator::make($req->all(), [
-            'titulo' => 'required|min:3',
+            'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
         ], ['required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
@@ -110,7 +117,7 @@ class AdminController extends BaseController
             $area = Area::findOrFail($req->input('area_id'));
         }
 
-        $area->titulo = $req->input('titulo');
+        $area->nombre = $req->input('nombre');
         $area->descripcion = $req->input('descripcion');
         $area->save();
 
@@ -139,13 +146,14 @@ class AdminController extends BaseController
         $roles = Role::all();
         $rolesArray = array();
         $roles->each(function ($item) use (&$rolesArray) {
-            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->titulo);
+            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->nombre);
         });
         return response()->json(['status' => 'ok', 'list' => $rolesArray]);
     }
 
-    public function getRolesByArea($area_id){
-        $roles = Role::where("area_id",$area_id)->get();
+    public function getRolesByArea($area_id)
+    {
+        $roles = Role::where("area_id", $area_id)->get();
         $rolesArray = array();
         $roles->each(function ($item) use (&$rolesArray) {
             $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->titulo);
@@ -418,5 +426,61 @@ class AdminController extends BaseController
 
     }
 
+    /****************bonus method***************** */
+
+    public function getBonus()
+    {
+        $bonus = Bonus::all();
+        return response()->json(['status' => 'ok', 'list' => $bonus]);
+    }
+
+    public function getBonusById($bonus_id)
+    {
+        $bonus = Bonus::find($bonus_id);
+        return response()->json(['status' => 'ok', 'bonus' => $bonus]);
+    }
+
+    public function createOrUpdateBonus(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'titulo' => 'required|min:3',
+            'tipo' => 'required',
+            'beneficiario' => 'required|numeric',
+            'monto' => 'required|numeric',
+            'fecha' => 'required|date',
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $bonus = new Bonus();
+        if ($req->has('bonus_id')) {
+            $bonus = Bonus::findOrFail($req->input('bonus_id'));
+        }
+
+        $bonus->titulo = $req->input('titulo');
+        $bonus->tipo = $req->input('tipo');
+        $bonus->beneficiario = $req->input('beneficiario');
+        $bonus->monto = $req->input('monto');
+        $bonus->fecha = $req->input('fecha');
+        $bonus->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Bono guardado con éxito']);
+
+    }
+
+    public function deleteBonusById($bonus_id)
+    {
+        $item = Bonus::findOrFail($bonus_id);
+        $title = $item->titulo;
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "Bono: $title borrado con éxito"]);
+
+    }
 
 }

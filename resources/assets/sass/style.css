@@ -6,17 +6,17 @@
     width: 480px;
 }
 
-h2{
+h2 {
     display: inline;
 }
 
-.sub-title{
+.sub-title {
     font-weight: bold;
     font-size: 17px;
     padding: 12px 0 7px 41px;
 }
 
-.page-header{
+.page-header {
     padding-bottom: 20px;
 }
 
@@ -27,26 +27,26 @@ footer span {
 
 .logo-dev {
     background: url('../img/logoDev2.png') no-repeat center center;
-    background-size:113px 80px;
+    background-size: 113px 80px;
     width: 113px;
     height: 80px;
     display: inline-block;
 }
 
-form{
+form {
     margin-top: 17px;
     display: block;
 }
 
-.form-select{
+.form-select {
     background-color: #fff;
 }
 
-.bootstrap-select{
+.bootstrap-select {
     border: 1px solid #c3c3c3;
 }
 
-input{
+input {
     max-width: 400px;
 }
 
@@ -55,33 +55,34 @@ input.currency {
     padding-right: 15px;
 }
 
-label{
+label {
     font-weight: bold;
     text-transform: capitalize;
 }
 
-.tab-pane{
+.tab-pane {
     padding: 25px 0 10px 0;
 }
 
-.tab-pane a{
+.tab-pane a {
     padding-left: 8px;
     padding-bottom: 9px;
 }
 
 /*modal*/
-.modal-header{
+.modal-header {
     padding-left: 25px;
 }
-.modal-footer{
-   padding-right: 10px;
+
+.modal-footer {
+    padding-right: 10px;
 }
 
-#user-form, #area-form, #role-form, #table-form, #line-form, #person-form{
+#user-form, #area-form, #role-form, #table-form, #line-form, #person-form, #bonus-form {
     display: none;
 }
 
-#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person{
+#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person, #delete-bonus {
     display: none;
 }
 

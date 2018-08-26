@@ -31,6 +31,9 @@
             <a href="{!! url('areaRole') !!}">Areas y Cargos</a>
         </li>
         <li>
+            <a href="{!! url('bonus') !!}">Bonificaciones</a>
+        </li>
+        <li>
             <a href="{!! url('system') !!}">Sistema</a>
         </li>
         <li>
