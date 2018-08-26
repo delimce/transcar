@@ -42,7 +42,7 @@
         <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
             <div id="role-list-container">
                 <a id="to-role-form" href="#">[+] Crear Cargo</a>
-                <table id="role-list" class="table table-striped cn-grid">
+                <table id="role-list" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
