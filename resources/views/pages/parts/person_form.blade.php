@@ -82,7 +82,7 @@
 
                     <div class="col-sm-6">
                         <label for="cargo" class="control-label">Cargo</label><br>
-                        <select name="cargo" id="cargo" class="selectpickerRole" data-live-search="true" data-style="form-select" data-width="90%">
+                        <select name="cargo" id="cargo" title="Seleccione el cargo"  class="selectpickerRole" data-live-search="true" data-style="form-select" data-width="90%">
                         </select>
                     </div>
 

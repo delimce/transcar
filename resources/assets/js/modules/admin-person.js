@@ -19,6 +19,8 @@ const toggle_person_list = function (mode = true) {
     } else {
         $("#person-list-container").hide();
         $("#person-form").show();
+        $('.selectpickerArea').selectpicker('refresh');
+        $('.selectpickerRole').selectpicker('refresh');
     }
 }
 
@@ -70,9 +72,9 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form input[name=email]").val(datai.email);
             $("#person_form input[name=telefono]").val(datai.telefono);
             $("#person_form select[name=area]").val(datai.area_id);
-            $("#person_form select[name=area]").change();
+            $('.selectpickerArea').selectpicker('refresh');
             $("#person_form select[name=cargo]").val(datai.cargo_id);
-            $("#person_form select[name=cargo]").change();
+            $('.selectpickerRole').selectpicker('refresh');
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
 
