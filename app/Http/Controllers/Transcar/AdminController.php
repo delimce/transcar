@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Transcar;
 
+
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Validator;
@@ -18,6 +19,7 @@ use App\Models\Area;
 use App\Models\Role;
 use App\Models\Table;
 use App\Models\Line;
+use App\Models\Person;
 
 
 class AdminController extends BaseController
@@ -62,6 +64,12 @@ class AdminController extends BaseController
         $tables = Table::all();
         $lines = Line::all();
         return view('pages.tableLine', ["tables" => $tables, "lines" => $lines]);
+    }
+
+    public function personIndex()
+    {
+        $persons = Person::all();
+        return view('pages.persons', ["persons" => $persons]);
     }
 
     /****************areas method***************** */
@@ -135,6 +143,16 @@ class AdminController extends BaseController
         });
         return response()->json(['status' => 'ok', 'list' => $rolesArray]);
     }
+
+    public function getRolesByArea($area_id){
+        $roles = Role::where("area_id",$area_id)->get();
+        $rolesArray = array();
+        $roles->each(function ($item) use (&$rolesArray) {
+            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->titulo);
+        });
+        return response()->json(['status' => 'ok', 'list' => $rolesArray]);
+    }
+
 
     public function getRoleById($role_id)
     {
@@ -310,6 +328,93 @@ class AdminController extends BaseController
         $title = $item->titulo;
         $item->delete();
         return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
+
+    }
+
+
+    /****************employee method***************** */
+
+    public function getPersons()
+    {
+        $persons = Person::all();
+        $personArray = array();
+        $persons->each(function ($item) use (&$personArray) {
+            $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre);
+        });
+        return response()->json(['status' => 'ok', 'list' => $personArray]);
+    }
+
+    public function getPersonById($person_id)
+    {
+
+        $item = Person::find($person_id);
+        return response()->json(['status' => 'ok', 'person' => $item]);
+    }
+
+    public function createOrUpdatePerson(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'nombre' => 'required|min:3',
+            'apellido' => 'required|min:3',
+            'area' => 'required|numeric',
+            'cargo' => 'required|numeric',
+            'cedula' => 'required|min:3',
+            'sexo' => 'required',
+            'fecha_nac' => 'required|date',
+            'fecha_ingreso' => 'required|date',
+        ], ['required' => 'El campo :attribute es requerido',
+            'min' => 'El campo :attribute debe ser mayor a :min',
+            'date' => 'El campo :attribute no es una fecha correcta',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $person = new Person();
+        if ($req->has('person_id')) {
+            $person = Person::findOrFail($req->input('person_id'));
+        }
+
+        $person->nombre = $req->input('nombre');
+        $person->apellido = $req->input('apellido');
+        $person->cedula = $req->input('cedula');
+        $person->fecha_nac = $req->input('fecha_nac');
+        $person->fecha_ingreso = $req->input('fecha_ingreso');
+        $person->sexo = $req->input('sexo');
+        $person->cargo_id = $req->input('cargo');
+        $person->area_id = $req->input('area');
+
+        if ($req->has('email')) {
+            $person->email = $req->input('email');
+        }
+
+        if ($req->has('telefono')) {
+            $person->telefono = $req->input('telefono');
+        }
+
+        if ($req->has('account')) {
+            $person->cuenta_bancaria = $req->input('account');
+        }
+
+        if ($req->has('titular')) {
+            $person->titular = $req->input('titular');
+        }
+
+        $person->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Empleado guardado con éxito']);
+
+    }
+
+    public function deletePersonById($table_id)
+    {
+        $item = Person::findOrFail($table_id);
+        $title = $item->nombre;
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "Empleado: $title borrado con éxito"]);
 
     }
 

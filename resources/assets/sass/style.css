@@ -77,11 +77,11 @@ label{
    padding-right: 10px;
 }
 
-#user-form, #area-form, #role-form, #table-form, #line-form{
+#user-form, #area-form, #role-form, #table-form, #line-form, #person-form{
     display: none;
 }
 
-#delete, #delete-area, #delete-role, #delete-table, #delete-line{
+#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person{
     display: none;
 }
 

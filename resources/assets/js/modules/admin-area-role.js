@@ -55,9 +55,9 @@ const reloadAreaSelectBox = function () {
             for(let i=0;i<len;i++){
                 options += '<option value=' + data[i].id + '>' + data[i].titulo + '</option>';
             }
-            $('.selectpicker').empty();
-            $('.selectpicker').append(options);
-            $('.selectpicker').selectpicker('refresh');
+            $('.selectpickerArea').empty();
+            $('.selectpickerArea').append(options);
+            $('.selectpickerArea').selectpicker('refresh');
         }).catch(function (error) {
         showAlert(error.response.data.message)
     });

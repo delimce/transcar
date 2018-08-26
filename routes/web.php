@@ -24,6 +24,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/system', 'AdminController@index');
         $router->get('/areaRole', 'AdminController@areaRoleIndex');
         $router->get('/tableLine', 'AdminController@tableLineIndex');
+        $router->get('/people', 'AdminController@personIndex');
 
     });
 
@@ -62,6 +63,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ////roles
         $router->group(['prefix' => 'role'], function () use ($router) {
             $router->get('/all', 'AdminController@getRoles');
+            $router->get('/all/{area_id}', 'AdminController@getRolesByArea');
             $router->post('/', 'AdminController@createOrUpdateRole');
             $router->get('/{role_id}', 'AdminController@getRoleById');
             $router->delete('/{role_id}', 'AdminController@deleteRoleById');
@@ -81,6 +83,14 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->post('/', 'AdminController@createOrUpdateLine');
             $router->get('/{line_id}', 'AdminController@getLineById');
             $router->delete('/{line_id}', 'AdminController@deleteLineById');
+        });
+
+        ///employees
+        $router->group(['prefix' => 'person'], function () use ($router) {
+            $router->get('/all', 'AdminController@getPersons');
+            $router->post('/', 'AdminController@createOrUpdatePerson');
+            $router->get('/{person_id}', 'AdminController@getPersonById');
+            $router->delete('/{person_id}', 'AdminController@deletePersonById');
         });
 
     });

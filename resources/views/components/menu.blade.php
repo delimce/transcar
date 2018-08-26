@@ -22,7 +22,7 @@
             <a href="#">Producción</a>
         </li>
         <li>
-            <a href="#">Personal</a>
+            <a href="{!! url('people') !!}">Empleados</a>
         </li>
         <li>
             <a href="{!! url('tableLine') !!}">Mesas y Líneas</a>
