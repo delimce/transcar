@@ -51,8 +51,10 @@
                     </div>
                     <div class="col-sm-6">
                         <label for="hora_extra" class="control-label">Hora Extra</label>
-                        <input type="text" class="form-control" id="hora_extra" name="hora_extra"
-                               placeholder="hora extra"
+                        <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
+                                placeholder=""
+                                min="0" step="0.01" data-number-to-fixed="2"
+                                data-number-stepfactor="100"
                                autocomplete="my-extra">
                     </div>
                 </div>

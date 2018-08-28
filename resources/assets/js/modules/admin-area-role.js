@@ -130,6 +130,7 @@ $('#role-list').on('click-cell.bs.table', function (field, value, row, $element)
             $("#role_form input[name=sueldo]").val(datai.sueldo);
             $("#role_form input[name=asistencia]").val(datai.asistencia);
             $("#role_form input[name=produccion]").val(datai.produccion);
+            $("#role_form input[name=hora_extra]").val(datai.hora_extra);
             $("#role_form select[name=area]").val(datai.area_id);
             $("#role_form select[name=area]").change();
 
