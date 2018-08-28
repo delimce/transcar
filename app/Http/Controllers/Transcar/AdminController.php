@@ -47,6 +47,8 @@ class AdminController extends BaseController
     {
 
         $config = Config::find(1); ///only reg
+        $config->empresa_nombre = $req->input('empresa_nombre');
+        $config->empresa_rif = $req->input('empresa_rif');
         $config->iva = $req->input('iva');
         $config->caja_paleta = $req->input('cajas');
         $config->save();
