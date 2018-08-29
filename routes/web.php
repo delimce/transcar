@@ -26,6 +26,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/tableLine', 'AdminController@tableLineIndex');
         $router->get('/people', 'AdminController@personIndex');
         $router->get('/bonus', 'AdminController@bonusIndex');
+        $router->get('/appear', 'OperativeController@appearanceIndex');
 
     });
 
@@ -100,6 +101,11 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->post('/', 'AdminController@createOrUpdatePerson');
             $router->get('/{person_id}', 'AdminController@getPersonById');
             $router->delete('/{person_id}', 'AdminController@deletePersonById');
+        });
+
+        ///operative appear
+        $router->group(['prefix' => 'appear'], function () use ($router) {
+            $router->get('all/{entity}/{value}', 'OperativeController@getPersonsByEntity');
         });
 
     });

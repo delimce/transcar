@@ -59,7 +59,7 @@
                                                    required>
                                         </div>
                                         <div class="col-sm-6">
-                                            <label for="empresa_rif" class="control-label">apellido</label>
+                                            <label for="empresa_rif" class="control-label">Rif Empresa</label>
                                             <input type="text" class="form-control" id="empresa_rif" name="empresa_rif"
                                                    value="{{$config->empresa_rif}}"
                                                    placeholder="Rif de la empresa"

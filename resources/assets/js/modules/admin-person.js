@@ -93,7 +93,8 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
 
 $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
-    axios.get(api_url + "api/role/all/"+$(this).val())
+    let area = $(this).val()
+    axios.get(api_url + "api/role/all/"+area)
         .then(function (response) {
             let options = '';
             let data = response.data.list;
@@ -104,6 +105,7 @@ $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
             $('.selectpickerRole').empty();
             $('.selectpickerRole').append(options);
             $('.selectpickerRole').selectpicker('refresh');
+            reloadPersonList('area',area)
         }).catch(function (error) {
         showAlert(error.response.data.message)
     });

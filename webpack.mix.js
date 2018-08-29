@@ -23,7 +23,8 @@ mix.babel([
     'resources/assets/js/modules/admin-area-role.js',
     'resources/assets/js/modules/admin-bonus.js',
     'resources/assets/js/modules/admin-table-line.js',
-    'resources/assets/js/modules/admin-person.js'
+    'resources/assets/js/modules/admin-person.js',
+    'resources/assets/js/modules/op-appearance.js'
 ], 'public/js/modules.js');
 
 //vendor libs

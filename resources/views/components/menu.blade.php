@@ -6,20 +6,17 @@
         <li>
             <a href="{!! url('home') !!}">Inicio</a>
         </li>
-        <li>
-            <a href="#">Shortcuts</a>
+        <li class="sidebar-brand">
+            Operaciones
         </li>
         <li>
-            <a href="#">Overview</a>
+            <a href="{!! url('appear') !!}">Control de Asistencia</a>
         </li>
         <li>
-            <a href="#">Events</a>
+            <a href="#">Actualizar Producción</a>
         </li>
         <li class="sidebar-brand">
            Administración
-        </li>
-        <li>
-            <a href="#">Producción</a>
         </li>
         <li>
             <a href="{!! url('people') !!}">Empleados</a>
