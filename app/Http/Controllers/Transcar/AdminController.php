@@ -178,9 +178,11 @@ class AdminController extends BaseController
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
             'sueldo' => 'required|numeric',
+            'produccion' => 'max:100',
             'area' => 'required|numeric',
         ], ['required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
+            'max' => 'El campo :attribute debe ser maximo :max',
         ]);
 
         if ($validator->fails()) {
@@ -203,6 +205,10 @@ class AdminController extends BaseController
 
         if ($req->has('hora_extra')) {
             $role->hora_extra = $req->input('hora_extra');
+        }
+
+        if ($req->has('bono_extra')) {
+            $role->bono_extra = $req->input('bono_extra');
         }
 
         $role->nombre = $req->input('nombre');

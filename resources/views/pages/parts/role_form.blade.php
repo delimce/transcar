@@ -32,7 +32,7 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <label for="asistencia" class="control-label">Asistencia</label>
+                        <label for="asistencia" class="control-label">Bono Asistencia</label>
                         <input type="number" class="form-control currency" id="asistencia" name="asistencia"
                                placeholder=""
                                min="0" step="0.01" data-number-to-fixed="2"
@@ -43,15 +43,28 @@
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="produccion" class="control-label">Producción</label>
-                        <input type="text" class="form-control" id="produccion" name="produccion"
-                               placeholder="produccion"
+                        <label for="produccion" class="control-label">Bono Producción (%)</label>
+                        <input type="number" class="form-control currency" id="produccion" name="produccion"
+                               placeholder=""
+                               min="0" step="0.01" data-number-to-fixed="2"
+                               data-number-stepfactor="100"
                                autocomplete="my-prod"
                                required>
                     </div>
                     <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Hora Extra</label>
+                        <label for="hora_extra" class="control-label">Bono Hora Extra</label>
                         <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
+                                placeholder=""
+                                min="0" step="0.01" data-number-to-fixed="2"
+                                data-number-stepfactor="100"
+                               autocomplete="my-extra">
+                    </div>
+                </div>
+
+                <div class="form-group required row">
+                    <div class="col-sm-6">
+                        <label for="bono_extra" class="control-label">Bono Extra cargo</label>
+                        <input type="number" class="form-control currency" id="bono_extra" name="bono_extra"
                                 placeholder=""
                                 min="0" step="0.01" data-number-to-fixed="2"
                                 data-number-stepfactor="100"
