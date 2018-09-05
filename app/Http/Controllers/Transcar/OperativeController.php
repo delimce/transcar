@@ -13,6 +13,7 @@ use App\Models\Area;
 use App\Models\NonAppearance;
 use App\Models\User;
 use App\Models\Person;
+use DB;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
@@ -35,12 +36,23 @@ class OperativeController extends BaseController
 
     public function appearanceIndex()
     {
-        $persons = Person::with('table', 'line')->get();
+        $persons = Person::with('table', 'line')
+            ->leftJoin('tbl_asistencia as a', function($join){
+                $join->on('a.empleado_id', '=', 'tbl_empleado.id');
+                $join->on("a.fecha", "=", DB::raw("'".$this->currentdate."'"));
+            })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
+
         $areas = Area::all();
         $nonAppeareance = NonAppearance::whereFecha($this->currentdate)->with('person')->get();
 
-        $personList = $this->getPersons($persons);
+        //filtering
+        $filtered = $persons->filter(function ($item) use ($nonAppeareance) {
+            return !$nonAppeareance->contains('empleado_id', $item->id);
+        });
+
+        $personList = $this->getPersons($filtered);
         $nonAppear = $this->getNonAppear($nonAppeareance);
+
         return view('pages.appearance',
             ["persons" => $personList,
                 "areas" => $areas,
@@ -83,7 +95,26 @@ class OperativeController extends BaseController
             if (isset($item->table->titulo)) {
                 $location = $item->table->titulo . ', ' . $item->line->titulo;
             }
-            $personArray[] = array("id" => $item->id, "ubicacion" => $location, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre);
+
+            $in = '';
+            if (isset($item->hora_entrada)) {
+                $in = $item->hora_entrada;
+            }
+
+            $out = '';
+            if (isset($item->hora_salida)) {
+                $out = $item->hora_salida;
+            }
+
+
+            $personArray[] = array("id" => $item->id,
+                "ubicacion" => $location,
+                "nombre" => $item->nombre . ' ' . $item->apellido,
+                "cedula" => $item->cedula,
+                "ingreso" => $item->fecha_ingreso,
+                "entrada" => $in,
+                "salida" => $out,
+                "cargo" => $item->role->nombre);
         });
         return $personArray;
     }
@@ -183,7 +214,7 @@ class OperativeController extends BaseController
 
 
         $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre.' '.$emp->apellido;
+        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
         $info['cedula'] = $emp->cedula;
         $info['cargo'] = $emp->role->nombre;
 
@@ -195,7 +226,8 @@ class OperativeController extends BaseController
     }
 
 
-    public function saveOutHour(Request $req){
+    public function saveOutHour(Request $req)
+    {
         $validator = Validator::make($req->all(), [
             'out_hour' => 'required',
             'person' => 'required',
@@ -214,7 +246,7 @@ class OperativeController extends BaseController
         $info = array();
         $emp = $appear->person;
         $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre.' '.$emp->apellido;
+        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
         $info['cedula'] = $emp->cedula;
         $info['cargo'] = $emp->role->nombre;
         $info['entrada'] = $appear->hora_entrada;
@@ -225,7 +257,8 @@ class OperativeController extends BaseController
     }
 
 
-    public function deleteNonAppear($appear_id){
+    public function deleteNonAppear($appear_id)
+    {
         $item = NonAppearance::findOrFail($appear_id);
         $item->delete();
         return response()->json(['status' => 'ok', 'message' => "inasistencia borrada con éxito"]);

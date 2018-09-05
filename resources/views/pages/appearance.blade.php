@@ -62,8 +62,8 @@
                             <td>{{str_limit($item['cedula'],20)}}</td>
                             <td>{{str_limit($item['cargo'],20)}}</td>
                             <td>{{str_limit($item['ubicacion'],40)}}</td>
-                            <td></td>
-                            <td></td>
+                            <td>{{$item['entrada']}}</td>
+                            <td>{{$item['salida']}}</td>
                         </tr>
                     @endforeach
                     </tbody>

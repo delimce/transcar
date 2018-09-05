@@ -25,6 +25,11 @@ class Person extends Model
         return $this->belongsTo('App\Models\Line','linea_id');
     }
 
+    public function appear()
+    {
+        return $this->hasMany('App\Models\Appearance','empleado_id');
+    }
+
     protected $dates = ['deleted_at'];
 
 }
