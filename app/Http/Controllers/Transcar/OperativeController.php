@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: delimce
@@ -37,9 +38,9 @@ class OperativeController extends BaseController
     public function appearanceIndex()
     {
         $persons = Person::with('table', 'line')
-            ->leftJoin('tbl_asistencia as a', function($join){
+            ->leftJoin('tbl_asistencia as a', function ($join) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
-                $join->on("a.fecha", "=", DB::raw("'".$this->currentdate."'"));
+                $join->on("a.fecha", "=", DB::raw("'" . $this->currentdate . "'"));
             })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
 
         $areas = Area::all();
@@ -53,12 +54,15 @@ class OperativeController extends BaseController
         $personList = $this->getPersons($filtered);
         $nonAppear = $this->getNonAppear($nonAppeareance);
 
-        return view('pages.appearance',
-            ["persons" => $personList,
+        return view(
+            'pages.appearance',
+            [
+                "persons" => $personList,
                 "areas" => $areas,
                 "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
                 "nonAppear" => $nonAppear
-            ]);
+            ]
+        );
     }
 
 
@@ -107,14 +111,16 @@ class OperativeController extends BaseController
             }
 
 
-            $personArray[] = array("id" => $item->id,
+            $personArray[] = array(
+                "id" => $item->id,
                 "ubicacion" => $location,
                 "nombre" => $item->nombre . ' ' . $item->apellido,
                 "cedula" => $item->cedula,
                 "ingreso" => $item->fecha_ingreso,
                 "entrada" => $in,
                 "salida" => $out,
-                "cargo" => $item->role->nombre);
+                "cargo" => $item->role->nombre
+            );
         });
         return $personArray;
     }
@@ -138,7 +144,8 @@ class OperativeController extends BaseController
                 "nombre" => $item->person->nombre . ' ' . $item->person->apellido,
                 "cedula" => $item->person->cedula,
                 "ingreso" => $item->person->fecha_ingreso,
-                "cargo" => $item->person->role->nombre);
+                "cargo" => $item->person->role->nombre
+            );
         });
         return $personArray;
 
@@ -174,44 +181,49 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
-        $action = 1; ///0 non appear, 1 insert appear (hour of arrive) 2 set appear (hour of exit)
-        $info = array();
-        $emp = Person::findOrFail($req->input('person'));
+        try {
+
+            $action = 1; ///0 non appear, 1 insert appear (hour of arrive) 2 set appear (hour of exit)
+            $info = array();
+            $emp = Person::findOrFail($req->input('person'));
         //type = 1 appear, 0 non appear
-        if ($req->input('type')) {
+            if ($req->input('type')) {
 
-            $appear = new Appearance();
-            $appear->empleado_id = $emp->id;
-            $appear->cargo_id = $emp->cargo_id;
-            $appear->sueldo = $emp->role->sueldo;
-            $appear->fecha = Carbon::now();
-            if ($emp->mesa_id != null) {
-                $appear->mesa_id = $emp->mesa_id;
-                $appear->linea_id = $emp->linea_id;
+                $appear = new Appearance();
+                $appear->empleado_id = $emp->id;
+                $appear->cargo_id = $emp->cargo_id;
+                $appear->sueldo = $emp->role->sueldo;
+                $appear->fecha = Carbon::now();
+                if ($emp->mesa_id != null) {
+                    $appear->mesa_id = $emp->mesa_id;
+                    $appear->linea_id = $emp->linea_id;
+                }
+
+                if ($req->has('in_hour') && !empty($req->input('in_hour'))) { //if hour of arrived
+                    $appear->hora_entrada = $req->input('in_hour');
+                    $appear->turno = $this->getTurn($req->input('in_hour'));
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'por favor registre la hora de llegada'], 401);
+                }
+
+                $appear->save();
+                $action = 1;
+                $info['entrada'] = $req->input('in_hour');
+
+            } else { //non appear
+                $non = new NonAppearance();
+                $non->empleado_id = $req->input('person');
+                $non->fecha = Carbon::now();
+                $non->save();
+                $action = 0;
+                $info['non_id'] = $non->id;
+                $info['fecha'] = Carbon::parse($non->created_at)->format("d/m/Y");
+                $info['person'] = intval($req->input('person'));
             }
 
-            if ($req->has('in_hour') && !empty($req->input('in_hour'))) { //if hour of arrived
-                $appear->hora_entrada = $req->input('in_hour');
-                $appear->turno = $this->getTurn($req->input('in_hour'));
-            } else {
-                return response()->json(['status' => 'error', 'message' => 'por favor registre la hora de llegada'], 401);
-            }
-
-            $appear->save();
-            $action = 1;
-            $info['entrada'] = $req->input('in_hour');
-
-        } else { //non appear
-            $non = new NonAppearance();
-            $non->empleado_id = $req->input('person');
-            $non->fecha = Carbon::now();
-            $non->save();
-            $action = 0;
-            $info['non_id'] = $non->id;
-            $info['fecha'] = Carbon::parse($non->created_at)->format("d/m/Y");
-            $info['person'] = intval($req->input('person'));
+        } catch (\PDOException $ex) {
+            return response()->json(['status' => 'error', 'message' => 'El empleado ya esta registrado en la lista de hoy'], 500);
         }
-
 
         $info['person_id'] = $emp->id;
         $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
@@ -257,7 +269,8 @@ class OperativeController extends BaseController
     }
 
 
-    public function deleteAppear($person_id){
+    public function deleteAppear($person_id)
+    {
 
         $appear = Appearance::with('person')->whereEmpleadoId($person_id)->whereFecha($this->currentdate)->first();
 
@@ -276,8 +289,16 @@ class OperativeController extends BaseController
     public function deleteNonAppear($appear_id)
     {
         $item = NonAppearance::findOrFail($appear_id);
+        $info = array();
+        $emp = $item->person;
         $item->delete();
-        return response()->json(['status' => 'ok', 'message' => "inasistencia borrada con éxito"]);
+
+        $info['person_id'] = $emp->id;
+        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
+        $info['cedula'] = $emp->cedula;
+        $info['cargo'] = $emp->role->nombre;
+
+        return response()->json(['status' => 'ok', 'info' => $info]);
     }
 
 

@@ -151,8 +151,8 @@ $("#non-appear").on("click", function () {
             console.log(info)
             if (info.action === 0) { //non appear
                 $('#appear-list').bootstrapTable('remove', {
-                    field: 'id',
-                    values: [info.detail.person]
+                    field: 'cedula',
+                    values: [info.detail.cedula]
                 });
 
                 $('#non-appear-list')
@@ -182,10 +182,26 @@ $("#delete-non-appear").on("click", function () {
     let non_appear = $('#non-appear-id').data('id'); //non appear id
     axios.delete(api_url + 'api/appear/non/' + non_appear)
         .then(function (response) {
+            let info = response.data.info;
             $('#non-appear-list').bootstrapTable('remove', {
                 field: 'id',
                 values: [non_appear]
             });
+
+            $('#appear-list')
+            .bootstrapTable('insertRow', {
+                index: 1,
+                row: {
+                    id: info.person_id,
+                    nombre: info.nombre,
+                    cedula: info.cedula,
+                    cargo: info.cargo,
+                    ubicacion: '',
+                    entrada: '',
+                    salida: ''
+                }
+            });
+
         }).catch(function (error) {
             showAlert(error.response.data.message)
         }).finally(function () {
