@@ -109,6 +109,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->put('save', 'OperativeController@saveAppearance');
             $router->put('saveOut', 'OperativeController@saveOutHour');
             $router->delete('non/{appear_id}', 'OperativeController@deleteNonAppear');
+            $router->delete('/{person_id}', 'OperativeController@deleteAppear');
         });
 
     });

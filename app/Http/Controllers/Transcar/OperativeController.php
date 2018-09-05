@@ -257,6 +257,22 @@ class OperativeController extends BaseController
     }
 
 
+    public function deleteAppear($person_id){
+
+        $appear = Appearance::with('person')->whereEmpleadoId($person_id)->whereFecha($this->currentdate)->first();
+
+        $info = array();
+        $emp = $appear->person;
+        $appear->delete();
+        $info['person_id'] = $emp->id;
+        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
+        $info['cedula'] = $emp->cedula;
+        $info['cargo'] = $emp->role->nombre;
+
+        return response()->json(['status' => 'ok', 'info' => $info]);
+
+    }
+
     public function deleteNonAppear($appear_id)
     {
         $item = NonAppearance::findOrFail($appear_id);

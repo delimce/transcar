@@ -33,10 +33,12 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
         $("#appear-in").hide();
         $("#non-appear").hide();
         $("#appear-out").show();
+        $("#delete-appear").show();
     } else {
         $("#appear-in").show();
         $("#non-appear").show();
         $("#appear-out").hide();
+        $("#delete-appear").hide();
     }
 
 });
@@ -75,10 +77,10 @@ $("#appear-in").on("click", function () {
                 }
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 
 })
 
@@ -105,10 +107,34 @@ $("#appear-out").on("click", function () {
                 }
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
+})
+
+
+$("#delete-appear").on("click", function () {
+    let person = $('#person-id').data('id'); //person id
+    axios.delete(api_url + 'api/appear/' + person)
+        .then(function (response) {
+            let info = response.data.info;
+            $('#appear-list').bootstrapTable('updateByUniqueId', {
+                id: info.person_id, row: {
+                    nombre: info.nombre,
+                    cedula: info.cedula,
+                    cargo: info.cargo,
+                    ubicacion: '',
+                    fecha: info.fecha,
+                    entrada: '',
+                    salida: ''
+                }
+            });
+        }).catch(function (error) {
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 })
 
 
@@ -124,10 +150,10 @@ $("#non-appear").on("click", function () {
             let info = response.data.info;
             console.log(info)
             if (info.action === 0) { //non appear
-                // $('#appear-list').bootstrapTable('remove', {
-                //     field: 'id',
-                //     values: [info.detail.person]
-                // });
+                $('#appear-list').bootstrapTable('remove', {
+                    field: 'id',
+                    values: [info.detail.person]
+                });
 
                 $('#non-appear-list')
                     .bootstrapTable('insertRow', {
@@ -144,10 +170,10 @@ $("#non-appear").on("click", function () {
 
             }
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 
 })
 
@@ -161,9 +187,9 @@ $("#delete-non-appear").on("click", function () {
                 values: [non_appear]
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#non-appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#non-appear-actions').modal('hide')
+        });
 
 })
