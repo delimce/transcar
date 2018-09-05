@@ -15,6 +15,16 @@ class Person extends Model
         return $this->belongsTo('App\Models\Role','cargo_id');
     }
 
+    public function table()
+    {
+        return $this->belongsTo('App\Models\Table','mesa_id');
+    }
+
+    public function line()
+    {
+        return $this->belongsTo('App\Models\Line','linea_id');
+    }
+
     protected $dates = ['deleted_at'];
 
 }

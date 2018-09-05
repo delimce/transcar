@@ -86,3 +86,9 @@ label {
     display: none;
 }
 
+.appear-subtitle{
+    font-weight: bold;
+    float: left;
+    position: relative;
+}
+

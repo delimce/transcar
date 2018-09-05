@@ -106,6 +106,9 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ///operative appear
         $router->group(['prefix' => 'appear'], function () use ($router) {
             $router->get('all/{entity}/{value}', 'OperativeController@getPersonsByEntity');
+            $router->put('save', 'OperativeController@saveAppearance');
+            $router->put('saveOut', 'OperativeController@saveOutHour');
+            $router->delete('non/{appear_id}', 'OperativeController@deleteNonAppear');
         });
 
     });
