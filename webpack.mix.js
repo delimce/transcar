@@ -34,8 +34,7 @@ mix.scripts([
 ], 'public/js/vendor.js');
 
 mix.copyDirectory('resources/assets/img', 'public/img', false);
-
-
+mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts/font-awesome');
 // Full API
 // mix.js(src, output);
 // mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.

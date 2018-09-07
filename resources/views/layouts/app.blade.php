@@ -18,7 +18,7 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><span class="glyphicon glyphicon-user"></span>{{session()->get("myUser")->nombre}}</li>
+            <li>{{session()->get("myUser")->nombre}}&nbsp;<i class="fa fa-user-circle-o"></i></li>
             <li>
                 <a href="{!! url('account') !!}"><span class="glyphicon glyphicon-log-in"></span> Editar datos</a>
                 &nbsp;|&nbsp;

@@ -19,7 +19,10 @@
            Administración
         </li>
         <li>
-            <a href="{!! url('people') !!}">Empleados</a>
+
+            <a href="{!! url('people') !!}">
+                <i class="fa fa-users"></i>
+                Empleados</a>
         </li>
         <li>
             <a href="{!! url('tableLine') !!}">Mesas y Líneas</a>

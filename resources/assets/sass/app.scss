@@ -23,6 +23,10 @@
 //animate.css
 @import '~animate.css/animate.min.css';
 
+//fontawesome
+$fa-font-path: "../fonts/font-awesome" !default;
+@import "~font-awesome/scss/font-awesome.scss";
+
 //my styles
 @import "style.css";
 @import "home.css";
