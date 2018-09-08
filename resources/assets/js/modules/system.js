@@ -1,6 +1,7 @@
 // buttons
 $("#to-user-form").click(function () {
     $('.sub-title').html('Crear Usuario');
+    $('#user_form input[name=user_id]').remove();
     toggle_user_list(false);
 });
 

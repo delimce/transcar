@@ -1,6 +1,7 @@
 // buttons
 $("#to-bonus-form").click(function () {
     $('.sub-title').html('Nuevo Bono');
+    $('#bonus_form input[name=bonus_id]').remove();
     toggle_bonus_list(false);
 });
 

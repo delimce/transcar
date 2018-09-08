@@ -1,6 +1,7 @@
 // buttons
 $("#to-person-form").click(function () {
     $('.sub-title').html('Nuevo Empleado');
+    $('#person_form input[name=person_id]').remove();
     toggle_person_list(false);
 });
 

@@ -1,6 +1,7 @@
 // buttons
 $("#to-table-form").click(function () {
     $('.sub-title').html('Crear Mesa');
+    $('#table_form input[name=table_id]').remove();
     toggle_table_list(false);
 });
 
@@ -10,6 +11,7 @@ $("#to-table-list").click(function () {
 
 $("#to-line-form").click(function () {
     $('.sub-title').html('Crear Línea');
+    $('#line_form input[name=line_id]').remove();
     toggle_line_list(false);
 });
 
@@ -49,7 +51,7 @@ const toggle_line_list = function (mode = true) {
 const reloadTableSelectBox = function () {
     axios.get(api_url + "api/table/all")
         .then(function (response) {
-            let options = '';
+            let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
@@ -58,10 +60,31 @@ const reloadTableSelectBox = function () {
             $('.selectpickerTable').empty();
             $('.selectpickerTable').append(options);
             $('.selectpickerTable').selectpicker('refresh');
+            $('.selectpickerLine').selectpicker('refresh');
         }).catch(function (error) {
         showAlert(error.response.data.message)
     });
 }
+
+$('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    // do something...
+    let mesa = $(this).val()
+    axios.get(api_url + "api/line/all/"+mesa)
+        .then(function (response) {
+            let options = '';
+            let data = response.data.list;
+            let len = data.length;
+            for (let i = 0; i < len; i++) {
+                options += '<option value=' + data[i].id + '>' + data[i].titulo + '</option>';
+            }
+            $('.selectpickerLine').empty();
+            $('.selectpickerLine').append(options);
+            $('.selectpickerLine').selectpicker('refresh');
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+
+});
 
 // Forms
 $("#table_form").submit(function (event) {

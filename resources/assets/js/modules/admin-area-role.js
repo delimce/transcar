@@ -1,6 +1,7 @@
 // buttons
 $("#to-area-form").click(function () {
     $('.sub-title').html('Crear Area');
+    $('#area_form input[name=area_id]').remove();
     toggle_area_list(false);
 });
 
@@ -10,6 +11,7 @@ $("#to-area-list").click(function () {
 
 $("#to-role-form").click(function () {
     $('.sub-title').html('Crear Cargo');
+    $('#role_form input[name=role_id]').remove();
     toggle_role_list(false);
 });
 
