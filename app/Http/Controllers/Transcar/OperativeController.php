@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Transcar;
 use App\Models\Appearance;
 use App\Models\Area;
 use App\Models\NonAppearance;
+use App\Models\Production;
 use App\Models\User;
 use App\Models\Person;
 use DB;
@@ -63,6 +64,17 @@ class OperativeController extends BaseController
                 "nonAppear" => $nonAppear
             ]
         );
+    }
+
+    public function prodIndex()
+    {
+        $prods =  Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+
+        return View('pages.checkprod',
+            [
+                "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
+                "prod" => $this->setProduction($prods)
+            ]);
     }
 
 
@@ -186,7 +198,7 @@ class OperativeController extends BaseController
             $action = 1; ///0 non appear, 1 insert appear (hour of arrive) 2 set appear (hour of exit)
             $info = array();
             $emp = Person::findOrFail($req->input('person'));
-        //type = 1 appear, 0 non appear
+            //type = 1 appear, 0 non appear
             if ($req->input('type')) {
 
                 $appear = new Appearance();
@@ -299,6 +311,73 @@ class OperativeController extends BaseController
         $info['cargo'] = $emp->role->nombre;
 
         return response()->json(['status' => 'ok', 'info' => $info]);
+    }
+
+
+    /**********************************production services *************************************/
+
+    private function setProduction($prods)
+    {
+
+        $prodArray = array();
+        $prods->each(function ($item) use (&$prodArray) {
+            $prodArray[] = array(
+                "id" => $item->id,
+                "fecha" => $item->date(),
+                "hora" => $item->time(),
+                "mesa" => $item->table->titulo,
+                "linea" => $item->line->titulo,
+                "cajas" => $item->cajas,
+            );
+        });
+        return $prodArray;
+    }
+
+    public function getProduction()
+    {
+
+
+        $prods =  Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        return response()->json(['status' => 'ok', 'list' => $this->setProduction($prods)]);
+
+    }
+
+    /**create production
+     * @param Request $req
+     * @return mixed
+     */
+    public function createOrUpdateProd(Request $req)
+    {
+
+        $validator = Validator::make($req->all(), [
+            'mesa' => 'required|numeric',
+            'hora' => 'required',
+            'linea' => 'required|numeric',
+            'cajas' => 'required|numeric',
+        ], ['required' => 'El campo :attribute es requerido',
+            'numeric' => 'El campo :attribute debe ser numerico',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        $prod = new Production();
+        if ($req->has('prod_id')) {
+            $prod = Production::findOrFail($req->input('prod_id'));
+        }
+
+        $my_date = $req->input('fecha') . ' ' . $req->input('hora');
+        $prod->fecha = $my_date;
+        $prod->cajas = $req->input('cajas');
+        $prod->mesa_id = $req->input('mesa');
+        $prod->linea_id = $req->input('linea');
+        $prod->usuario_id = $req->session()->get('myUser')->id;
+        $prod->save();
+
+        return response()->json(['status' => 'ok', 'message' => 'Producción registrada con éxito']);
+
     }
 
 

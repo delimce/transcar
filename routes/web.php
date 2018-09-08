@@ -27,6 +27,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/people', 'AdminController@personIndex');
         $router->get('/bonus', 'AdminController@bonusIndex');
         $router->get('/appear', 'OperativeController@appearanceIndex');
+        $router->get('/prod', 'OperativeController@prodIndex');
 
     });
 
@@ -90,6 +91,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ////lines
         $router->group(['prefix' => 'line'], function () use ($router) {
             $router->get('/all', 'AdminController@getLines');
+            $router->get('/all/{table_id}', 'AdminController@getLinesByTable');
             $router->post('/', 'AdminController@createOrUpdateLine');
             $router->get('/{line_id}', 'AdminController@getLineById');
             $router->delete('/{line_id}', 'AdminController@deleteLineById');
@@ -110,6 +112,12 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->put('saveOut', 'OperativeController@saveOutHour');
             $router->delete('non/{appear_id}', 'OperativeController@deleteNonAppear');
             $router->delete('/{person_id}', 'OperativeController@deleteAppear');
+        });
+
+        ///operative production
+        $router->group(['prefix' => 'prod'], function () use ($router) {
+            $router->get('/all', 'OperativeController@getProduction');
+            $router->post('/', 'OperativeController@createOrUpdateProd');
         });
 
     });

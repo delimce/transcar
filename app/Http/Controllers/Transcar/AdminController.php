@@ -302,6 +302,17 @@ class AdminController extends BaseController
         return response()->json(['status' => 'ok', 'list' => $linesArray]);
     }
 
+
+    public function getLinesByTable($table_id)
+    {
+        $lines = Line::where("mesa_id", $table_id)->get();
+        $linesArray = array();
+        $lines->each(function ($item) use (&$linesArray) {
+            $linesArray[] = array("id" => $item->id, "titulo" => $item->titulo, "descripcion" => $item->descripcion, "mesa" => $item->table->titulo);
+        });
+        return response()->json(['status' => 'ok', 'list' => $linesArray]);
+    }
+
     public function getLineById($line_id)
     {
         $item = Line::find($line_id);

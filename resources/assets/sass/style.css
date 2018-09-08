@@ -50,6 +50,11 @@ input {
     max-width: 400px;
 }
 
+
+.short-text input{
+    max-width: 180px;
+}
+
 input.currency {
     text-align: right;
     padding-right: 15px;
@@ -82,7 +87,7 @@ label {
     display: none;
 }
 
-#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person, #delete-bonus {
+#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person, #delete-bonus, #prod-form {
     display: none;
 }
 
