@@ -380,5 +380,13 @@ class OperativeController extends BaseController
 
     }
 
+    public function deleteProd($prod_id){
+
+        $item = Production::findOrFail($prod_id);
+        $item->delete();
+        return response()->json(['status' => 'ok', 'message' => "producción borrada"]);
+
+    }
+
 
 }

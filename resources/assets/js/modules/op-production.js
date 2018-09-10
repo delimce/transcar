@@ -1,7 +1,7 @@
 // buttons
 $("#to-prod-form").click(function () {
-    $('.sub-title').html('Cargar  Producción');
     getDateTimeProd();
+    $('.sub-title').html('Cargar  Producción');
     $('#prod_form input[name=prod_id]').remove();
     toggle_prod_list(false);
 });
@@ -18,7 +18,8 @@ const toggle_prod_list = function (mode = true) {
         $("#prod-list-container").show();
         $("#prod-form").hide();
         $("#prod_form")[0].reset();
-        $('#delete-prod').hide();
+        $('.selectpickerTable').selectpicker('refresh');
+        $('.selectpickerLine').selectpicker('refresh');
     } else {
         $("#prod-list-container").hide();
         $("#prod-form").show();
@@ -32,7 +33,7 @@ const getDateTimeProd = function () {
     //day
     console.log(d.getDate())
     let y = d.getFullYear();
-    let mo = d.getMonth()+1;
+    let mo = d.getMonth() + 1;
     let day = d.getDate();
     mo = (mo < 10) ? "0" + String(mo) : String(mo);
     day = (day < 10) ? "0" + String(day) : String(day);
@@ -60,4 +61,28 @@ $("#prod_form").submit(function (event) {
         showAlert(error.response.data.message)
     });
     event.preventDefault();
+});
+
+$('#prod-list').on('click-cell.bs.table', function (field, value, row, $element) {
+
+    $.confirm({
+        title: 'Producción de ' + $element.cajas + ' cajas',
+        content: 'Desea eliminar este registro?',
+        buttons: {
+            confirm: function () {
+                axios.delete(api_url + 'api/prod/' + $element.id)
+                    .then(function (response) {
+                        reloadList('api/prod/all', '#prod-list');
+                    }).catch(function (error) {
+                    showAlert(error.response.data.message)
+                })
+            },
+            cancel: function () {
+
+            }
+        }
+    });
+
+    console.log($element.id)
+
 });

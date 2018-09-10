@@ -16,9 +16,9 @@
                 <th data-field="id" data-visible="false"></th>
                 <th data-field="fecha" data-sortable="true" scope="col">Fecha</th>
                 <th data-field="hora" data-sortable="true" scope="col">Hora</th>
-                <th data-field="cajas" data-sortable="true" scope="col">Cajas</th>
                 <th data-field="mesa" data-sortable="true" scope="col">Mesa</th>
                 <th data-field="linea" data-sortable="true" scope="col">Linea</th>
+                <th data-field="cajas" data-sortable="true" scope="col">Cajas</th>
             </tr>
             </thead>
             <tbody>
@@ -27,9 +27,9 @@
                     <td>{{$item['id']}}</td>
                     <td>{{str_limit($item['fecha'],100)}}</td>
                     <td>{{str_limit($item['hora'],20)}}</td>
-                    <td>{{str_limit($item['cajas'],20)}}</td>
                     <td>{{str_limit($item['mesa'],45)}}</td>
                     <td>{{str_limit($item['linea'],45)}}</td>
+                    <td>{{str_limit($item['cajas'],20)}}</td>
                 </tr>
             @endforeach
             </tbody>
