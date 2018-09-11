@@ -9,14 +9,14 @@
                         <label for="titulo" class="control-label">titulo</label>
                         <input type="text" class="form-control" id="titulo" name="titulo"
                                placeholder="titulo"
-                               autocomplete="my-title-line"
+                               autocomplete="my-line-name"
                                required>
                     </div>
                     <div class="col-sm-6">
                         <label for="descripcion" class="control-label">descripción</label>
                         <input type="text" class="form-control" id="descripcion" name="descripcion"
                                placeholder="descripcion"
-                               autocomplete="my-desc-line">
+                               autocomplete="my-line-desc">
                     </div>
                 </div>
                 <div class="form-group required row">

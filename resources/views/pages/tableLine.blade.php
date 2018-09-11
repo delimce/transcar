@@ -18,7 +18,7 @@
 
             <div id="table-list-container">
                 <a id="to-table-form" href="#">[+] Crear Mesa</a>
-                <table id="table-list" class="table table-striped cn-grid">
+                <table id="table-list" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
@@ -42,7 +42,7 @@
         <div class="tab-pane fade" id="nav-line" role="tabpanel" aria-labelledby="nav-line-tab">
             <div id="line-list-container">
                 <a id="to-line-form" href="#">[+] Crear Linea</a>
-                <table id="line-list" class="table table-striped cn-grid">
+                <table id="line-list" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>

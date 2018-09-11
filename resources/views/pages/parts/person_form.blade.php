@@ -10,14 +10,14 @@
                         <label for="nombre" class="control-label">nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre"
                                placeholder="Nombre"
-                               autocomplete="my-name-person"
+                               autocomplete="my-person-name"
                                required>
                     </div>
                     <div class="col-sm-6">
                         <label for="apellido" class="control-label">apellido</label>
                         <input type="text" class="form-control" id="apellido" name="apellido"
                                placeholder="apellido"
-                               autocomplete="my-lastname-person"
+                               autocomplete="my-person-lastname"
                                required>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                         <label for="cedula" class="control-label">cédula</label>
                         <input type="text" class="form-control" id="cedula" name="cedula"
                                placeholder="cédula"
-                               autocomplete="my-name-ced"
+                               autocomplete="my-person-ced"
                                required>
                     </div>
                     <div class="col-sm-6">
@@ -51,7 +51,7 @@
                         <label for="email" class="control-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email"
                                placeholder="email"
-                               autocomplete="my-email-person">
+                               autocomplete="my-person-email">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                         <label for="telefono" class="control-label">telefono</label>
                         <input type="text" class="form-control" id="telefono" name="telefono"
                                placeholder="telefono"
-                               autocomplete="my-tlf-person">
+                               autocomplete="my-person-tlf">
                     </div>
                 </div>
 
@@ -95,13 +95,13 @@
                         <label for="titular" class="control-label">Titular</label>
                         <input type="text" class="form-control" id="titular" name="titular"
                                placeholder="titular de la cuenta"
-                               autocomplete="my-titular-person">
+                               autocomplete="my-person-titular">
                     </div>
                     <div class="col-sm-6">
                         <label for="account" class="control-label">Nº cuenta</label>
                         <input type="text" class="form-control" id="account" name="account"
                                placeholder="numero de cuenta"
-                               autocomplete="my-cuenta-person">
+                               autocomplete="my-person-account">
                     </div>
                 </div>
 

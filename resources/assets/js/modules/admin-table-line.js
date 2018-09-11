@@ -41,6 +41,7 @@ const toggle_line_list = function (mode = true) {
         $("#line_form")[0].reset();
         $('#delete-line').hide();
     } else {
+        reloadTableSelectBox();
         $("#line-list-container").hide();
         $("#line-form").show();
         ///loading area list to select

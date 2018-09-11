@@ -9,14 +9,14 @@
                         <label for="nombre" class="control-label">Nombre</label>
                         <input type="text" class="form-control" id="nombre" name="nombre"
                                placeholder="nombre"
-                               autocomplete="my-title"
+                               autocomplete="my-role-name"
                                required>
                     </div>
                     <div class="col-sm-6">
                         <label for="descripcion" class="control-label">Descripcion</label>
                         <input type="text" class="form-control" id="descripcion" name="descripcion"
                                placeholder="descripcion"
-                               autocomplete="my-desc">
+                               autocomplete="my-role-desc">
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                                 placeholder=""
                                 min="0" step="0.01" data-number-to-fixed="2"
                                 data-number-stepfactor="100"
-                               autocomplete="my-extra">
+                               autocomplete="my-bonus">
                     </div>
                 </div>
 

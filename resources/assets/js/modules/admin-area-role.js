@@ -42,6 +42,7 @@ const toggle_role_list = function (mode = true) {
         $("#role_form")[0].reset();
         $('#delete-role').hide();
     } else {
+        reloadAreaSelectBox();
         $("#role-list-container").hide();
         $("#role-form").show();
     }
