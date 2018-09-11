@@ -41,7 +41,6 @@ const toggle_line_list = function (mode = true) {
         $("#line_form")[0].reset();
         $('#delete-line').hide();
     } else {
-        reloadTableSelectBox();
         $("#line-list-container").hide();
         $("#line-form").show();
         ///loading area list to select
@@ -92,7 +91,8 @@ $("#table_form").submit(function (event) {
     const $form = $('#table_form');
     axios.post(api_url + 'api/table', $form.serialize())
         .then(function (response) {
-            showSuccess(response.data.message, 2000)
+            showSuccess(response.data.message, 2000);
+            reloadTableSelectBox();
             toggle_table_list();
         }).catch(function (error) {
         showAlert(error.response.data.message)

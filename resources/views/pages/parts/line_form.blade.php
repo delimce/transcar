@@ -26,11 +26,6 @@
                         </select>
 
                     </div>
-                    <div class="col-sm-6">
-                        <label for="jefe" class="control-label">jefe mesa</label>
-                        <select name="jefe" data-style="form-select" class="selectpicker" data-width="90%">
-                        </select>
-                    </div>
                 </div>
 
                 <div class="form-group required row">

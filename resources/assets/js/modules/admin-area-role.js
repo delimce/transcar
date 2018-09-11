@@ -42,7 +42,6 @@ const toggle_role_list = function (mode = true) {
         $("#role_form")[0].reset();
         $('#delete-role').hide();
     } else {
-        reloadAreaSelectBox();
         $("#role-list-container").hide();
         $("#role-form").show();
     }
@@ -73,6 +72,7 @@ $("#area_form").submit(function (event) {
     axios.post(api_url + 'api/area', $form.serialize())
         .then(function (response) {
             showSuccess(response.data.message, 2000)
+            reloadAreaSelectBox();
             toggle_area_list();
         }).catch(function (error) {
         showAlert(error.response.data.message)
