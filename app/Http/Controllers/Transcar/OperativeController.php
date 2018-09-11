@@ -335,8 +335,6 @@ class OperativeController extends BaseController
 
     public function getProduction()
     {
-
-
         $prods =  Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
         return response()->json(['status' => 'ok', 'list' => $this->setProduction($prods)]);
 

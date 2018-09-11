@@ -199,6 +199,10 @@ class AdminController extends BaseController
             $role->asistencia = $req->input('asistencia');
         }
 
+        if ($req->has('produccion_tipo')) {
+            $role->produccion_tipo = $req->input('produccion_tipo');
+        }
+
         if ($req->has('produccion')) {
             $role->produccion = $req->input('produccion');
         }

@@ -42,6 +42,17 @@
                 </div>
 
                 <div class="form-group required row">
+
+                    <div class="col-sm-6">
+                        <label for="profile" class="control-label">Ganacia producción</label>
+                        <select name="produccion_tipo" data-style="form-select" class="selectpicker" data-width="90%">
+                            <option value="">Seleccione</option>
+                            <option value="total" title="Total">Toda la producción</option>
+                            <option value="mesa" title="Mesa">Produccion por mesa</option>
+                            <option value="linea" title="Línea">Producción por línea</option>
+                        </select>
+                    </div>
+
                     <div class="col-sm-6">
                         <label for="produccion" class="control-label">Bono Producción (%)</label>
                         <input type="number" class="form-control currency" id="produccion" name="produccion"
@@ -51,24 +62,26 @@
                                autocomplete="my-prod"
                                required>
                     </div>
-                    <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Bono Hora Extra</label>
-                        <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
-                                placeholder=""
-                                min="0" step="0.01" data-number-to-fixed="2"
-                                data-number-stepfactor="100"
-                               autocomplete="my-extra">
-                    </div>
+
                 </div>
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
                         <label for="bono_extra" class="control-label">Bono Extra cargo</label>
                         <input type="number" class="form-control currency" id="bono_extra" name="bono_extra"
-                                placeholder=""
-                                min="0" step="0.01" data-number-to-fixed="2"
-                                data-number-stepfactor="100"
+                               placeholder=""
+                               min="0" step="0.01" data-number-to-fixed="2"
+                               data-number-stepfactor="100"
                                autocomplete="my-bonus">
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="hora_extra" class="control-label">Bono Hora Extra</label>
+                        <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
+                               placeholder=""
+                               min="0" step="0.01" data-number-to-fixed="2"
+                               data-number-stepfactor="100"
+                               autocomplete="my-extra">
                     </div>
                 </div>
 
