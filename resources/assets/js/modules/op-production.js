@@ -19,6 +19,7 @@ const toggle_prod_list = function (mode = true) {
         $("#prod-form").hide();
         $("#prod_form")[0].reset();
         $('.selectpickerTable').selectpicker('refresh');
+        $('.selectpickerLine').empty();
         $('.selectpickerLine').selectpicker('refresh');
     } else {
         $("#prod-list-container").hide();

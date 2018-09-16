@@ -8,7 +8,7 @@
         <h4> Asistencias del día: {{$date}}</h4>
     </div>
 
-    <div class="row">
+{{--    <div class="row">
         <div class="col-sm-6">
             <label for="area" class="control-label">Area</label><br>
             <select name="area" id="area" title="Seleccione el area." data-style="form-select" class="selectpickerArea"
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <p>&nbsp;</p>
+    <p>&nbsp;</p>--}}
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -42,7 +42,7 @@
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-asis" role="tabpanel" aria-labelledby="nav-asis-tab">
             <div id="appear-list-container">
-                <table id="appear-list" data-unique-id="id" class="table table-striped cn-grid">
+                <table id="appear-list" data-search="true" data-unique-id="id" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
@@ -73,7 +73,7 @@
 
         <div class="tab-pane fade" id="nav-ina" role="tabpanel" aria-labelledby="nav-ina-tab">
             <div id="non-appear-list-container">
-                <table id="non-appear-list" class="table table-striped cn-grid">
+                <table id="non-appear-list" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>

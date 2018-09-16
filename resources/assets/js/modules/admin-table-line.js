@@ -71,7 +71,7 @@ $('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     let mesa = $(this).val()
     axios.get(api_url + "api/line/all/"+mesa)
         .then(function (response) {
-            let options = '';
+            let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {

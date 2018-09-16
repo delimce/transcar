@@ -20,8 +20,6 @@ const toggle_person_list = function (mode = true) {
     } else {
         $("#person-list-container").hide();
         $("#person-form").show();
-        $('.selectpickerArea').selectpicker('refresh');
-        $('.selectpickerRole').selectpicker('refresh');
     }
 }
 

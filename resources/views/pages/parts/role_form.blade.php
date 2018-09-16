@@ -44,7 +44,7 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="profile" class="control-label">Ganacia producción</label>
+                        <label for="profile" class="control-label">Ganancia producción</label>
                         <select name="produccion_tipo" data-style="form-select" class="selectpicker" data-width="90%">
                             <option value="">Seleccione</option>
                             <option value="total" title="Total">Toda la producción</option>
