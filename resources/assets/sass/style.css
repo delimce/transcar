@@ -87,7 +87,7 @@ label {
     display: none;
 }
 
-#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person, #delete-bonus, #prod-form {
+#delete, #delete-area, #delete-role, #delete-table, #delete-line, #delete-person, #delete-bonus, #prod-form, #role-location {
     display: none;
 }
 

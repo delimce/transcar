@@ -68,7 +68,7 @@ class OperativeController extends BaseController
 
     public function prodIndex()
     {
-        $prods =  Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
 
         return View('pages.checkprod',
             [
@@ -109,7 +109,10 @@ class OperativeController extends BaseController
         $persons->each(function ($item) use (&$personArray) {
             $location = "N/A";
             if (isset($item->table->titulo)) {
-                $location = $item->table->titulo . ', ' . $item->line->titulo;
+                $location = $item->table->titulo;
+                if (isset($item->line->titulo)) {
+                    $location .= ', ' . $item->line->titulo;
+                }
             }
 
             $in = '';
@@ -147,8 +150,12 @@ class OperativeController extends BaseController
         $nonAppear->each(function ($item) use (&$personArray) {
             $location = "N/A";
             if (isset($item->person->table->titulo)) {
-                $location = $item->person->table->titulo . ', ' . $item->person->line->titulo;
+                $location = $item->person->table->titulo;
+                if (isset($item->person->line->titulo)) {
+                    $location .= ', ' . $item->person->line->titulo;
+                }
             }
+
             $personArray[] = array(
                 "id" => $item->id,
                 "ubicacion" => $location,
@@ -335,7 +342,7 @@ class OperativeController extends BaseController
 
     public function getProduction()
     {
-        $prods =  Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
         return response()->json(['status' => 'ok', 'list' => $this->setProduction($prods)]);
 
     }
@@ -378,7 +385,8 @@ class OperativeController extends BaseController
 
     }
 
-    public function deleteProd($prod_id){
+    public function deleteProd($prod_id)
+    {
 
         $item = Production::findOrFail($prod_id);
         $item->delete();

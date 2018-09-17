@@ -88,6 +88,22 @@
 
                 </div>
 
+                <div id="role-location">
+                    <h3>Ubicación</h3>
+                    <div class="form-group required row">
+                        <div class="col-sm-6">
+                            <label for="mesa" class="control-label">Mesa</label><br>
+                            <select name="mesa" id="mesa" data-style="form-select" class="selectpickerTable" data-width="90%">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="linea" class="control-label">Linea</label><br>
+                            <select name="linea" id="linea" data-style="form-select" class="selectpickerLine" data-width="90%">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
                 <h3>Información de la cuenta</h3>
 
                 <div class="form-group required row">

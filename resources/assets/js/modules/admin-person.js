@@ -17,6 +17,19 @@ const toggle_person_list = function (mode = true) {
         $("#person-form").hide();
         $("#person_form")[0].reset();
         $('#person-table').hide();
+        $("#role-location").hide();
+
+        //area & role
+        $("#person_form select[name=area]").val("");
+        $('.selectpickerArea').selectpicker('refresh');
+        $("#person_form select[name=cargo]").val("");
+        $('.selectpickerRole').selectpicker('refresh');
+
+        //table & line
+        $("#person_form select[name=mesa]").val("");
+        $('.selectpickerTable').selectpicker('refresh');
+        $("#person_form select[name=linea]").val("");
+        $('.selectpickerLine').selectpicker('refresh');
     } else {
         $("#person-list-container").hide();
         $("#person-form").show();
@@ -77,6 +90,20 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
 
+            ///table and line
+            if (datai.mesa_id !== 0) {
+                $("#role-location").show();
+                $("#person_form select[name=mesa]").val(datai.mesa_id);
+                $('.selectpickerTable').selectpicker('refresh');
+                if (datai.linea_id !== 0) {
+                    $("#person_form select[name=linea]").val(datai.linea_id);
+                    $('.selectpickerLine').selectpicker('refresh');
+                }
+            } else {
+                $("#role-location").hide();
+            }
+
+
             ///append id to form
             $('<input>').attr({
                 type: 'hidden',
@@ -93,7 +120,7 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
 $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let area = $(this).val()
-    axios.get(api_url + "api/role/all/"+area)
+    axios.get(api_url + "api/role/all/" + area)
         .then(function (response) {
             let options = '';
             let data = response.data.list;
@@ -104,7 +131,23 @@ $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
             $('.selectpickerRole').empty();
             $('.selectpickerRole').append(options);
             $('.selectpickerRole').selectpicker('refresh');
-            reloadPersonList('area',area)
+            reloadPersonList('area', area)
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+
+});
+
+$('#cargo').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+    // do something...
+    let cargo = $(this).val()
+    axios.get(api_url + "api/role/" + cargo)
+        .then(function (response) {
+            if (response.data.role.produccion_tipo !== "total") {
+                $("#role-location").show();
+            } else {
+                $("#role-location").hide();
+            }
         }).catch(function (error) {
         showAlert(error.response.data.message)
     });

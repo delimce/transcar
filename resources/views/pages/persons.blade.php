@@ -36,4 +36,5 @@
     $('#person-list').bootstrapTable();
     reloadRoleSelectBox();
     reloadAreaSelectBox();
+    reloadTableSelectBox();
 @endpush

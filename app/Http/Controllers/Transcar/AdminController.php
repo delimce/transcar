@@ -13,6 +13,7 @@ namespace App\Http\Controllers\Transcar;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Validator;
+use Log;
 use App\Models\User;
 use App\Models\Config;
 use App\Models\Area;
@@ -148,7 +149,7 @@ class AdminController extends BaseController
         $roles = Role::all();
         $rolesArray = array();
         $roles->each(function ($item) use (&$rolesArray) {
-            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->nombre);
+            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->nombre, "produccion" => $item->produccion_tipo);
         });
         return response()->json(['status' => 'ok', 'list' => $rolesArray]);
     }
@@ -178,6 +179,7 @@ class AdminController extends BaseController
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
             'sueldo' => 'required|numeric',
+            'produccion_tipo' => 'required',
             'produccion' => 'max:100',
             'area' => 'required|numeric',
         ], ['required' => 'El campo :attribute es requerido',
@@ -415,8 +417,34 @@ class AdminController extends BaseController
         $person->fecha_nac = $req->input('fecha_nac');
         $person->fecha_ingreso = $req->input('fecha_ingreso');
         $person->sexo = $req->input('sexo');
-        $person->cargo_id = $req->input('cargo');
         $person->area_id = $req->input('area');
+        $person->cargo_id = $req->input('cargo');
+
+        ///get role and validate if location matches
+        $role = Role::findOrFail($person->cargo_id);
+
+        Log::info($role->produccion_tipo);
+
+        if ($role->produccion_tipo == "mesa") {
+            if ($req->filled('mesa')) {
+                $person->mesa_id = $req->input('mesa');
+            } else {
+                return response()->json(['status' => 'error', 'message' => "debe ingresar una mesa"], 400);
+            }
+        } else if ($role->produccion_tipo == "linea") {
+            if ($req->filled('linea')) {
+                $person->mesa_id = $req->input('mesa');
+                $person->linea_id = $req->input('linea');
+            } else {
+                return response()->json(['status' => 'error', 'message' => "debe ingresar una linea"], 400);
+            }
+        } else {
+            $person->mesa_id = '';
+            $person->linea_id = '';
+            Log::info("nada");
+        }
+        ///end validation
+
 
         if ($req->has('email')) {
             $person->email = $req->input('email');
