@@ -16,6 +16,7 @@ use App\Models\Production;
 use App\Models\User;
 use App\Models\Person;
 use DB;
+use Log;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
@@ -242,6 +243,7 @@ class OperativeController extends BaseController
             }
 
         } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
             return response()->json(['status' => 'error', 'message' => 'El empleado ya esta registrado en la lista de hoy'], 500);
         }
 

@@ -138,6 +138,7 @@ class AdminController extends BaseController
             $area->delete();
             return response()->json(['status' => 'ok', 'message' => "Area: $areaTitle borrada con éxito"]);
         } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
             return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee cargos asociados'], 500);
         }
     }
@@ -292,6 +293,7 @@ class AdminController extends BaseController
             $item->delete();
             return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
         } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
             return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee líneas asociadas'], 500);
         }
     }

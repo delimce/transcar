@@ -99,7 +99,7 @@ $('#area-list').on('click-cell.bs.table', function (field, value, row, $element)
     $('#delete-area').show();
     $('#area_form').data('record', $element.id); //element id
     $('.sub-title').html('Editar Area');
-    axios.get(api_url + 'api/query/area/' + $element.id)
+    axios.get(api_url + 'api/area/' + $element.id)
         .then(function (response) {
             const datai = response.data.area;
             $("#area_form input[name=nombre]").val(datai.nombre);
