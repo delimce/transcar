@@ -97,14 +97,14 @@ label {
     position: relative;
 }
 
-.card{
+#home-panel .card{
     width: 44%;
     min-height: 180px;
     margin: 12px;
 
 }
 
-.card h1{
+#home-panel .card h1{
     padding-left: 20px;
 }
 

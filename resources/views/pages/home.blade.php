@@ -6,7 +6,7 @@
     @endcomponent
 
 
-    <div class="row">
+    <div id="home-panel" class="row">
         <div class="card">
             <div class="card-body">
                 <h3 class="card-title">Control de asistencia</h3>
