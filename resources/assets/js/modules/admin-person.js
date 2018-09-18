@@ -38,7 +38,7 @@ const toggle_person_list = function (mode = true) {
 
 ///reload select list
 const reloadRoleSelectBox = function () {
-    axios.get(api_url + "api/role/all")
+    axios.get(api_url + "api/query/role/all")
         .then(function (response) {
             let options = '';
             let data = response.data.list;
@@ -120,7 +120,7 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
 $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let area = $(this).val()
-    axios.get(api_url + "api/role/all/" + area)
+    axios.get(api_url + "api/query/role/all/" + area)
         .then(function (response) {
             let options = '';
             let data = response.data.list;

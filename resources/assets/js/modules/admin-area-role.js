@@ -49,7 +49,7 @@ const toggle_role_list = function (mode = true) {
 
 ///reload select list
 const reloadAreaSelectBox = function () {
-    axios.get(api_url + "api/area/all")
+    axios.get(api_url + "api/query/area/all")
         .then(function (response) {
             let options = '';
             let data = response.data.list;
@@ -99,7 +99,7 @@ $('#area-list').on('click-cell.bs.table', function (field, value, row, $element)
     $('#delete-area').show();
     $('#area_form').data('record', $element.id); //element id
     $('.sub-title').html('Editar Area');
-    axios.get(api_url + 'api/area/' + $element.id)
+    axios.get(api_url + 'api/query/area/' + $element.id)
         .then(function (response) {
             const datai = response.data.area;
             $("#area_form input[name=nombre]").val(datai.nombre);

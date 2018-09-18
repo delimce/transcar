@@ -24,19 +24,16 @@ class ProfileMiddleware
     public function handle($request, Closure $next, $allowed)
     {
 
-        $privileges = explode(',', $allowed);
+       $privileges = explode('|', $allowed);
         $profile = $request->session()->get('myUser')->perfil_id; ///accesos del usuario
 
         if (!in_array($profile, $privileges)) { //if profile is allowed
-
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
                 return redirect()->route('app.login'); ///pagina de no permitido el acceso
             }
-
         }
-
         return $next($request);
     }
 

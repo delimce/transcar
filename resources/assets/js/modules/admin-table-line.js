@@ -49,7 +49,7 @@ const toggle_line_list = function (mode = true) {
 
 ///reload select list
 const reloadTableSelectBox = function () {
-    axios.get(api_url + "api/table/all")
+    axios.get(api_url + "api/query/table/all")
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
@@ -69,7 +69,7 @@ const reloadTableSelectBox = function () {
 $('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let mesa = $(this).val()
-    axios.get(api_url + "api/line/all/"+mesa)
+    axios.get(api_url + "api/query/line/all/"+mesa)
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;

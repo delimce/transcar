@@ -121,6 +121,17 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->delete('/{prod_id}', 'OperativeController@deleteProd');
         });
 
+        ///queries
+        $router->group(['prefix' => 'query'], function () use ($router) {
+            $router->get('/area/all', 'QueryController@getAreas');
+            $router->get('/role/all', 'QueryController@getRoles');
+            $router->get('/role/all/{area_id}', 'QueryController@getRolesByArea');
+            $router->get('/table/all', 'QueryController@getTables');
+            $router->get('/line/all', 'QueryController@getLines');
+            $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');
+            $router->get('/person/all', 'QueryController@getPersons');
+        });
+
     });
 
 });
