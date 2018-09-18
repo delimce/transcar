@@ -78,6 +78,7 @@ $app->withFacades(true, [
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'profiles' => App\Http\Middleware\ProfileMiddleware::class,
      'cors' => \Barryvdh\Cors\HandleCors::class,
  ]);
 

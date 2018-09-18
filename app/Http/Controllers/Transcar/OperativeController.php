@@ -29,6 +29,7 @@ class OperativeController extends BaseController
 
     public function __construct(Request $req)
     {
+        $this->middleware('profiles:1,2'); ///perfiles requeridos
         $myUser = $req->session()->get("myUser");
         if (!is_null($myUser))
             $this->user = User::findOrFail($myUser->id);
