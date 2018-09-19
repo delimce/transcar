@@ -81,7 +81,7 @@ label {
     background: rgba(195, 195, 195, 0.8);
     position: fixed;
     width: 360px;
-    height: 92px;
+    height: 80px;
     top: 47%;
     left: 41%;
     z-index: 1000;
@@ -97,7 +97,7 @@ label {
     z-index: 1001;
     color:black;
     text-align:center;
-    font-size:24px;
+    font-size:18px;
 }
 
 /*modal*/
