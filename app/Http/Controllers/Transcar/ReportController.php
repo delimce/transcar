@@ -9,8 +9,6 @@
 namespace App\Http\Controllers\Transcar;
 
 use App\Models\User;
-use App\Models\UserLog;
-use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
@@ -30,6 +28,11 @@ class ReportController extends BaseController
             $this->user = User::findOrFail($myUser->id);
         $this->currentdate = Carbon::today();
 
+    }
+
+    public function report1Index(){
+
+        return view('pages.report01');
     }
 
 }

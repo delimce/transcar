@@ -32,7 +32,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{!! url('report1') !!}">
                     <i class="fa fa-line-chart"></i>&nbsp;
                     Asistencia y producción</a>
             </li>

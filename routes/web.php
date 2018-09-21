@@ -28,6 +28,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/bonus', 'AdminController@bonusIndex');
         $router->get('/appear', 'OperativeController@appearanceIndex');
         $router->get('/prod', 'OperativeController@prodIndex');
+        $router->get('/report1', 'ReportController@report1Index');
 
     });
 
