@@ -32,12 +32,25 @@ class ReportController extends BaseController
 
     }
 
-    public function report1Index()
+    public function report1Index(Request $req)
     {
 
+
         $now = Carbon::now();
-        $start = $now->startOfWeek()->format('Y-m-d'); //monday
-        $end = $now->startOfWeek()->addDays(4)->format('Y-m-d'); //friday
+
+        if($req->filled('desde')){
+            $start = $req->input('desde');
+        }else{
+            $start = $now->startOfWeek()->format('Y-m-d'); //monday
+        }
+
+        if($req->filled('hasta')){
+            $end = $req->input('hasta');
+        }else{
+            $end = $now->startOfWeek()->addDays(4)->format('Y-m-d'); //friday
+        }
+
+
 
         $ap = new Appearance();
         $pro = new Production();
@@ -103,7 +116,7 @@ class ReportController extends BaseController
             case 6:
                 return "Sabado";
                 break;
-            case 7:
+            default:
                 return "Domingo";
                 break;
         }

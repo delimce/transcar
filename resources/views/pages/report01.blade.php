@@ -4,34 +4,38 @@
     @component("components.pageTitle",['title' => 'Reportar - Asistencia y Producción'])
     @endcomponent
 
-
-    <div class="row">
-        <div class="col-sm-6">
-            <label for="fecha" class="control-label">Fecha desde</label>
-            <input type="date" class="form-control" id="fecha" name="fecha"
-                   placeholder="fecha" value="{{$init}}"
-                   autocomplete="my-date">
+    <form id="filter" action="">
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="fecha" class="control-label">Fecha desde</label>
+                <input type="date" class="form-control" id="desde" name="desde"
+                       placeholder="fecha" value="{{$init}}"
+                       autocomplete="my-date">
+            </div>
+            <div class="col-sm-6">
+                <label for="fecha" class="control-label">Fecha hasta</label>
+                <input type="date" class="form-control" id="hasta" name="hasta"
+                       placeholder="fecha" value="{{$end}}"
+                       autocomplete="my-date">
+            </div>
         </div>
-        <div class="col-sm-6">
-            <label for="fecha" class="control-label">Fecha hasta</label>
-            <input type="date" class="form-control" id="fecha" name="fecha"
-                   placeholder="fecha" value="{{$end}}"
-                   autocomplete="my-date">
-        </div>
-    </div>
 
-    <br>
+        <br>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <label for="mesa" class="control-label">Mesa</label><br>
-            <select name="mesa" data-style="form-select" class="selectpickerTable" data-width="90%">
-            </select>
+        <div class="row">
+            <div class="col-sm-6">
+                <label for="mesa" class="control-label">Mesa</label><br>
+                <select name="mesa" data-style="form-select" class="selectpickerTable" data-width="90%">
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <button id="report" style="margin-top: 27px" class="btn btn-primary" type="submit">
+                   Reportar
+                </button>
+            </div>
         </div>
-        <div class="col-sm-6">
 
-        </div>
-    </div>
+    </form>
 
     <p>&nbsp&nbsp;</p>
 
