@@ -9,13 +9,13 @@
         <div class="col-sm-6">
             <label for="fecha" class="control-label">Fecha desde</label>
             <input type="date" class="form-control" id="fecha" name="fecha"
-                   placeholder="fecha"
+                   placeholder="fecha" value="{{$init}}"
                    autocomplete="my-date">
         </div>
         <div class="col-sm-6">
             <label for="fecha" class="control-label">Fecha hasta</label>
             <input type="date" class="form-control" id="fecha" name="fecha"
-                   placeholder="fecha"
+                   placeholder="fecha" value="{{$end}}"
                    autocomplete="my-date">
         </div>
     </div>
@@ -33,7 +33,61 @@
         </div>
     </div>
 
-    <p>&nbsp;</p>
+    <p>&nbsp&nbsp;</p>
+
+    <div class="report">
+
+        <table class="table">
+            <thead>
+            <tr class="d-flex">
+                <th class="col-1">CI</th>
+                <th class="col-2">Empleado</th>
+                @foreach($days as $day)
+                    <th class="col-2">{{$day["name"]}} {{$day["day"]}}</th>
+                @endforeach
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($results as $item)
+                <tr class="d-flex">
+                    <th class="col-sm-1">{{$item->cedula}}</th>
+                    <th class="col-sm-2">{{$item->nombre}}</th>
+                    <?php
+                    $mdates = explode(",", $item->fechas);
+                    $mhours = explode(",", $item->horas);
+                    ?>
+                    @foreach($days as $day)
+                        <td class="col-sm-2">
+                            {!!\App\Http\Controllers\Transcar\ReportController::
+                            findDateinAppearance($mdates,$mhours,$day["date"])!!}
+                        </td>
+                    @endforeach
+                </tr>
+            @endforeach
+            <tr class="d-flex">
+                <th class="col-sm-2">Total paletas</th>
+                <td class="col-sm-1">&nbsp;</td>
+                @foreach($days as $day)
+                    <th class="col-2">
+                        {!!\App\Http\Controllers\Transcar\ReportController::
+                               findProdByDate($day["date"],$production,'tpaletas')!!}
+                    </th>
+                @endforeach
+            </tr>
+            <tr class="d-flex">
+                <th class="col-sm-2">Total Cajas</th>
+                <td class="col-sm-1">&nbsp;</td>
+                @foreach($days as $day)
+                    <th class="col-2">
+                        {!!\App\Http\Controllers\Transcar\ReportController::
+                               findProdByDate($day["date"],$production,'tcajas')!!}
+                    </th>
+                @endforeach
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 
 @endsection
 

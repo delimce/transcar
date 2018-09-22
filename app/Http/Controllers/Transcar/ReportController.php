@@ -8,6 +8,8 @@
 
 namespace App\Http\Controllers\Transcar;
 
+use App\Models\Appearance;
+use App\Models\Production;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -30,9 +32,81 @@ class ReportController extends BaseController
 
     }
 
-    public function report1Index(){
+    public function report1Index()
+    {
 
-        return view('pages.report01');
+        $now = Carbon::now();
+        $start = $now->startOfWeek()->format('Y-m-d'); //monday
+        $end = $now->startOfWeek()->addDays(4)->format('Y-m-d'); //friday
+
+        $ap = new Appearance();
+        $pro = new Production();
+        $records = $ap->getAppearance($start, $end, $table = 11);
+        $production = $pro->getProduction($start, $end, $table = 11);
+
+
+        return view('pages.report01',
+            ["init" => $start,
+                "end" => $end,
+                "results" => $records,
+                "production" => json_decode(json_encode($production), True),
+                "days" => $this->getDaysBetween($start, $end)]);
+    }
+
+
+    static function findDateinAppearance($dates, $hours, $date)
+    {
+        $index = array_search($date, $dates);
+        return ($index === false) ? '<b>NO</b>' : $hours[$index] . 'h';
+    }
+
+    static function findProdByDate($date, $production, $key)
+    {
+        $index = array_search($date, array_column($production, 'fecha'));
+        return ($index === false) ? '' : $production[$index][$key];
+    }
+
+    private function getDaysBetween($initDate, $endDate)
+    {
+        $dateInit = Carbon::parse("$initDate 00:00:00");
+        $dateEnd = Carbon::parse("$endDate 00:00:00");
+        $dates = array();
+
+        while (!$dateInit->gt($dateEnd)) {
+            $temp = array("number" => $dateInit->dayOfWeekIso, "name" => self::nameOfDay($dateInit->dayOfWeek), "date" => $dateInit->format('Y-m-d'), "day" => $dateInit->day);
+            $dates[] = $temp;
+            $dateInit->addDays(1);
+        }
+
+        return $dates;
+    }
+
+    static function nameOfDay($day)
+    {
+        switch ($day) {
+
+            case 1:
+                return "Lunes";
+                break;
+            case 2:
+                return "Martes";
+                break;
+            case 3:
+                return "Miércoles";
+                break;
+            case 4:
+                return "Jueves";
+                break;
+            case 5:
+                return "Viernes";
+                break;
+            case 6:
+                return "Sabado";
+                break;
+            case 7:
+                return "Domingo";
+                break;
+        }
     }
 
 }

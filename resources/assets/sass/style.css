@@ -135,3 +135,9 @@ label {
     padding-left: 20px;
 }
 
+.report{
+    width: 100%;
+    display: inline-block;
+    min-width: 600px;
+}
+
