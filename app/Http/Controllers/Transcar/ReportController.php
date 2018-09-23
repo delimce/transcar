@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Transcar;
 
 use App\Models\Appearance;
 use App\Models\Production;
+use App\Models\Table;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -35,32 +36,37 @@ class ReportController extends BaseController
     public function report1Index(Request $req)
     {
 
-
         $now = Carbon::now();
 
-        if($req->filled('desde')){
+        if ($req->filled('desde')) {
             $start = $req->input('desde');
-        }else{
+        } else {
             $start = $now->startOfWeek()->format('Y-m-d'); //monday
         }
 
-        if($req->filled('hasta')){
+        if ($req->filled('hasta')) {
             $end = $req->input('hasta');
-        }else{
+        } else {
             $end = $now->startOfWeek()->addDays(4)->format('Y-m-d'); //friday
         }
 
-
+        if ($req->filled('mesa')) {
+            $table = $req->input('mesa');
+        } else {
+            $table = 4;
+        }
 
         $ap = new Appearance();
         $pro = new Production();
-        $records = $ap->getAppearance($start, $end, $table = 11);
-        $production = $pro->getProduction($start, $end, $table = 11);
-
+        $records = $ap->getAppearance($start, $end, $table);
+        $production = $pro->getProduction($start, $end, $table);
+        $tableInfo = Table::find($table);
 
         return view('pages.report01',
             ["init" => $start,
                 "end" => $end,
+                "table" => $table,
+                "tableInfo" => $tableInfo,
                 "results" => $records,
                 "production" => json_decode(json_encode($production), True),
                 "days" => $this->getDaysBetween($start, $end)]);

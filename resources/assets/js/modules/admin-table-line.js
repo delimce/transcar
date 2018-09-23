@@ -48,14 +48,15 @@ const toggle_line_list = function (mode = true) {
 }
 
 ///reload select list
-const reloadTableSelectBox = function () {
+const reloadTableSelectBox = function (tableId=false) {
     axios.get(api_url + "api/query/table/all")
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
-                options += '<option value=' + data[i].id + '>' + data[i].titulo + '</option>';
+                let selected = (tableId === data[i].id)?' selected':'';
+                options += '<option value=' + data[i].id + selected+'>' + data[i].titulo + '</option>';
             }
             $('.selectpickerTable').empty();
             $('.selectpickerTable').append(options);

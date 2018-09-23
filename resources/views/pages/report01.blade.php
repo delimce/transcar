@@ -41,6 +41,11 @@
 
     <div class="report">
 
+        <div>
+            <span style="font-weight: bolder">Lineas:</span>
+            <span>{{$tableInfo->showLineNames()}}</span>
+        </div>
+
         <table class="table">
             <thead>
             <tr class="d-flex">
@@ -96,5 +101,5 @@
 @endsection
 
 @push('scripts-ready')
-    reloadTableSelectBox();
+    reloadTableSelectBox({{$table}});
 @endpush
