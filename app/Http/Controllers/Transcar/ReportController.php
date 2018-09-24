@@ -53,7 +53,7 @@ class ReportController extends BaseController
         if ($req->filled('mesa')) {
             $table = $req->input('mesa');
         } else {
-            $table = 4;
+            $table = '';
         }
 
         $ap = new Appearance();

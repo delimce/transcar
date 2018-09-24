@@ -30,7 +30,7 @@
             </div>
             <div class="col-sm-6">
                 <button id="report" style="margin-top: 27px" class="btn btn-primary" type="submit">
-                   Reportar
+                    Reportar
                 </button>
             </div>
         </div>
@@ -43,7 +43,11 @@
 
         <div>
             <span style="font-weight: bolder">Lineas:</span>
-            <span>{{$tableInfo->showLineNames()}}</span>
+            <span>
+                @if(count($tableInfo)>0)
+                    {{$tableInfo->showLineNames()}}
+                @endif
+            </span>
         </div>
 
         <table class="table">

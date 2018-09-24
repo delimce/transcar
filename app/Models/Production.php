@@ -31,17 +31,25 @@ class Production extends Model
     public function getProduction($start,$end,$table)
     {
         $params = array(
-            'tableID' => $table,
             'startDate' => $start,
             'endDate' => $end,
         );
+
+        if ($table) {
+            $params['tableID'] = $table;
+            $tableFilter = "and p.mesa_id = :tableID ";
+        } else {
+            $tableFilter = "";
+        }
+
+
         $query = "SELECT
                     date(p.fecha) as fecha,
                     sum(p.cajas) as tcajas,
-                    round(sum(p.cajas)/(select caja_paleta from tbl_configuracion)) as tpaletas
+                    FLOOR(sum(p.cajas)/(select caja_paleta from tbl_configuracion)) as tpaletas
                     FROM
                     tbl_produccion AS p
-                    where p.mesa_id = :tableID and p.fecha BETWEEN :startDate and :endDate
+                    where p.fecha BETWEEN :startDate and :endDate $tableFilter
                     GROUP BY
                     date(p.fecha)";
 
