@@ -50,7 +50,6 @@ input {
     max-width: 400px;
 }
 
-
 .short-text input{
     max-width: 180px;
 }
@@ -124,6 +123,11 @@ label {
     position: relative;
 }
 
+.data-ap-non span{
+    padding: 6px;
+    margin-left: 9px;
+}
+
 #home-panel .card{
     width: 44%;
     min-height: 180px;
@@ -142,4 +146,3 @@ label {
     display: inline-block;
     min-width: 600px;
 }
-

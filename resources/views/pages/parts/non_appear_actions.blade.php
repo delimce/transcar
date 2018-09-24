@@ -9,11 +9,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="non-appear-id" data-id="">
-                    <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="ina_nombre"></span><br>
-                    <span class="appear-subtitle">Cédula:</span>&nbsp;<span id="ina_cedula"></span><br>
-                    <span class="appear-subtitle">Cargo:</span>&nbsp;<span  id="ina_cargo"></span><br>
-                    <span class="appear-subtitle">Ubicación:</span>&nbsp;<span id="ina_ubicacion"></span><br>
+                <div style="padding: 10px" class="row" id="non-appear-id" data-id="">
+                    <div class="col-sm-6">
+                        <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="ina_nombre"></span><br>
+                        <span class="appear-subtitle">Cargo:</span>&nbsp;<span  id="ina_cargo"></span><br>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="appear-subtitle">Cédula:</span>&nbsp;<span id="ina_cedula"></span><br>
+                        <span class="appear-subtitle">Ubicación:</span>&nbsp;<span id="ina_ubicacion"></span><br>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

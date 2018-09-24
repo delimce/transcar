@@ -9,12 +9,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="person-id" data-id="">
-                    <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
-                    <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
-                    <span class="appear-subtitle">Cargo:</span>&nbsp;<span  id="asis_cargo"></span><br>
-                    <span class="appear-subtitle">Ubicacion:</span>&nbsp;<span id="asis_ubicacion"></span><br>
-                    <span class="appear-subtitle">Hora:</span>&nbsp;<input id="my_hour" type="time" value="">
+                <div style="padding: 10px" class="row" id="person-id" data-id="">
+                    <div class="col-sm-6">
+                        <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
+                        <span class="appear-subtitle">Cargo:</span>&nbsp;<span  id="asis_cargo"></span><br>
+                    </div>
+                    <div class="col-sm-6">
+                        <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
+                        <span class="appear-subtitle">Ubicacion:</span>&nbsp;<span id="asis_ubicacion"></span><br>
+                    </div>
+                    <div class="data-ap-non" class="col-sm-6">
+                        <span class="appear-subtitle">Hora:&nbsp;<input id="my_hour" type="time" value=""></span>&nbsp;<br>
+                        <span class="appear-subtitle">Nota:&nbsp;<input id="note" style="width: 300px" type="text" value=""></span>&nbsp;
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

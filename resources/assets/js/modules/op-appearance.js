@@ -16,6 +16,7 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#asis_cargo').html($element.cargo);
     $('#asis_ubicacion').html($element.ubicacion);
     $('#person-id').data('id', $element.id); //element id
+    $('#note').val('');
 
     //get hour
     let d = new Date(); // for now
@@ -57,10 +58,12 @@ $('#non-appear-list').on('click-cell.bs.table', function (field, value, row, $el
 $("#appear-in").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let hour = $('#my_hour').val(); //person id
+    let note = $('#note').val(); //person id
     let data = {
         "person": person,
         "type": 1,
-        "in_hour": hour
+        "in_hour": hour,
+        "note": note,
     }
     axios.put(api_url + 'api/appear/save', data)
         .then(function (response) {
@@ -88,9 +91,11 @@ $("#appear-in").on("click", function () {
 $("#appear-out").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let hour = $('#my_hour').val(); //person id
+    let note = $('#note').val(); //person id
     let data = {
         "person": person,
-        "out_hour": hour
+        "out_hour": hour,
+        "note": note,
     }
     axios.put(api_url + 'api/appear/saveOut', data)
         .then(function (response) {
@@ -140,9 +145,11 @@ $("#delete-appear").on("click", function () {
 
 $("#non-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
+    let note = $('#note').val(); //person id
     let data = {
         "person": person,
-        "type": 0
+        "type": 0,
+        "note": note,
     }
 
     axios.put(api_url + 'api/appear/save', data)

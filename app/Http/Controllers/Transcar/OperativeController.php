@@ -205,8 +205,14 @@ class OperativeController extends BaseController
         try {
 
             $action = 1; ///0 non appear, 1 insert appear (hour of arrive) 2 set appear (hour of exit)
+            $note = '';
             $info = array();
             $emp = Person::findOrFail($req->input('person'));
+
+            if($req->filled('note')){
+                $note = $req->input('note');
+            }
+
             //type = 1 appear, 0 non appear
             if ($req->input('type')) {
 
@@ -215,6 +221,7 @@ class OperativeController extends BaseController
                 $appear->cargo_id = $emp->cargo_id;
                 $appear->sueldo = $emp->role->sueldo;
                 $appear->fecha = Carbon::now();
+                $appear->comentario = $note;
                 if ($emp->mesa_id != null) {
                     $appear->mesa_id = $emp->mesa_id;
                     $appear->linea_id = $emp->linea_id;
@@ -273,8 +280,14 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
+        $note = '';
+        if($req->filled('note')){
+            $note = $req->input('note');
+        }
+
         $appear = Appearance::with('person')->whereEmpleadoId($req->input('person'))->whereFecha($this->currentdate)->first();
         $appear->hora_salida = $req->input('out_hour');
+        $appear->comentario = $note;
         $appear->save();
 
         $info = array();
