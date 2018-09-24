@@ -209,7 +209,7 @@ class OperativeController extends BaseController
             $info = array();
             $emp = Person::findOrFail($req->input('person'));
 
-            if($req->filled('note')){
+            if ($req->filled('note')) {
                 $note = $req->input('note');
             }
 
@@ -280,14 +280,11 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
-        $note = '';
-        if($req->filled('note')){
-            $note = $req->input('note');
-        }
-
         $appear = Appearance::with('person')->whereEmpleadoId($req->input('person'))->whereFecha($this->currentdate)->first();
         $appear->hora_salida = $req->input('out_hour');
-        $appear->comentario = $note;
+        if ($req->filled('note')) {
+            $appear->comentario = $req->input('note');
+        }
         $appear->save();
 
         $info = array();
