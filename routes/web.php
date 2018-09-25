@@ -131,6 +131,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('/line/all', 'QueryController@getLines');
             $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');
             $router->get('/person/all', 'QueryController@getPersons');
+            $router->put('/appear/detail', 'QueryController@getAppearDetail');
         });
 
     });

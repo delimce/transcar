@@ -146,3 +146,6 @@ label {
     display: inline-block;
     min-width: 600px;
 }
+.det-appear{
+    cursor: pointer;
+}

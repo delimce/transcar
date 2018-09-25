@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers\Transcar;
 
+use App\Models\Appearance;
 use App\Models\User;
 use App\Models\Area;
 use App\Models\Role;
@@ -105,6 +106,19 @@ class QueryController extends BaseController
             $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre);
         });
         return response()->json(['status' => 'ok', 'list' => $personArray]);
+    }
+
+
+    public function getAppearDetail(Request $req)
+    {
+        $detail = Appearance::whereEmpleadoId($req->input('person'))
+            ->whereFecha($req->input('date'))->with('person','table','line')->first();
+        if ($detail->count() > 0) {
+            return response()->json(['status' => 'ok', 'info' => $detail]);
+        } else {
+            return response()->json(['status' => 'error', 'message' => 404], 401);
+        }
+
     }
 
 }

@@ -19,6 +19,11 @@ class Appearance extends Model
         return $this->belongsTo('App\Models\Table', 'mesa_id');
     }
 
+    public function line()
+    {
+        return $this->belongsTo('App\Models\Line', 'linea_id');
+    }
+
     public function getAppearance($start, $end, $table)
     {
         $params = array(
@@ -33,14 +38,12 @@ class Appearance extends Model
             $tableFilter = "";
         }
 
-
         $query = "SELECT
                     e.id,
                     e.cedula,
                     concat(e.nombre,' ',e.apellido) as nombre,
                     GROUP_CONCAT(a.fecha) as fechas,
-                    GROUP_CONCAT(ABS(if(isnull(a.hora_salida),17,HOUR(a.hora_salida)) - hour(a.hora_entrada))) as horas,
-                    GROUP_CONCAT(a.id) as asis
+                    GROUP_CONCAT(ABS(if(isnull(a.hora_salida),17,HOUR(a.hora_salida)) - hour(a.hora_entrada))) as horas
                     FROM
                     tbl_asistencia AS a
                     INNER JOIN tbl_empleado AS e ON a.empleado_id = e.id
