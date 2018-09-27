@@ -10,7 +10,7 @@
         </li>
 
         @if(in_array(session()->get("myUser")->perfil_id,array(1,2,3)))
-            <li class="sidebar-brand">
+            <li class="sidebar-brand tab">
                 Operaciones
             </li>
             <li>
@@ -27,7 +27,7 @@
 
 
         @if(in_array(session()->get("myUser")->perfil_id,array(1,3)))
-            <li class="sidebar-brand">
+            <li class="sidebar-brand tab">
                 Reportes
             </li>
 
@@ -46,8 +46,32 @@
 
 
         @if(in_array(session()->get("myUser")->perfil_id,array(1)))
-            <li class="sidebar-brand">
+            <li class="sidebar-brand tab">
                 Administración
+            </li>
+
+            <li>
+                <a href="{!! url('config') !!}">
+                    <i class="fa fa-cog"></i>&nbsp;
+                    Empresa</a>
+            </li>
+
+            <li>
+                <a href="{!! url('users') !!}">
+                    <i class="fa fa-user"></i>&nbsp;
+                    Usuarios</a>
+            </li>
+           
+            <li>
+                <a href="{!! url('areaRole') !!}">
+                    <i class="fa fa-sitemap"></i>&nbsp;
+                    Areas y Cargos</a>
+            </li>
+
+            <li>
+                <a href="{!! url('tableLine') !!}">
+                    <i class="fa fa-th-large"></i>&nbsp;
+                    Mesas y Líneas</a>
             </li>
 
             <li>
@@ -55,27 +79,12 @@
                     <i class="fa fa-users"></i>&nbsp;
                     Empleados</a>
             </li>
-            <li>
-                <a href="{!! url('tableLine') !!}">
-                    <i class="fa fa-th-large"></i>&nbsp;
-                    Mesas y Líneas</a>
-            </li>
-            <li>
-                <a href="{!! url('areaRole') !!}">
-                    <i class="fa fa-sitemap"></i>&nbsp;
-                    Areas y Cargos</a>
-            </li>
+
             <li>
                 <a href="{!! url('bonus') !!}">
                     <i class="fa fa-money"></i>&nbsp;
                     Bonos Especiales</a>
             </li>
-            <li>
-                <a href="{!! url('system') !!}">
-                    <i class="fa fa-cog"></i>&nbsp;
-                    Sistema</a>
-            </li>
-
         @endif
     </ul>
 </div>

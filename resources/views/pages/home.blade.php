@@ -44,7 +44,7 @@
                     <h3 class="card-title">Administración</h3>
                     <h1><i class="fa fa-tachometer" aria-hidden="true"></i></h1>
                     <p class="card-text">Maestros y administración de los datos principales.</p>
-                    <a href="{!! url('system') !!}" class="btn btn-primary">Entrar al módulo</a>
+                    <a href="{!! url('users') !!}" class="btn btn-primary">Entrar al módulo</a>
                 </div>
             </div>
         @endif

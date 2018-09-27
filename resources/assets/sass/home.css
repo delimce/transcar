@@ -88,6 +88,11 @@ body {
     background: none;
 }
 
+ .tab{
+    padding-left: 15px;
+    display: inline-block;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 0;

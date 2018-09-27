@@ -38,11 +38,16 @@ class AdminController extends BaseController
     }
 
 
-    public function index()
+    public function indexUsers()
     {
         $users = User::where("id", "!=", $this->user->id)->with('profile')->get();
+        return view('pages.system', ["users" => $users]);
+    }
+
+    public function indexConfig()
+    {
         $config = Config::first();
-        return view('pages.system', ["users" => $users, "config" => $config]);
+        return view('pages.config', [ "config" => $config]);
     }
 
     public function saveConfig(Request $req)
