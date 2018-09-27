@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    @component("components.pageTitle",['title' => 'Operaciones - Control de producción'])
+    @component("components.pageTitle",['title' => 'Operaciones - Registrar Producción Diaria'])
     @endcomponent
 
     <div>

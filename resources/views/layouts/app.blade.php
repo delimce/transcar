@@ -14,7 +14,9 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Transcar</a>
+            <a class="navbar-brand" href="#">
+                Transcar – RAPCAN Registro de Asistencia, Producción y Cálculo de Nómina
+            </a>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
@@ -22,7 +24,7 @@
             <li>
                 <a href="{!! url('account') !!}"><span class="glyphicon glyphicon-log-in"></span> Editar datos</a>
                 &nbsp;|&nbsp;
-                <a href="{!! url('logout') !!}"><span class="glyphicon glyphicon-log-in"></span> Cerrar</a>
+                <a href="{!! url('logout') !!}"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</a>
             </li>
         </ul>
     </div>

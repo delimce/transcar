@@ -16,19 +16,19 @@
             <li>
                 <a href="{!! url('appear') !!}">
                     <i class="fa fa-calendar-check-o"></i>&nbsp;
-                    Control de Asistencia</a>
+                    Registrar Asistencia Diaria</a>
             </li>
             <li>
                 <a href="{!! url('prod') !!}">
                     <i class="fa fa-cubes"></i>&nbsp;
-                    Actualizar Producción</a>
+                    Registrar Producción Diaria</a>
             </li>
         @endif
 
 
         @if(in_array(session()->get("myUser")->perfil_id,array(1,3)))
             <li class="sidebar-brand">
-                Reportar
+                Reportes
             </li>
 
             <li>
@@ -40,7 +40,7 @@
             <li>
                 <a href="#">
                     <i class="fa fa-calculator"></i>&nbsp;
-                    Pago de nómina</a>
+                    Cálculo de Nómina</a>
             </li>
         @endif
 
@@ -68,7 +68,7 @@
             <li>
                 <a href="{!! url('bonus') !!}">
                     <i class="fa fa-money"></i>&nbsp;
-                    Bonificaciones</a>
+                    Bonos Especiales</a>
             </li>
             <li>
                 <a href="{!! url('system') !!}">
@@ -77,11 +77,5 @@
             </li>
 
         @endif
-
-        <li>
-            <a href="{!! url('logout') !!}">
-                <i class="fa fa-sign-out"></i>&nbsp;
-                Cerrar Sesión</a>
-        </li>
     </ul>
 </div>

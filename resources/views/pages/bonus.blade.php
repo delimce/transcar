@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
 
-    @component("components.pageTitle",['title' => 'Administración - Bonificaciones'])
+    @component("components.pageTitle",['title' => 'Administración - Bonos Especiales'])
     @endcomponent
 
     <div id="bonus-list-container">
-        <a id="to-bonus-form" href="#">[+] Crear Bonificación</a>
+        <a id="to-bonus-form" href="#">[+] Crear Bono</a>
         <table id="bonus-list" data-search="true" class="table table-striped cn-grid">
             <thead>
             <tr>

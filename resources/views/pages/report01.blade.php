@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    @component("components.pageTitle",['title' => 'Reportar - Asistencia y Producción'])
+    @component("components.pageTitle",['title' => 'Reportar - Reporte de Asistencia y Producción'])
     @endcomponent
 
     <form id="filter" action="">

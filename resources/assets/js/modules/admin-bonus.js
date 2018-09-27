@@ -60,7 +60,7 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
     toggle_bonus_list(false);
     $('#delete-bonus').show();
     $('#bonus_form').data('record', $element.id); //element id
-    $('.sub-title').html('Editar Empleado');
+    $('.sub-title').html('Editar Bono');
     axios.get(api_url + 'api/bonus/' + $element.id)
         .then(function (response) {
             const datai = response.data.bonus;

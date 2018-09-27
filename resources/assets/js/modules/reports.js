@@ -19,6 +19,7 @@ $(".det-appear").on("click", function () {
             $('#asis_fecha').html(info.fecha)
             $('#asis_turno').html(info.turno)
 
+            if(info.table!=null)
             $('#asis_mesa').html(info.table.titulo)
             if(info.line!=null)
             $('#asis_linea').html(info.line.titulo)
