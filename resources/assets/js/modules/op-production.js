@@ -67,7 +67,7 @@ $("#prod_form").submit(function (event) {
 $('#prod-list').on('click-cell.bs.table', function (field, value, row, $element) {
 
     $.confirm({
-        title: 'Producción de ' + $element.cajas + ' cajas',
+        title: 'Producción de ' + $element.cajas + ' cajas, a la hora:'+$element.hora,
         content: 'Desea eliminar este registro?',
         buttons: {
             confirm: function () {
