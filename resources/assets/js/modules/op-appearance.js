@@ -19,12 +19,16 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#note').val('');
 
     //get hour
-    let d = new Date(); // for now
-    let h1 = d.getHours(); // => 9
-    let m1 = d.getMinutes(); // =>  30
-    h1 = (h1 < 10) ? "0" + String(h1) : String(h1);
-    m1 = (m1 < 10) ? "0" + String(m1) : String(m1);
-    $('#my_hour').val(String(h1) + ':' + String(m1));
+    let hour_desc = ($element.entrada)?'Hora de salida:':'Hora de entrada:';
+    let hour_value = ($element.entrada)?'16:00':'07:00';
+    // let d = new Date(); // for now
+    // let h1 = d.getHours(); // => 9
+    // let m1 = d.getMinutes(); // =>  30
+    // h1 = (h1 < 10) ? "0" + String(h1) : String(h1);
+    // m1 = (m1 < 10) ? "0" + String(m1) : String(m1);
+    // $('#my_hour').val(String(h1) + ':' + String(m1));
+    $('#my_hour').val(hour_value);
+    $('#hour-desc').html(hour_desc);
 
     ///tools
     let action_in = $('#in_' + $element.id).data("value");

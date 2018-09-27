@@ -19,7 +19,7 @@
                         <span class="appear-subtitle">Ubicacion:</span>&nbsp;<span id="asis_ubicacion"></span><br>
                     </div>
                     <div class="data-ap-non" class="col-sm-6">
-                        <span class="appear-subtitle">Hora:&nbsp;<input id="my_hour" type="time" value=""></span>&nbsp;<br>
+                        <span class="appear-subtitle"><b id="hour-desc"></b>&nbsp;<input id="my_hour" type="time" value=""></span>&nbsp;<br>
                         <span class="appear-subtitle">Nota:&nbsp;<input id="note" style="width: 300px" type="text" value=""></span>&nbsp;
                     </div>
                 </div>
