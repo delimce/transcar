@@ -1,6 +1,6 @@
 // buttons
 $("#to-area-form").click(function () {
-    $('.sub-title').html('Crear Area');
+    $('.sub-title').html('Crear Departamento');
     $('#area_form input[name=area_id]').remove();
     toggle_area_list(false);
 });
@@ -98,7 +98,7 @@ $('#area-list').on('click-cell.bs.table', function (field, value, row, $element)
     toggle_area_list(false);
     $('#delete-area').show();
     $('#area_form').data('record', $element.id); //element id
-    $('.sub-title').html('Editar Area');
+    $('.sub-title').html('Editar Departamento');
     axios.get(api_url + 'api/area/' + $element.id)
         .then(function (response) {
             const datai = response.data.area;
@@ -155,8 +155,8 @@ $('#role-list').on('click-cell.bs.table', function (field, value, row, $element)
 });
 
 $('#delete-area').confirm({
-    title: 'Borrar Area',
-    content: 'Esta seguro que desea borrar esta area?',
+    title: 'Borrar departamento',
+    content: 'Esta seguro que desea borrar este departamento?',
     buttons: {
         confirm: function () {
             let area_id = $("#area_form").data("record");

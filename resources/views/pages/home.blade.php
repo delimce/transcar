@@ -32,8 +32,8 @@
                 <div class="card-body">
                     <h3 class="card-title">Reportes</h3>
                     <h1><i class="fa fa-line-chart" aria-hidden="true"></i></h1>
-                    <p class="card-text">Reportes para el pago de la nómina.</p>
-                    <a href="#" class="btn btn-primary">Entrar al módulo</a>
+                    <p class="card-text">Reportes asistencia, produccion y pago de nómina.</p>
+                    <a href="{!! url('report1') !!}" class="btn btn-primary">Entrar al módulo</a>
                 </div>
             </div>
         @endif

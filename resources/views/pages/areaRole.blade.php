@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-    @component("components.pageTitle",['title' => 'Administración - Areas y cargos'])
+    @component("components.pageTitle",['title' => 'Administración - Departamentos y Cargos'])
     @endcomponent
 
     <nav>
@@ -17,8 +17,8 @@
         <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
 
             <div id="area-list-container">
-                <a id="to-area-form" href="#">[+] Crear Area</a>
-                <table id="area-list" class="table table-striped cn-grid">
+                <a id="to-area-form" href="#">[+] Crear Departamento</a>
+                <table id="area-list" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>

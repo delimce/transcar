@@ -65,7 +65,7 @@
             <li>
                 <a href="{!! url('areaRole') !!}">
                     <i class="fa fa-sitemap"></i>&nbsp;
-                    Areas y Cargos</a>
+                    Departamentos y Cargos</a>
             </li>
 
             <li>
