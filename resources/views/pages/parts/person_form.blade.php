@@ -84,9 +84,19 @@
                         <label for="cargo" class="control-label">Cargo</label><br>
                         <select name="cargo" id="cargo" title="Seleccione el cargo"  class="selectpickerRole" data-live-search="true" data-style="form-select" data-width="90%">
                         </select>
-                    </div>
+                    </div> 
 
                 </div>
+
+                <div class="form-group required row">
+                        <div class="col-sm-6">
+                                <label class="control-label">Activo?</label>
+                                <div class="custom-switch">
+                                    <input class="custom-switch-input btn-primary" name="activo" id="activo" value="1" type="checkbox" checked>
+                                    <label class="custom-switch-btn" for="activo"></label>
+                                </div>
+                        </div>
+                </div>    
 
                 <div id="role-location">
                     <h3>Ubicación</h3>

@@ -70,7 +70,7 @@ $("#person_form").submit(function (event) {
 //behavior
 $('#person-list').on('click-cell.bs.table', function (field, value, row, $element) {
     toggle_person_list(false);
-    $('#delete-person').show();
+   // $('#delete-person').show(); todo:deshabilitado por peticion del cliente
     $('#person_form').data('record', $element.id); //element id
     $('.sub-title').html('Editar Empleado');
     axios.get(api_url + 'api/person/' + $element.id)
@@ -89,6 +89,11 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $('.selectpickerRole').selectpicker('refresh');
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
+            if (datai.activo == 1) {
+                $("#person_form #activo").prop('checked', true);
+            } else {
+                $("#person_form #activo").prop('checked', false);
+            }
 
             ///table and line
             if (datai.mesa_id !== 0) {

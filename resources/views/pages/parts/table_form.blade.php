@@ -18,6 +18,14 @@
                                placeholder="descripcion"
                                autocomplete="my-desc-table">
                     </div>
+
+                    <div class="col-sm-6">
+                        <label class="control-label">Activa?</label>
+                        <div class="custom-switch">
+                            <input class="custom-switch-input btn-primary" name="activo" id="activo" value="1" type="checkbox" checked>
+                            <label class="custom-switch-btn" for="activo"></label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group required row">

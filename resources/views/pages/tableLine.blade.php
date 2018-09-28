@@ -24,6 +24,7 @@
                         <th data-field="id" data-visible="false"></th>
                         <th data-field="titulo" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="ubicacion" data-sortable="true" scope="col">Ubicación</th>
+                        <th data-field="activo" data-sortable="true" scope="col">Activa?</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,6 +33,7 @@
                             <td>{{$item->id}}</td>
                             <td>{{str_limit($item->titulo,70)}}</td>
                             <td>{{str_limit($item->ubicacion,100)}}</td>
+                            <td>{{ $item->activo ? "SI" : "NO" }}</td>
                         </tr>
                     @endforeach
                     </tbody>

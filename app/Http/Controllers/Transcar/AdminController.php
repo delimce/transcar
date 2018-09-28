@@ -251,7 +251,12 @@ class AdminController extends BaseController
     {
 
         $tables = Table::all();
-        return response()->json(['status' => 'ok', 'list' => $tables]);
+        $list = $tables->map(function ($item, $key) {
+            $item->activo = ($item->activo)?"SI":"NO";
+            return $item;
+        });
+
+        return response()->json(['status' => 'ok', 'list' => $list]);
 
     }
 
@@ -284,6 +289,7 @@ class AdminController extends BaseController
 
         $table->titulo = $req->input('titulo');
         $table->ubicacion = $req->input('ubicacion');
+        $table->activo = ($req->has('activo')) ? 1 : 0;
         $table->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Mesa guardada con éxito']);
@@ -357,6 +363,7 @@ class AdminController extends BaseController
         $line->titulo = $req->input('titulo');
         $line->descripcion = $req->input('descripcion');
         $line->mesa_id = $req->input('mesa');
+        $line->activo = ($req->has('activo')) ? 1 : 0;
         $line->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
@@ -380,7 +387,8 @@ class AdminController extends BaseController
         $persons = Person::all();
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
-            $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre);
+            $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula,
+             "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre,"activo"=>($item->activo)?'SI':'NO');
         });
         return response()->json(['status' => 'ok', 'list' => $personArray]);
     }
@@ -427,6 +435,8 @@ class AdminController extends BaseController
         $person->sexo = $req->input('sexo');
         $person->area_id = $req->input('area');
         $person->cargo_id = $req->input('cargo');
+        $person->activo = ($req->has('activo')) ? 1 : 0;
+        
 
         ///get role and validate if location matches
         $role = Role::findOrFail($person->cargo_id);

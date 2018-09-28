@@ -69,7 +69,7 @@ class QueryController extends BaseController
     public function getTables()
     {
 
-        $tables = Table::all();
+        $tables = Table::whereActivo(1)->get();
         return response()->json(['status' => 'ok', 'list' => $tables]);
 
     }

@@ -40,7 +40,7 @@ class OperativeController extends BaseController
 
     public function appearanceIndex()
     {
-        $persons = Person::with('table', 'line')
+        $persons = Person::with('table', 'line')->whereActivo(1)
             ->leftJoin('tbl_asistencia as a', function ($join) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
                 $join->on("a.fecha", "=", DB::raw("'" . $this->currentdate . "'"));

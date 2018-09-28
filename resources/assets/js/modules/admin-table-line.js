@@ -126,6 +126,11 @@ $('#table-list').on('click-cell.bs.table', function (field, value, row, $element
             const datai = response.data.table;
             $("#table_form input[name=titulo]").val(datai.titulo);
             $("#table_form input[name=ubicacion]").val(datai.ubicacion);
+            if (datai.activo == 1) {
+                $("#table_form #activo").prop('checked', true);
+            } else {
+                $("#table_form #activo").prop('checked', false);
+            }
 
             ///append id to form
             $('<input>').attr({
