@@ -30,6 +30,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/appear', 'OperativeController@appearanceIndex');
         $router->get('/prod', 'OperativeController@prodIndex');
         $router->get('/report1', 'ReportController@report1Index');
+        $router->get('/report2', 'ReportController@report2Index');
 
     });
 
@@ -99,6 +100,11 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->delete('/{line_id}', 'AdminController@deleteLineById');
         });
 
+        ///reports
+        $router->group(['prefix' => 'reports'], function () use ($router) {
+            $router->post('/nomina', 'ReportController@getNominaHtml');
+        });
+
         ///employees
         $router->group(['prefix' => 'person'], function () use ($router) {
             $router->get('/all', 'AdminController@getPersons');
@@ -133,6 +139,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');
             $router->get('/person/all', 'QueryController@getPersons');
             $router->put('/appear/detail', 'QueryController@getAppearDetail');
+            $router->get('/daysOfMonth/{month}', 'QueryController@getDaysOfMonth');
         });
 
     });

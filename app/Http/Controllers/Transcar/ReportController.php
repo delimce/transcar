@@ -13,6 +13,8 @@ use App\Models\Production;
 use App\Models\Table;
 use App\Models\User;
 use Carbon\Carbon;
+use DB;
+use Log;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -72,6 +74,20 @@ class ReportController extends BaseController
                 "days" => $this->getDaysBetween($start, $end)]);
     }
 
+    public function report2Index(Request $req)
+    {
+
+        $now = Carbon::now();
+        $end = Carbon::parse($now->format('Y-m-d'))->daysInMonth;
+        $months = array();
+        $months[] = array("number" => $now->month, "name" => self::nameOfMonth($now->month));
+        $last_month = $now->subMonth();
+        $months[] = array("number" => $last_month->month, "name" => self::nameOfMonth($last_month->month));
+
+
+        return view('pages.report02', ["months" => $months, "days" => $end]);
+    }
+
 
     static function findDateinAppearance($dates, $hours, $date)
     {
@@ -100,6 +116,38 @@ class ReportController extends BaseController
         return $dates;
     }
 
+
+    public function getNominaHtml(Request $req)
+    {
+
+        $month = $req->input("month");
+        $type = intval($req->input("quincena")); ///quincena
+        $dt = Carbon::now();
+        $dt->month = $month; // would force month
+
+        if ($type == 1) {
+            $dt->day = 1;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = 15;
+            $end = Carbon::parse($dt->format('Y-m-d'));
+        } else {
+            $dt->day = 15;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
+            $end = Carbon::parse($dt->format('Y-m-d'));
+        }
+
+        Log::info($start);
+        Log::info($end);
+
+        $results = $this->getNominaResult($start, $end);
+
+        return view('pages.parts.nomina_detail', ["results" => $results]);
+
+
+    }
+
+
     static function nameOfDay($day)
     {
         switch ($day) {
@@ -126,6 +174,71 @@ class ReportController extends BaseController
                 return "Domingo";
                 break;
         }
+    }
+
+    static function nameOfMonth($month)
+    {
+        switch ($month) {
+
+            case 1:
+                return "Enero";
+                break;
+            case 2:
+                return "Febrero";
+                break;
+            case 3:
+                return "Marzo";
+                break;
+            case 4:
+                return "Abril";
+                break;
+            case 5:
+                return "Mayo";
+                break;
+            case 6:
+                return "Junio";
+                break;
+            case 7:
+                return "Julio";
+                break;
+            case 8:
+                return "Agosto";
+                break;
+            case 9:
+                return "Septiembre";
+                break;
+            case 10:
+                return "Octubre";
+                break;
+            case 11:
+                return "Noviembre";
+                break;
+            default:
+                return "Diciembre";
+                break;
+        }
+    }
+
+    private function getNominaResult($start, $end)
+    {
+
+        $query = "SELECT
+                    e.id,
+                   	e.cedula,
+	                concat(e.nombre,' ',e.apellido) as nombre,
+                    round( c.sueldo / 2 ) AS base,
+                    c.bono_extra,
+                    IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
+                        (SELECT	sum(ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) - 8 ) 
+                    FROM tbl_asistencia a WHERE a.empleado_id = e.id and a.fecha BETWEEN '$start' And '$end' and
+                        ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) > 8 
+                        )* c.hora_extra AS extra 
+                    FROM
+                        tbl_cargo AS c
+                        INNER JOIN tbl_empleado AS e ON e.cargo_id = c.id 
+                    WHERE	e.activo = 1 AND e.deleted_at IS NULL";
+
+        return DB::select(DB::raw($query));
     }
 
 }

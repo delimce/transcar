@@ -22,7 +22,7 @@
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="sueldo" class="control-label">Sueldo</label>
+                        <label for="sueldo" class="control-label">Salario Base</label>
 
                         <input type="number" class="form-control currency" id="sueldo" name="sueldo"
                                placeholder=""
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="produccion" class="control-label">Bono Producción (%)</label>
+                        <label for="produccion" class="control-label">Bono x Caja</label>
                         <input type="number" class="form-control currency" id="produccion" name="produccion"
                                placeholder=""
                                min="0" step="0.01" data-number-to-fixed="2"
@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Bono Hora Extra</label>
+                        <label for="hora_extra" class="control-label">Valor Hora Extra</label>
                         <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
                                placeholder=""
                                min="0" step="0.01" data-number-to-fixed="2"
@@ -87,7 +87,7 @@
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="area" class="control-label">Area</label><br>
+                        <label for="area" class="control-label">Departamento</label><br>
                         <select name="area" class="selectpickerArea" data-style="form-select" data-width="90%">
                         </select>
                     </div>

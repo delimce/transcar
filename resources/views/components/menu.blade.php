@@ -38,7 +38,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="{!! url('report2') !!}">
                     <i class="fa fa-calculator"></i>&nbsp;
                     Cálculo de Nómina</a>
             </li>

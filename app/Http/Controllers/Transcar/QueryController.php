@@ -112,13 +112,20 @@ class QueryController extends BaseController
     public function getAppearDetail(Request $req)
     {
         $detail = Appearance::whereEmpleadoId($req->input('person'))
-            ->whereFecha($req->input('date'))->with('person','table','line')->first();
+            ->whereFecha($req->input('date'))->with('person', 'table', 'line')->first();
         if ($detail->count() > 0) {
             return response()->json(['status' => 'ok', 'info' => $detail]);
         } else {
             return response()->json(['status' => 'error', 'message' => 404], 401);
         }
 
+    }
+
+    public function getDaysOfMonth($month)
+    {
+        $now = Carbon::now();
+        $days = Carbon::parse($now->format("Y-$month"))->daysInMonth;
+        return response()->json(['status' => 'ok', 'days' => $days]);
     }
 
 }
