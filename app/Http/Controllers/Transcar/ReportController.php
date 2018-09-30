@@ -221,11 +221,14 @@ class ReportController extends BaseController
 
     private function getNominaResult($start, $end)
     {
+        $start.=' 00:00:00';
+        $end.=' 23:59:59';
 
         $query = "SELECT
                     e.id,
                    	e.cedula,
 	                concat(e.nombre,' ',e.apellido) as nombre,
+	                c.nombre as cargo,
                     round( c.sueldo / 2 ) AS base,
                     c.bono_extra,
                     IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
@@ -279,7 +282,7 @@ class ReportController extends BaseController
     static function totalSalary($base, $bonus, $appear, $extra, $prod)
     {
 
-        return round(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod), 2);
+        return number_format(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod),2);
 
     }
 

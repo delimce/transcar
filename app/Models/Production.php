@@ -31,8 +31,8 @@ class Production extends Model
     public function getProduction($start,$end,$table)
     {
         $params = array(
-            'startDate' => $start,
-            'endDate' => $end,
+            'startDate' => $start.' 00:00:00',
+            'endDate' => $end.' 23:59:59',
         );
 
         if ($table) {
