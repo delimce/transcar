@@ -48,8 +48,8 @@
                         <th data-field="id" data-visible="false"></th>
                         <th data-field="nombre" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="descripcion" data-sortable="true" scope="col">Descripción</th>
-                        <th data-field="area" data-sortable="true" scope="col">Area</th>
-                        <th data-field="produccion" data-sortable="true" scope="col">% producción</th>
+                        <th data-field="area" data-sortable="true" scope="col">Departamento</th>
+                        <th data-field="produccion" data-sortable="true" scope="col">tipo producción</th>
                     </tr>
                     </thead>
                     <tbody>

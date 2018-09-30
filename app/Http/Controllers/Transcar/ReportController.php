@@ -232,13 +232,55 @@ class ReportController extends BaseController
                         (SELECT	sum(ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) - 8 ) 
                     FROM tbl_asistencia a WHERE a.empleado_id = e.id and a.fecha BETWEEN '$start' And '$end' and
                         ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) > 8 
-                        )* c.hora_extra AS extra 
+                        )* c.hora_extra AS extra,
+                      -- produccion
+                    c.produccion_tipo as type,
+                    CASE c.produccion_tipo
+                     when 'total' then 
+                        (SELECT
+                            sum(p.cajas)
+                            FROM
+                            tbl_asistencia AS a
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            WHERE
+                            a.empleado_id = e.id
+                            and p.fecha BETWEEN '$start' and '$end'
+                            and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))
+                      when 'mesa'  then
+                            (SELECT	sum(p.cajas)
+                            FROM
+                            tbl_asistencia AS a
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            WHERE
+                            a.empleado_id = e.id and p.mesa_id = e.mesa_id
+                            and p.fecha BETWEEN '$start' and '$end'
+                            and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))
+                      when 'linea'  then
+                            (SELECT	sum(p.cajas)
+                            FROM
+                            tbl_asistencia AS a
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            WHERE
+                            a.empleado_id = e.id and p.mesa_id = e.mesa_id and p.linea_id = e.linea_id
+                            and p.fecha BETWEEN '$start' and '$end'
+                            and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))	
+                        ELSE 0	
+                    END as ncajas,
+                    c.produccion
+                    -- produccion
                     FROM
                         tbl_cargo AS c
                         INNER JOIN tbl_empleado AS e ON e.cargo_id = c.id 
                     WHERE	e.activo = 1 AND e.deleted_at IS NULL";
 
         return DB::select(DB::raw($query));
+    }
+
+    static function totalSalary($base, $bonus, $appear, $extra, $prod)
+    {
+
+        return round(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod), 2);
+
     }
 
 }

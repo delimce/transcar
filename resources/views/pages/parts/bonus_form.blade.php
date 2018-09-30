@@ -20,7 +20,7 @@
                         <label for="tipo" class="control-label">Tipo</label><br>
                         <select name="tipo" id="tipo" title="Seleccione el tipo"  data-style="form-select" class="selectpickerType" data-width="90%">
                             <option value="area" title="Area">Areas de trabajo</option>
-                            <option value="cargo" title="Cargo">Cargos por area</option>
+                            <option value="cargo" title="Cargo">Cargos por departamento</option>
                             <option value="empleado" title="Empleado">Empleado directo</option>
                         </select>
 

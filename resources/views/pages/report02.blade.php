@@ -43,7 +43,7 @@
 
     <p>&nbsp&nbsp;</p>
 
-    <div id="nomina-det">
+    <div id="nomina-det" class="report">
     </div>
 
 @endsection

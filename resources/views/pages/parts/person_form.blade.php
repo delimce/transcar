@@ -75,7 +75,7 @@
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="area" class="control-label">Area</label><br>
+                        <label for="area" class="control-label">Departamento</label><br>
                         <select name="area" id="area" title="Seleccione..." class="selectpickerArea" data-style="form-select" data-width="90%">
                         </select>
                     </div>

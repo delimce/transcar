@@ -23,7 +23,7 @@
                                 <div class="form-group required row">
                                         <div class="col-sm-6">
                                             <button id="save" class="btn btn-primary" type="submit">
-                                                Guardar Area
+                                                Guardar
                                             </button>
                                             &nbsp;
                                             <button id="delete-area" class="btn btn-danger" type="button">
