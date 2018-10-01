@@ -328,7 +328,7 @@ class AdminController extends BaseController
         $items = Line::all();
         $linesArray = array();
         $items->each(function ($item) use (&$linesArray) {
-            $linesArray[] = array("id" => $item->id, "titulo" => $item->titulo, "descripcion" => $item->descripcion, "mesa" => $item->table->titulo);
+            $linesArray[] = array("id" => $item->id, "titulo" => $item->titulo, "descripcion" => $item->descripcion, "mesa" => $item->table->titulo, "activo" => ($item->activo) ? 'SI' : 'NO');
         });
 
         return response()->json(['status' => 'ok', 'list' => $linesArray]);
@@ -367,6 +367,11 @@ class AdminController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
+        $max = Line::whereMesaId($req->input('mesa'))->count();
+        if ($max == 2) {
+            return response()->json(['status' => 'error', 'message' => "Imposible guardar mas de 2 lineas por mesa"], 400);
+        }
+
         $line = new Line();
         if ($req->has('line_id')) {
             $line = Line::findOrFail($req->input('line_id'));
@@ -375,7 +380,7 @@ class AdminController extends BaseController
         $line->titulo = $req->input('titulo');
         $line->descripcion = $req->input('descripcion');
         $line->mesa_id = $req->input('mesa');
-        $line->activo = ($req->has('activo')) ? 1 : 0;
+        $line->activo = ($req->has('activo2')) ? 1 : 0;
         $line->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
@@ -384,10 +389,16 @@ class AdminController extends BaseController
 
     public function deleteLineById($table_id)
     {
-        $item = Line::findOrFail($table_id);
-        $title = $item->titulo;
-        $item->delete();
-        return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
+        try {
+            $item = Line::findOrFail($table_id);
+            $title = $item->titulo;
+            $item->delete();
+            return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
+
+        } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee produccion asociada'], 500);
+        }
 
     }
 

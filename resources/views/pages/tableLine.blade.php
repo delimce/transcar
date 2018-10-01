@@ -51,6 +51,7 @@
                         <th data-field="titulo" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="descripcion" data-sortable="true" scope="col">Descripción</th>
                         <th data-field="mesa" data-sortable="true" scope="col">Mesa</th>
+                        <th data-field="activo" data-sortable="true" scope="col">Activa?</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@
                             <td>{{str_limit($item->titulo,70)}}</td>
                             <td>{{str_limit($item->descripcion,60)}}</td>
                             <td>{{str_limit($item->table->titulo,100)}}</td>
+                            <td>{{ $item->activo ? "SI" : "NO" }}</td>
                         </tr>
                     @endforeach
                     </tbody>

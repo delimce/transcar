@@ -11,7 +11,8 @@ $("#to-table-list").click(function () {
 
 $("#to-line-form").click(function () {
     $('.sub-title').html('Crear Línea');
-    $('#line_form input[name=line_id]').remove();
+    $('#line_form select[name=mesa]').removeAttr('selected');
+    $('.selectpickerTable').selectpicker('refresh');
     toggle_line_list(false);
 });
 
@@ -157,6 +158,11 @@ $('#line-list').on('click-cell.bs.table', function (field, value, row, $element)
             $("#line_form input[name=descripcion]").val(datai.descripcion);
             $("#line_form select[name=mesa]").val(datai.mesa_id);
             $("#line_form select[name=mesa]").change();
+            if (datai.activo == 1) {
+                $("#line_form #activo2").prop('checked', true);
+            } else {
+                $("#line_form #activo2").prop('checked', false);
+            }
 
             ///append id to form
             $('<input>').attr({

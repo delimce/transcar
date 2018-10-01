@@ -24,7 +24,13 @@
                         <label for="mesa"  class="control-label">Mesa</label><br>
                         <select name="mesa" data-style="form-select" class="selectpickerTable" data-width="90%">
                         </select>
-
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label">Activa?</label>
+                        <div class="custom-switch">
+                            <input class="custom-switch-input btn-primary" name="activo2" id="activo2" value="1" type="checkbox" checked>
+                            <label class="custom-switch-btn" for="activo2"></label>
+                        </div>
                     </div>
                 </div>
 
