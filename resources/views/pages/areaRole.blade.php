@@ -79,4 +79,31 @@
     $('#role-list').bootstrapTable();
     ///loading area list to select
     reloadAreaSelectBox();
+
+    // currency fields
+    var cleaveNumeral = new Cleave('#sueldo', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
+    var cleaveNumeral = new Cleave('#asistencia', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
+    var cleaveNumeral = new Cleave('#produccion', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
+    var cleaveNumeral = new Cleave('#bono_extra', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
+    var cleaveNumeral = new Cleave('#hora_extra', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
 @endpush

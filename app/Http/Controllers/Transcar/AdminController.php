@@ -47,7 +47,7 @@ class AdminController extends BaseController
     public function indexConfig()
     {
         $config = Config::first();
-        return view('pages.config', [ "config" => $config]);
+        return view('pages.config', ["config" => $config]);
     }
 
     public function saveConfig(Request $req)
@@ -190,9 +190,12 @@ class AdminController extends BaseController
         $validator = Validator::make($req->all(), [
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
-            'sueldo' => 'required|numeric',
-          //  'produccion_tipo' => 'required',
-            'produccion' => 'max:100',
+            'sueldo' => 'required|regex:/^\d*(\.\d{1,2})?/',
+            //  'produccion_tipo' => 'required',
+            'produccion' => 'regex:/^\d*(\.\d{1,2})?/',
+            'asistencia' => 'regex:/^\d*(\.\d{1,2})?/',
+            'hora_extra' => 'regex:/^\d*(\.\d{1,2})?/',
+            'bono_extra' => 'regex:/^\d*(\.\d{1,2})?/',
             'area' => 'required|numeric',
         ], ['required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
@@ -210,7 +213,7 @@ class AdminController extends BaseController
         }
 
         if ($req->has('asistencia')) {
-            $role->asistencia = $req->input('asistencia');
+            $role->asistencia = str_replace(",", "", $req->input('asistencia'));
         }
 
         if ($req->has('produccion_tipo')) {
@@ -222,20 +225,20 @@ class AdminController extends BaseController
         }
 
         if ($req->has('produccion')) {
-            $role->produccion = $req->input('produccion');
+            $role->produccion = str_replace(",", "", $req->input('produccion'));
         }
 
         if ($req->has('hora_extra')) {
-            $role->hora_extra = $req->input('hora_extra');
+            $role->hora_extra = str_replace(",", "", $req->input('hora_extra'));
         }
 
         if ($req->has('bono_extra')) {
-            $role->bono_extra = $req->input('bono_extra');
+            $role->bono_extra = str_replace(",", "", $req->input('bono_extra'));
         }
 
         $role->nombre = $req->input('nombre');
         $role->descripcion = $req->input('descripcion');
-        $role->sueldo = $req->input('sueldo');
+        $role->sueldo = str_replace(",", "", $req->input('sueldo'));
         $role->area_id = $req->input('area');
         $role->save();
 
@@ -261,7 +264,7 @@ class AdminController extends BaseController
 
         $tables = Table::all();
         $list = $tables->map(function ($item, $key) {
-            $item->activo = ($item->activo)?"SI":"NO";
+            $item->activo = ($item->activo) ? "SI" : "NO";
             return $item;
         });
 
@@ -397,7 +400,7 @@ class AdminController extends BaseController
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
             $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula,
-             "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre,"activo"=>($item->activo)?'SI':'NO');
+                "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre, "activo" => ($item->activo) ? 'SI' : 'NO');
         });
         return response()->json(['status' => 'ok', 'list' => $personArray]);
     }
@@ -445,7 +448,7 @@ class AdminController extends BaseController
         $person->area_id = $req->input('area');
         $person->cargo_id = $req->input('cargo');
         $person->activo = ($req->has('activo')) ? 1 : 0;
-        
+
 
         ///get role and validate if location matches
         $role = Role::findOrFail($person->cargo_id);
@@ -525,7 +528,7 @@ class AdminController extends BaseController
             'titulo' => 'required|min:3',
             'tipo' => 'required',
             'beneficiario' => 'required|numeric',
-            'monto' => 'required|numeric',
+            'monto' => 'required|regex:/^\d*(\.\d{1,2})?/',
             'fecha' => 'required|date',
         ], ['required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
@@ -544,7 +547,7 @@ class AdminController extends BaseController
         $bonus->titulo = $req->input('titulo');
         $bonus->tipo = $req->input('tipo');
         $bonus->beneficiario = $req->input('beneficiario');
-        $bonus->monto = $req->input('monto');
+        $bonus->monto = str_replace(",", "", $req->input('monto'));
         $bonus->fecha = $req->input('fecha');
         $bonus->save();
 

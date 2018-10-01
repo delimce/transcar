@@ -7,7 +7,7 @@
         <th class="col-2">Salario Base 50%</th>
         <th class="col-2">Monto Bono cargo</th>
         <th class="col-2">Monto Asistencia</th>
-        <th class="col-2">Horas extra</th>
+        <th class="col-2">Monto Horas extra</th>
         <th class="col-2">N°: Cajas/Paletas</th>
         <th class="col-2">Monto Producción</th>
         <th class="col-1">TOTAL</th>
