@@ -2,6 +2,7 @@
 $("#to-person-form").click(function () {
     $('.sub-title').html('Nuevo Empleado');
     $('#person_form input[name=person_id]').remove();
+    $("#person_form select[name=area]").removeAttr('selected');
     toggle_person_list(false);
 });
 
@@ -83,8 +84,11 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form input[name=fecha_ingreso]").val(datai.fecha_ingreso);
             $("#person_form input[name=email]").val(datai.email);
             $("#person_form input[name=telefono]").val(datai.telefono);
+
+            $("#person_form select[name=area]").removeAttr('selected');
             $("#person_form select[name=area]").val(datai.area_id);
             $('.selectpickerArea').selectpicker('refresh');
+
             $("#person_form select[name=cargo]").val(datai.cargo_id);
             $('.selectpickerRole').selectpicker('refresh');
             $("#person_form input[name=titular]").val(datai.titular);
@@ -148,7 +152,7 @@ $('#cargo').on('changed.bs.select', function (e, clickedIndex, isSelected, previ
     let cargo = $(this).val()
     axios.get(api_url + "api/role/" + cargo)
         .then(function (response) {
-            if (response.data.role.produccion_tipo !== "total") {
+            if (response.data.role.produccion_tipo !== "total" && response.data.role.produccion_tipo !== "") {
                 $("#role-location").show();
             } else {
                 $("#role-location").hide();

@@ -156,7 +156,12 @@ class AdminController extends BaseController
         $roles = Role::all();
         $rolesArray = array();
         $roles->each(function ($item) use (&$rolesArray) {
-            $rolesArray[] = array("id" => $item->id, "nombre" => $item->nombre, "descripcion" => $item->descripcion, "area" => $item->area->nombre, "produccion" => $item->produccion_tipo);
+            $rolesArray[] = array("id" => $item->id,
+                "nombre" => $item->nombre,
+                "descripcion" => $item->descripcion,
+                "area" => $item->area->nombre,
+                "unidad" => $item->produccion_unidad,
+                "produccion" => $item->produccion_tipo);
         });
         return response()->json(['status' => 'ok', 'list' => $rolesArray]);
     }
@@ -186,7 +191,7 @@ class AdminController extends BaseController
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
             'sueldo' => 'required|numeric',
-            'produccion_tipo' => 'required',
+          //  'produccion_tipo' => 'required',
             'produccion' => 'max:100',
             'area' => 'required|numeric',
         ], ['required' => 'El campo :attribute es requerido',
@@ -210,6 +215,10 @@ class AdminController extends BaseController
 
         if ($req->has('produccion_tipo')) {
             $role->produccion_tipo = $req->input('produccion_tipo');
+        }
+
+        if ($req->has('unidad')) {
+            $role->produccion_unidad = $req->input('unidad');
         }
 
         if ($req->has('produccion')) {

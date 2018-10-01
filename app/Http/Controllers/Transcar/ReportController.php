@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Transcar;
 
 use App\Models\Appearance;
+use App\Models\Config;
 use App\Models\Production;
 use App\Models\Table;
 use App\Models\User;
@@ -141,8 +142,9 @@ class ReportController extends BaseController
         Log::info($end);
 
         $results = $this->getNominaResult($start, $end);
+        $factor = Config::select("caja_paleta")->first();
 
-        return view('pages.parts.nomina_detail', ["results" => $results]);
+        return view('pages.parts.nomina_detail', ["results" => $results, "factor" => $factor->caja_paleta]);
 
 
     }
@@ -221,8 +223,8 @@ class ReportController extends BaseController
 
     private function getNominaResult($start, $end)
     {
-        $start.=' 00:00:00';
-        $end.=' 23:59:59';
+        $start .= ' 00:00:00';
+        $end .= ' 23:59:59';
 
         $query = "SELECT
                     e.id,
@@ -269,7 +271,8 @@ class ReportController extends BaseController
                             and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))	
                         ELSE 0	
                     END as ncajas,
-                    c.produccion
+                    c.produccion,
+                    c.produccion_unidad as unidad
                     -- produccion
                     FROM
                         tbl_cargo AS c
@@ -282,7 +285,7 @@ class ReportController extends BaseController
     static function totalSalary($base, $bonus, $appear, $extra, $prod)
     {
 
-        return number_format(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod),2);
+        return number_format(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod), 2);
 
     }
 

@@ -8,7 +8,7 @@
         <th class="col-2">Monto Bono cargo</th>
         <th class="col-2">Monto Asistencia</th>
         <th class="col-2">Horas extra</th>
-        <th class="col-2">N°:Cajas/Paletas</th>
+        <th class="col-2">N°: Cajas/Paletas</th>
         <th class="col-2">Monto Producción</th>
         <th class="col-1">TOTAL</th>
     </tr>
@@ -23,8 +23,18 @@
             <td class="col-sm-2">{{$res->bono_extra}}</td>
             <td class="col-sm-2">{{$res->asistencia}}</td>
             <td class="col-sm-2">{{$res->extra}}</td>
-            <td class="col-sm-2">{{$res->ncajas}}</td>
-            <td class="col-sm-2">{{$prod = $res->ncajas*$res->produccion}}</td>
+            <?php
+            if ($res->unidad == 'paleta') {
+                $total_unity = floor($res->ncajas / $factor);
+                $unity = 'P';
+            } else {
+                $total_unity = $res->ncajas;
+                $unity = 'C';
+            }
+            ?>
+            <td class="col-sm-2">{{$total_unity}}{{ $total_unity >0 ? $unity:'' }}</td>
+            <td class="col-sm-2">
+                {{$prod = $total_unity*$res->produccion}}</td>
             <th class="col-sm-1" style="text-align: right">
                 {{\App\Http\Controllers\Transcar\ReportController
             ::totalSalary($res->base,$res->bono_extra,$res->asistencia,$res->extra,$prod)}}

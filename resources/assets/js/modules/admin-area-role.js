@@ -11,6 +11,7 @@ $("#to-area-list").click(function () {
 
 $("#to-role-form").click(function () {
     $('.sub-title').html('Crear Cargo');
+    $("#role_form [name=unidad]").removeAttr('checked');
     $('#role_form input[name=role_id]').remove();
     toggle_role_list(false);
 });
@@ -135,9 +136,13 @@ $('#role-list').on('click-cell.bs.table', function (field, value, row, $element)
             $("#role_form input[name=produccion]").val(datai.produccion);
             $("#role_form input[name=hora_extra]").val(datai.hora_extra);
             $("#role_form input[name=bono_extra]").val(datai.bono_extra);
+            $("#role_form [name=unidad]").removeAttr('checked');
+            $("#role_form input[name=unidad][value=" + datai.produccion_unidad + "]").attr('checked', 'checked');
 
+            $("#role_form select[name=produccion_tipo]").removeAttr('selected');
             $("#role_form select[name=produccion_tipo]").val(datai.produccion_tipo);
             $("#role_form select[name=produccion_tipo]").change();
+            $("#role_form select[name=area]").removeAttr('selected');
             $("#role_form select[name=area]").val(datai.area_id);
             $("#role_form select[name=area]").change();
 

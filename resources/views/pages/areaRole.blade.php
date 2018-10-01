@@ -50,6 +50,7 @@
                         <th data-field="descripcion" data-sortable="true" scope="col">Descripción</th>
                         <th data-field="area" data-sortable="true" scope="col">Departamento</th>
                         <th data-field="produccion" data-sortable="true" scope="col">tipo producción</th>
+                        <th data-field="unidad" data-sortable="true" scope="col">tipo Ganancia</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@
                             <td>{{str_limit($item->descripcion,100)}}</td>
                             <td>{{str_limit($item->area->nombre,100)}}</td>
                             <td>{{str_limit($item->produccion_tipo,100)}}</td>
+                            <td>{{str_limit($item->produccion_unidad,100)}}</td>
                         </tr>
                     @endforeach
                     </tbody>

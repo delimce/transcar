@@ -32,7 +32,7 @@
 
                     </div>
                     <div class="col-sm-6">
-                        <label for="asistencia" class="control-label">Bono Asistencia</label>
+                        <label for="asistencia" class="control-label">Bono Asistencia quincenal</label>
                         <input type="number" class="form-control currency" id="asistencia" name="asistencia"
                                placeholder=""
                                min="0" step="0.01" data-number-to-fixed="2"
@@ -54,6 +54,22 @@
                     </div>
 
                     <div class="col-sm-6">
+                        <label for="bono_extra" class="control-label">Tipo Ganancia</label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio1" value="caja" name="unidad" class="custom-control-input">
+                            <label style="font-weight: lighter" class="custom-control-label" for="customRadio1">Ganacia x Caja</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio2" value="paleta" name="unidad" class="custom-control-input">
+                            <label style="font-weight: lighter" class="custom-control-label" for="customRadio2">Ganacia x Paleta</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group required row">
+
+                    <div class="col-sm-6">
                         <label for="produccion" class="control-label">Bono x Caja</label>
                         <input type="number" class="form-control currency" id="produccion" name="produccion"
                                placeholder=""
@@ -63,17 +79,19 @@
                                required>
                     </div>
 
-                </div>
-
-                <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="bono_extra" class="control-label">Bono Extra cargo</label>
+                        <label for="bono_extra" class="control-label">Bono Extra cargo quincenal</label>
                         <input type="number" class="form-control currency" id="bono_extra" name="bono_extra"
                                placeholder=""
                                min="0" step="0.01" data-number-to-fixed="2"
                                data-number-stepfactor="100"
                                autocomplete="my-bonus">
                     </div>
+
+
+                </div>
+
+                <div class="form-group required row">
 
                     <div class="col-sm-6">
                         <label for="hora_extra" class="control-label">Valor Hora Extra</label>
@@ -83,9 +101,7 @@
                                data-number-stepfactor="100"
                                autocomplete="my-extra">
                     </div>
-                </div>
 
-                <div class="form-group required row">
                     <div class="col-sm-6">
                         <label for="area" class="control-label">Departamento</label><br>
                         <select name="area" class="selectpickerArea" data-style="form-select" data-width="90%">
