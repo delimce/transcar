@@ -42,11 +42,8 @@
                     </div>
                     <div class="col-sm-6">
                         <label for="monto" class="control-label">Monto bono</label>
-                        <input type="number" class="form-control currency" id="monto" name="monto"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               required>
+                        <input type="text" class="form-control currency" id="monto" name="monto"
+                               placeholder="" required>
                     </div>
                 </div>
 

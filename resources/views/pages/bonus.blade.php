@@ -35,4 +35,9 @@
 @push('scripts-ready')
     $('#bonus-list').bootstrapTable();
 
+    var cleaveNumeral = new Cleave('#monto', {
+    numeral: true,
+    numeralDecimalScale: 2
+    });
+
 @endpush

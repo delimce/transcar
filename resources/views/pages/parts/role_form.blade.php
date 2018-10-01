@@ -24,20 +24,14 @@
                     <div class="col-sm-6">
                         <label for="sueldo" class="control-label">Salario Base</label>
 
-                        <input type="number" class="form-control currency" id="sueldo" name="sueldo"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               required>
+                        <input type="text" class="form-control currency" id="sueldo" name="sueldo"
+                               placeholder="" required>
 
                     </div>
                     <div class="col-sm-6">
                         <label for="asistencia" class="control-label">Bono Asistencia quincenal</label>
-                        <input type="number" class="form-control currency" id="asistencia" name="asistencia"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               required>
+                        <input type="text" value="0" class="form-control currency" id="asistencia" name="asistencia"
+                               placeholder="" required>
                     </div>
                 </div>
 
@@ -70,22 +64,15 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="produccion" class="control-label">Bono x Caja</label>
-                        <input type="number" class="form-control currency" id="produccion" name="produccion"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               autocomplete="my-prod"
-                               required>
+                        <label for="produccion" class="control-label">Bono x Caja/Paleta</label>
+                        <input type="text" class="form-control currency" id="produccion" name="produccion"
+                               placeholder="">
                     </div>
 
                     <div class="col-sm-6">
                         <label for="bono_extra" class="control-label">Bono Extra cargo quincenal</label>
-                        <input type="number" class="form-control currency" id="bono_extra" name="bono_extra"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               autocomplete="my-bonus">
+                        <input type="text" class="form-control currency" id="bono_extra" name="bono_extra"
+                               placeholder="">
                     </div>
 
 
@@ -95,11 +82,8 @@
 
                     <div class="col-sm-6">
                         <label for="hora_extra" class="control-label">Valor Hora Extra</label>
-                        <input type="number" class="form-control currency" id="hora_extra" name="hora_extra"
-                               placeholder=""
-                               min="0" step="0.01" data-number-to-fixed="2"
-                               data-number-stepfactor="100"
-                               autocomplete="my-extra">
+                        <input type="text" class="form-control currency" id="hora_extra" name="hora_extra"
+                               placeholder="">
                     </div>
 
                     <div class="col-sm-6">
