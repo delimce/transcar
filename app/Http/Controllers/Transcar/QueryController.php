@@ -100,7 +100,7 @@ class QueryController extends BaseController
 
     public function getPersons()
     {
-        $persons = Person::all();
+        $persons = Person::whereActivo(1)->get();
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
             $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre);

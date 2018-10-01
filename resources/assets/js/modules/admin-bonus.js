@@ -1,6 +1,7 @@
 // buttons
 $("#to-bonus-form").click(function () {
     $('.sub-title').html('Nuevo Bono');
+    $("#bonus_form [name=tipo]").removeAttr('selected');
     $('#bonus_form input[name=bonus_id]').remove();
     toggle_bonus_list(false);
 });
@@ -31,7 +32,7 @@ $('#tipo').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
     let value = String($(this).val());
     let url = ''
     if (value === 'empleado') {
-        url = 'api/person/all';
+        url = 'api/query/person/all';
     } else if (value === 'cargo') {
         url = 'api/role/all';
     } else {
@@ -68,6 +69,7 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
             $("#bonus_form input[name=fecha]").val(datai.fecha);
             $("#bonus_form input[name=monto]").val(datai.monto);
 
+            $("#bonus_form [name=tipo]").removeAttr('selected');
             $("#bonus_form select[name=tipo]").val(datai.tipo);
             $('.selectpickerType').selectpicker('refresh');
             $("#bonus_form select[name=beneficiario]").val(datai.beneficiario);
