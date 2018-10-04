@@ -26,6 +26,18 @@
                                            required>
                                 </div>
                             </div>
+
+                            <div class="form-group required row">
+                                <div class="col-sm-6">
+                                    <label for="empresa_cuenta" class="control-label">Cuenta Empresa</label>
+                                    <input type="text" class="form-control" id="empresa_cuenta" name="empresa_cuenta"
+                                           value="{{$config->empresa_cuenta}}"
+                                           placeholder="cuenta de banco de la empresa"
+                                           autocomplete="my-name-account"
+                                           required>
+                                </div>
+                               
+                            </div>
                             
                             <div class="form-group required row">
                                         <div class="col-sm-6">

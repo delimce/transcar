@@ -7,7 +7,7 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab"
-               aria-controls="nav-users" aria-selected="true">Areas</a>
+               aria-controls="nav-users" aria-selected="true">Departamentos</a>
             <a class="nav-item nav-link" id="nav-config-tab" data-toggle="tab" href="#nav-config" role="tab"
                aria-controls="nav-config" aria-selected="false">Cargos</a>
         </div>

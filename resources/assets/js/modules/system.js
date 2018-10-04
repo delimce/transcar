@@ -103,3 +103,22 @@ $('#delete').confirm({
         }
     }
 });
+
+///reload select list
+const reloadBankSelectBox = function (bankId=false) {
+    axios.get(api_url + "api/query/bank/all")
+        .then(function (response) {
+            let options = '<option value="">Seleccione</option>';
+            let data = response.data.list;
+            let len = data.length;
+            for (let i = 0; i < len; i++) {
+                let selected = (bankId === data[i].id)?' selected':'';
+                options += '<option value=' + data[i].id + selected+'>' + data[i].nombre + '</option>';
+            }
+            $('.selectpickerBank').empty();
+            $('.selectpickerBank').append(options);
+            $('.selectpickerBank').selectpicker('refresh');
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+}

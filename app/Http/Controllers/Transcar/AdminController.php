@@ -55,6 +55,7 @@ class AdminController extends BaseController
 
         $config = Config::find(1); ///only reg
         $config->empresa_nombre = $req->input('empresa_nombre');
+        $config->empresa_cuenta = $req->input('empresa_cuenta');
         $config->empresa_rif = $req->input('empresa_rif');
         $config->iva = $req->input('iva');
         $config->caja_paleta = $req->input('cajas');
@@ -501,6 +502,14 @@ class AdminController extends BaseController
 
         if ($req->has('titular')) {
             $person->titular = $req->input('titular');
+        }
+
+        if ($req->has('titular_doc')) {
+            $person->titular_doc = $req->input('titular_doc');
+        }
+
+        if ($req->filled('banco')) {
+            $person->banco_id = $req->input('banco');
         }
 
         $person->save();
