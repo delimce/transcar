@@ -39,4 +39,5 @@
     reloadRoleSelectBox();
     reloadAreaSelectBox();
     reloadTableSelectBox();
+    reloadBankSelectBox();
 @endpush

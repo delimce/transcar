@@ -103,6 +103,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ///reports
         $router->group(['prefix' => 'reports'], function () use ($router) {
             $router->post('/nomina', 'ReportController@getNominaHtml');
+            $router->post('/file', 'ReportController@getReportToBank');
         });
 
         ///employees
@@ -139,6 +140,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('/line/all', 'QueryController@getLines');
             $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');
             $router->get('/person/all', 'QueryController@getPersons');
+            $router->get('/bank/all', 'QueryController@getBanks');
             $router->put('/appear/detail', 'QueryController@getAppearDetail');
             $router->get('/daysOfMonth/{month}', 'QueryController@getDaysOfMonth');
         });

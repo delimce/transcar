@@ -30,8 +30,8 @@ $(".det-appear").on("click", function () {
             console.log(info)
 
         }).catch(function (error) {
-        return false;
-    });
+            return false;
+        });
 
 })
 
@@ -42,8 +42,8 @@ $('#month').on('changed.bs.select', function (e, clickedIndex, isSelected, previ
         .then(function (response) {
             $('#last-day').html(response.data.days)
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 
 });
 
@@ -52,10 +52,34 @@ $('#report-det').on('click', function () {
         "month": $('#month').val(),
         "quincena": $("input[name='quincena']:checked").val()
     }
-    axios.post(api_url + "api/reports/nomina",data)
+    axios.post(api_url + "api/reports/nomina", data)
         .then(function (response) {
             $("#nomina-det").html(response.data)
         }).catch(function (error) {
+            showAlert(error.response.data.message)
+        });
+
+})
+
+$('#report-txt').on('click', function () {
+    let data = {
+        "month": $('#month').val(),
+        "quincena": $("input[name='quincena']:checked").val()
+    }
+
+    axios({
+        url: api_url + "api/reports/file",
+        method: 'POST',
+        data: data,
+        responseType: 'blob', // important
+    }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'file.txt');
+        document.body.appendChild(link);
+        link.click();
+    }).catch(function (error) {
         showAlert(error.response.data.message)
     });
 

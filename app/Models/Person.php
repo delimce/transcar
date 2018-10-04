@@ -20,6 +20,11 @@ class Person extends Model
         return $this->belongsTo('App\Models\Table','mesa_id');
     }
 
+    public function bank()
+    {
+        return $this->belongsTo('App\Models\Bank','banco_id');
+    }
+
     public function line()
     {
         return $this->belongsTo('App\Models\Line','linea_id');

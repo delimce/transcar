@@ -3,6 +3,7 @@ $("#to-person-form").click(function () {
     $('.sub-title').html('Nuevo Empleado');
     $('#person_form input[name=person_id]').remove();
     $("#person_form select[name=area]").removeAttr('selected');
+    $("#person_form select[name=banco]").removeAttr('selected');
     toggle_person_list(false);
 });
 
@@ -93,6 +94,10 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $('.selectpickerRole').selectpicker('refresh');
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
+            $("#person_form input[name=titular_doc]").val(datai.titular_doc);
+            $("#person_form select[name=banco]").val(datai.banco_id);
+            $('.selectpickerBank').selectpicker('refresh');
+
             if (datai.activo == 1) {
                 $("#person_form #activo").prop('checked', true);
             } else {

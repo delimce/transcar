@@ -289,4 +289,12 @@ class ReportController extends BaseController
 
     }
 
+        
+    public function getReportToBank(Request $req){
+
+        return response('Hello World', 200)
+        ->header('Content-Type', 'text/plain');
+
+    }
+
 }

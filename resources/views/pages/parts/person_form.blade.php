@@ -123,12 +123,30 @@
                                placeholder="titular de la cuenta"
                                autocomplete="my-person-titular">
                     </div>
+
+                    <div class="col-sm-6">
+                        <label for="titular_doc" class="control-label">Cédula Titular</label>
+                        <input type="text" class="form-control" id="titular_doc" name="titular_doc"
+                               placeholder="cedula o pasaporte del titular"
+                               autocomplete="my-person-titular-doc">
+                    </div>
+                </div>
+
+                <div class="form-group required row">
+                   
+                    <div class="col-sm-6">
+                        <label for="banco" class="control-label">Banco</label><br>
+                        <select name="banco" id="banco" data-style="form-select" class="selectpickerBank" data-width="90%">
+                        </select>
+                    </div>
+
                     <div class="col-sm-6">
                         <label for="account" class="control-label">Nº cuenta</label>
                         <input type="text" class="form-control" id="account" name="account"
                                placeholder="numero de cuenta"
                                autocomplete="my-person-account">
                     </div>
+                  
                 </div>
 
                 <div class="form-group required row">

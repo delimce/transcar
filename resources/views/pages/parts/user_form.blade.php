@@ -60,9 +60,8 @@
                     <div class="col-sm-6">
                         <label for="profile" class="control-label">Perfil de usuario</label>
                         <select name="profile" data-style="form-select" class="selectpicker" data-width="90%">
-                            <option value="2" title="Operador">Operador, Carga de produccion</option>
-                            <option value="3" title="Supervisor">Supervisor, Carga de producción y
-                                asistencia
+                            <option value="2" title="Operador">Operador, Carga Asistencia y producción</option>
+                            <option value="3" title="Supervisor">Supervisor, Operaciones y reportes
                             </option>
                             <option value="1" title="Administrador">Administrador, Acceso a todo el
                                 sistema

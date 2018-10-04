@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Transcar;
 use App\Models\Appearance;
 use App\Models\User;
 use App\Models\Area;
+use App\Models\Bank;
 use App\Models\Role;
 use App\Models\Table;
 use App\Models\Line;
@@ -42,6 +43,13 @@ class QueryController extends BaseController
         $areas = Area::all();
         return response()->json(['status' => 'ok', 'list' => $areas->toArray()]);
 
+    }
+
+    
+    public function getBanks()
+    {
+        $banks = Bank::all();
+        return response()->json(['status' => 'ok', 'list' => $banks]);
     }
 
 
