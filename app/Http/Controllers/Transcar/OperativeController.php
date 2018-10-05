@@ -334,14 +334,17 @@ class OperativeController extends BaseController
     }
 
 
-    public function registerAppearBatch()
+    /**
+     * @param $myDate
+     */
+    public function registerAppearBatch($myDate)
     {
 
         ///all people less non appear
         $persons = Person::whereActivo(1)->with('role')
-            ->leftJoin('tbl_inasistencia as i', function ($join) {
+            ->leftJoin('tbl_inasistencia as i', function ($join) use($myDate) {
                 $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
-                $join->on("i.fecha", "=", DB::raw("'" . $this->currentdate . "'"));
+                $join->on("i.fecha", "=", DB::raw("'" . $myDate. "'"));
             })->select("tbl_empleado.*")->get();
 
         ///now register appears with arrive hour and exit hour
@@ -349,12 +352,12 @@ class OperativeController extends BaseController
         try {
             DB::beginTransaction();
 
-            $persons->each(function ($item) {
+            $persons->each(function ($item) use ($myDate) {
                 $appear = new Appearance();
                 $appear->emplaeado_id = $item->empleado_id;
                 $appear->cargo_id = $item->cargo_id;
                 $appear->sueldo = $item->role->sueldo;
-                $appear->fecha = $this->currentdate;
+                $appear->fecha = $myDate;
                 $appear->mesa_id = $item->mesa_id;
                 $appear->linea_id = $item->linea_id;
                 $appear->hora_entrada = '07:00:00';
