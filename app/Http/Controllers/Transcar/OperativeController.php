@@ -334,6 +334,44 @@ class OperativeController extends BaseController
     }
 
 
+    public function registerAppearBatch()
+    {
+
+        ///all people less non appear
+        $persons = Person::whereActivo(1)->with('role')
+            ->leftJoin('tbl_inasistencia as i', function ($join) {
+                $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
+                $join->on("i.fecha", "=", DB::raw("'" . $this->currentdate . "'"));
+            })->select("tbl_empleado.*")->get();
+
+        ///now register appears with arrive hour and exit hour
+
+        try {
+            DB::beginTransaction();
+
+            $persons->each(function ($item) {
+                $appear = new Appearance();
+                $appear->emplaeado_id = $item->empleado_id;
+                $appear->cargo_id = $item->cargo_id;
+                $appear->sueldo = $item->role->sueldo;
+                $appear->fecha = $this->currentdate;
+                $appear->mesa_id = $item->mesa_id;
+                $appear->linea_id = $item->linea_id;
+                $appear->hora_entrada = '07:00:00';
+                $appear->hora_salida = '16:00:00';
+                $appear->turno = $this->getTurn('07:00:00');
+                $appear->comentario = "Registrado por lotes";
+                $appear->save();
+            });
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+        }
+
+
+    }
+
+
     /**********************************production services *************************************/
 
     private function setProduction($prods)
