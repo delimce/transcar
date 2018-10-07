@@ -155,25 +155,25 @@ class ReportController extends BaseController
         switch ($day) {
 
             case 1:
-                return "Lunes";
+                return "Lun.";
                 break;
             case 2:
-                return "Martes";
+                return "Mar.";
                 break;
             case 3:
-                return "Miércoles";
+                return "Mié.";
                 break;
             case 4:
-                return "Jueves";
+                return "Jue.";
                 break;
             case 5:
-                return "Viernes";
+                return "Vie.";
                 break;
             case 6:
-                return "Sabado";
+                return "Sab.";
                 break;
             default:
-                return "Domingo";
+                return "Dom.";
                 break;
         }
     }
@@ -289,6 +289,7 @@ class ReportController extends BaseController
 
     }
 
+    
         
     public function getReportToBank(Request $req){
 
