@@ -36,8 +36,8 @@
             <td class="col-sm-2">
                 {{$prod = $total_unity*$res->produccion}}</td>
             <th class="col-sm-1" style="text-align: right">
-                {{\App\Http\Controllers\Transcar\ReportController
-            ::totalSalary($res->base,$res->bono_extra,$res->asistencia,$res->extra,$prod)}}
+                {{number_format(\App\Http\Controllers\Transcar\ReportController
+            ::totalSalary($res->base,$res->bono_extra,$res->asistencia,$res->extra,$prod),2)}}
             </th>
         </tr>
     @endforeach
