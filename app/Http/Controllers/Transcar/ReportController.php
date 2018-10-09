@@ -14,6 +14,7 @@ use App\Models\Production;
 use App\Models\Table;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use DB;
 use Log;
 use Illuminate\Http\Request;
@@ -221,6 +222,22 @@ class ReportController extends BaseController
         }
     }
 
+    static function getTypeOfDocument($type)
+    {
+        switch ($type) {
+
+            case 'V':
+                return "01";
+                break;
+            case 'P':
+                return "02";
+                break;
+            default:
+                return "08";
+                break;
+        }
+    }
+
     private function getNominaResult($start, $end)
     {
         $start .= ' 00:00:00';
@@ -328,9 +345,12 @@ class ReportController extends BaseController
                 $total_unity = $item->ncajas;
 
             $prod = $total_unity * $item->produccion;
+            $doc_type = Str::substr($item->titular_doc, 0, 1); //type of document, V, P, E
+            $doc = Str::substr($item->titular_doc, 1); //document
+
             $total = self::totalSalary($item->base, $item->bono_extra, $item->asistencia, $item->extra, $prod);
             $TOTAL += $total;
-            $body .= $item->titular_doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
+            $body .= self::getTypeOfDocument($doc_type) . ';' . $doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
             $body .= PHP_EOL;
         }
 

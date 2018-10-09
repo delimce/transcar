@@ -125,9 +125,16 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="titular_doc" class="control-label">Cédula Titular</label>
+                        <label for="titular_doc" class="control-label">Cédula Titular</label><br>
+
+                        <select name="tipo_doc" data-style="form-select" class="selectpickerDoc" data-width="16%">
+                            <option value="V">V</option>
+                            <option value="P">P</option>
+                            <option value="E">E</option>
+                        </select>
+
                         <input type="text" class="form-control" id="titular_doc" name="titular_doc"
-                               placeholder="cedula o pasaporte del titular"
+                               placeholder="cedula o pasaporte del titular" style="width: 280px; display: inline"
                                autocomplete="my-person-titular-doc">
                     </div>
                 </div>
