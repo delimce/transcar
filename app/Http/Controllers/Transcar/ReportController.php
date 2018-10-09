@@ -229,6 +229,9 @@ class ReportController extends BaseController
         $query = "SELECT
                     e.id,
                    	e.cedula,
+                   	e.titular,
+                   	e.titular_doc,
+                   	e.cuenta_bancaria,
 	                concat(e.nombre,' ',e.apellido) as nombre,
 	                c.nombre as cargo,
                     round( c.sueldo / 2 ) AS base,
@@ -285,16 +288,57 @@ class ReportController extends BaseController
     static function totalSalary($base, $bonus, $appear, $extra, $prod)
     {
 
-        return number_format(floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod), 2);
+        return (floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod));
 
     }
 
-    
-        
-    public function getReportToBank(Request $req){
 
-        return response('Hello World', 200)
-        ->header('Content-Type', 'text/plain');
+    public function getReportToBank(Request $req)
+    {
+
+        $month = $req->input("month");
+        $type = intval($req->input("quincena")); ///quincena
+        $dt = Carbon::now();
+        $dt->month = $month; // would force month
+
+        if ($type == 1) {
+            $dt->day = 1;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = 15;
+            $end = Carbon::parse($dt->format('Y-m-d'));
+            $ref = $dt->format('Ym') . '1';
+        } else {
+            $dt->day = 15;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
+            $end = Carbon::parse($dt->format('Y-m-d'));
+            $ref = $dt->format('Ym') . '2';
+        }
+
+        $nomina = $this->getNominaResult($start, $end);
+        $settings = Config::find(1);
+        $body = '';
+        $n = 0;
+        $TOTAL = 0;
+        foreach ($nomina as $item) {
+            $n++;
+            if ($item->unidad == 'paleta')
+                $total_unity = floor($item->ncajas / $settings->caja_paleta);
+            else
+                $total_unity = $item->ncajas;
+
+            $prod = $total_unity * $item->produccion;
+            $total = self::totalSalary($item->base, $item->bono_extra, $item->asistencia, $item->extra, $prod);
+            $TOTAL += $total;
+            $body .= $item->titular_doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
+            $body .= PHP_EOL;
+        }
+
+        $date = $end->format('d/m/Y');
+        $header = $settings->empresa_rif . ';' . $settings->empresa_cuenta . ';' . count($nomina) . ';' . $TOTAL . ';' . $date . ';' . $ref . PHP_EOL;
+
+        return response($header . $body, 200)
+            ->header('Content-Type', 'text/plain');
 
     }
 
