@@ -22,14 +22,14 @@
 
                 <div class="form-group required row">
                     <div class="col-sm-6">
-                        <label for="sueldo" class="control-label">Salario Base</label>
+                        <label for="sueldo" class="control-label">Salario Base (Bs)</label>
 
                         <input type="text" class="form-control currency" id="sueldo" name="sueldo"
                                placeholder="" required>
 
                     </div>
                     <div class="col-sm-6">
-                        <label for="asistencia" class="control-label">Bono Asistencia quincenal</label>
+                        <label for="asistencia" class="control-label">Bono Asistencia quincenal (Bs)</label>
                         <input type="text" value="0" class="form-control currency" id="asistencia" name="asistencia"
                                placeholder="" required>
                     </div>
@@ -64,13 +64,13 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="produccion" class="control-label">Bono x Caja/Paleta</label>
+                        <label for="produccion" class="control-label">Bono x Caja/Paleta (Bs)</label>
                         <input type="text" class="form-control currency" id="produccion" name="produccion"
                                placeholder="">
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="bono_extra" class="control-label">Bono Extra cargo quincenal</label>
+                        <label for="bono_extra" class="control-label">Bono Extra cargo quincenal (Bs)</label>
                         <input type="text" class="form-control currency" id="bono_extra" name="bono_extra"
                                placeholder="">
                     </div>
@@ -81,7 +81,7 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Valor Hora Extra</label>
+                        <label for="hora_extra" class="control-label">Valor Hora Extra (Bs)</label>
                         <input type="text" class="form-control currency" id="hora_extra" name="hora_extra"
                                placeholder="">
                     </div>
