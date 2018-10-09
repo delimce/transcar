@@ -505,7 +505,7 @@ class AdminController extends BaseController
         }
 
         if ($req->has('titular_doc')) {
-            $person->titular_doc = $req->input('titular_doc');
+            $person->titular_doc = $req->input('tipo_doc') . $req->input('titular_doc');
         }
 
         if ($req->filled('banco')) {

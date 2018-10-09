@@ -4,6 +4,7 @@ $("#to-person-form").click(function () {
     $('#person_form input[name=person_id]').remove();
     $("#person_form select[name=area]").removeAttr('selected');
     $("#person_form select[name=banco]").removeAttr('selected');
+    $("#person_form select[name=tipo_doc]").removeAttr('selected');
     toggle_person_list(false);
 });
 
@@ -94,7 +95,15 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $('.selectpickerRole').selectpicker('refresh');
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
-            $("#person_form input[name=titular_doc]").val(datai.titular_doc);
+
+            let typeDoc = String(datai.titular_doc).substring(0, 1);
+            let doc = String(datai.titular_doc).substring(1, datai.titular_doc.length);
+            $("#person_form input[name=titular_doc]").val(doc);
+
+
+            $("#person_form select[name=tipo_doc]").val(typeDoc);
+            $('.selectpickerDoc').selectpicker('refresh');
+
             $("#person_form select[name=banco]").val(datai.banco_id);
             $('.selectpickerBank').selectpicker('refresh');
 
