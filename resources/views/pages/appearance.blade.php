@@ -4,31 +4,15 @@
     @component("components.pageTitle",['title' => 'Operaciones - Registrar Asistencia Diaria'])
     @endcomponent
 
-    <div>
-        <h4> Asistencias del día: {{$date}}</h4>
+    <div class="row" style="display: inline-block; padding-left: 20px; padding: auto; font-size: medium">
+      <form id="appear_form">
+        Asistencias del día: <input type="date" id="appear_date" name="appear_date" value="{{$date}}">
+        <button id="appear-search" class="btn btn-primary" type="submit">
+            Buscar
+        </button>
+      </form>
     </div>
-
-{{--    <div class="row">
-        <div class="col-sm-6">
-            <label for="area" class="control-label">Area</label><br>
-            <select name="area" id="area" title="Seleccione el area." data-style="form-select" class="selectpickerArea"
-                    data-width="90%">
-                <option value="All" selected>Todas</option>
-                @foreach($areas as $area)
-                    <option value="{{$area->id}}">{{$area->nombre}}</option>
-                @endforeach
-            </select>
-
-        </div>
-        <div class="col-sm-6">
-            <label for="role" class="control-label">Cargo</label><br>
-            <select name="role" id="role" title="Seleccione el cargo." class="selectpickerRole"
-                    data-style="form-select" data-width="90%">
-            </select>
-        </div>
-    </div>
-
-    <p>&nbsp;</p>--}}
+    <br><br>
 
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -103,8 +87,8 @@
 
     </div>
 
-    @include('pages.parts.appear_actions')
-    @include('pages.parts.non_appear_actions')
+    @include('pages.parts.appear_actions',["date"=>$date])
+    @include('pages.parts.non_appear_actions',["date"=>$date])
 @endsection
 
 @push('scripts-ready')

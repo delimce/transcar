@@ -16,7 +16,7 @@ class NonAppearance extends Model
 
     public function date()
     {
-        return Carbon::parse($this->created_at)->format("d/m/Y");
+        return Carbon::parse($this->fecha)->format("d/m/Y");
     }
 
 

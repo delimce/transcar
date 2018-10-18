@@ -38,16 +38,23 @@ class OperativeController extends BaseController
 
     }
 
-    public function appearanceIndex()
+    public function appearanceIndex(Request $req)
     {
+
+        if ($req->filled('appear_date')) {
+            $myDate = $req->input('appear_date');
+        } else {
+            $myDate = Carbon::today()->setTimezone('America/Caracas')->format('Y-m-d');
+        }
+
         $persons = Person::with('table', 'line')->whereActivo(1)
-            ->leftJoin('tbl_asistencia as a', function ($join) {
+            ->leftJoin('tbl_asistencia as a', function ($join) use ($myDate) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
-                $join->on("a.fecha", "=", DB::raw("'" . $this->currentdate . "'"));
+                $join->on("a.fecha", "=", DB::raw("'" . $myDate . "'"));
             })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
 
         $areas = Area::all();
-        $nonAppeareance = NonAppearance::whereFecha($this->currentdate)->with('person')->get();
+        $nonAppeareance = NonAppearance::whereFecha($myDate)->with('person')->get();
 
         //filtering
         $filtered = $persons->filter(function ($item) use ($nonAppeareance) {
@@ -62,7 +69,7 @@ class OperativeController extends BaseController
             [
                 "persons" => $personList,
                 "areas" => $areas,
-                "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
+                "date" => $myDate,
                 "nonAppear" => $nonAppear
             ]
         );
@@ -190,10 +197,10 @@ class OperativeController extends BaseController
 
     public function saveAppearance(Request $req)
     {
-
         $validator = Validator::make($req->all(), [
             'type' => 'required',
             'person' => 'required',
+            'date' => 'required',
         ], ['required' => 'El campo :attribute es requerido',
         ]);
 
@@ -220,7 +227,7 @@ class OperativeController extends BaseController
                 $appear->empleado_id = $emp->id;
                 $appear->cargo_id = $emp->cargo_id;
                 $appear->sueldo = $emp->role->sueldo;
-                $appear->fecha = Carbon::now();
+                $appear->fecha = $req->input('date');
                 $appear->comentario = $note;
                 if ($emp->mesa_id != null) {
                     $appear->mesa_id = $emp->mesa_id;
@@ -241,11 +248,11 @@ class OperativeController extends BaseController
             } else { //non appear
                 $non = new NonAppearance();
                 $non->empleado_id = $req->input('person');
-                $non->fecha = Carbon::now();
+                $non->fecha = $req->input('date');
                 $non->save();
                 $action = 0;
                 $info['non_id'] = $non->id;
-                $info['fecha'] = Carbon::parse($non->created_at)->format("d/m/Y");
+                $info['fecha'] = Carbon::parse($non->fecha)->format("d/m/Y");
                 $info['person'] = intval($req->input('person'));
             }
 
@@ -272,6 +279,7 @@ class OperativeController extends BaseController
         $validator = Validator::make($req->all(), [
             'out_hour' => 'required',
             'person' => 'required',
+            'date' => 'required',
         ], ['required' => 'El campo :attribute es requerido',
         ]);
 
@@ -280,7 +288,7 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
-        $appear = Appearance::with('person')->whereEmpleadoId($req->input('person'))->whereFecha($this->currentdate)->first();
+        $appear = Appearance::with('person')->whereEmpleadoId($req->input('person'))->whereFecha($req->input('date'))->first();
         $appear->hora_salida = $req->input('out_hour');
         if ($req->filled('note')) {
             $appear->comentario = $req->input('note');
@@ -301,10 +309,12 @@ class OperativeController extends BaseController
     }
 
 
-    public function deleteAppear($person_id)
+    public function deleteAppear($person_id,$date)
     {
+        Log::info($person_id);
+        Log::info($date);
 
-        $appear = Appearance::with('person')->whereEmpleadoId($person_id)->whereFecha($this->currentdate)->first();
+        $appear = Appearance::with('person')->whereEmpleadoId($person_id)->whereFecha($date)->first();
 
         $info = array();
         $emp = $appear->person;
@@ -342,9 +352,9 @@ class OperativeController extends BaseController
 
         ///all people less non appear
         $persons = Person::whereActivo(1)->with('role')
-            ->leftJoin('tbl_inasistencia as i', function ($join) use($myDate) {
+            ->leftJoin('tbl_inasistencia as i', function ($join) use ($myDate) {
                 $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
-                $join->on("i.fecha", "=", DB::raw("'" . $myDate. "'"));
+                $join->on("i.fecha", "=", DB::raw("'" . $myDate . "'"));
             })->select("tbl_empleado.*")->get();
 
         ///now register appears with arrive hour and exit hour

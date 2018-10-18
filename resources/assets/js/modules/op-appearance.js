@@ -19,8 +19,8 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#note').val('');
 
     //get hour
-    let hour_desc = ($element.entrada)?'Hora de salida:':'Hora de entrada:';
-    let hour_value = ($element.entrada)?'16:00':'07:00';
+    let hour_desc = ($element.entrada) ? 'Hora de salida:' : 'Hora de entrada:';
+    let hour_value = ($element.entrada) ? '16:00' : '07:00';
     // let d = new Date(); // for now
     // let h1 = d.getHours(); // => 9
     // let m1 = d.getMinutes(); // =>  30
@@ -61,12 +61,14 @@ $('#non-appear-list').on('click-cell.bs.table', function (field, value, row, $el
 
 $("#appear-in").on("click", function () {
     let person = $('#person-id').data('id'); //person id
+    let date = $('#person-id').data('date'); //date
     let hour = $('#my_hour').val(); //person id
     let note = $('#note').val(); //person id
     let data = {
         "person": person,
         "type": 1,
         "in_hour": hour,
+        "date": date,
         "note": note,
     }
     axios.put(api_url + 'api/appear/save', data)
@@ -84,10 +86,10 @@ $("#appear-in").on("click", function () {
                 }
             });
         }).catch(function (error) {
-            showAlert(error.response.data.message)
-        }).finally(function () {
-            $('#appear-actions').modal('hide')
-        });
+        showAlert(error.response.data.message)
+    }).finally(function () {
+        $('#appear-actions').modal('hide')
+    });
 
 })
 
@@ -96,9 +98,11 @@ $("#appear-out").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let hour = $('#my_hour').val(); //person id
     let note = $('#note').val(); //person id
+    let date = $('#person-id').data('date'); //date
     let data = {
         "person": person,
         "out_hour": hour,
+        "date": date,
         "note": note,
     }
     axios.put(api_url + 'api/appear/saveOut', data)
@@ -116,16 +120,17 @@ $("#appear-out").on("click", function () {
                 }
             });
         }).catch(function (error) {
-            showAlert(error.response.data.message)
-        }).finally(function () {
-            $('#appear-actions').modal('hide')
-        });
+        showAlert(error.response.data.message)
+    }).finally(function () {
+        $('#appear-actions').modal('hide')
+    });
 })
 
 
 $("#delete-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
-    axios.delete(api_url + 'api/appear/' + person)
+    let date = $('#person-id').data('date'); //date
+    axios.delete(api_url + 'api/appear/' + person + '/' + date)
         .then(function (response) {
             let info = response.data.info;
             $('#appear-list').bootstrapTable('updateByUniqueId', {
@@ -140,19 +145,21 @@ $("#delete-appear").on("click", function () {
                 }
             });
         }).catch(function (error) {
-            showAlert(error.response.data.message)
-        }).finally(function () {
-            $('#appear-actions').modal('hide')
-        });
+        showAlert(error.response.data.message)
+    }).finally(function () {
+        $('#appear-actions').modal('hide')
+    });
 })
 
 
 $("#non-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
+    let date = $('#person-id').data('date'); //date
     let note = $('#note').val(); //person id
     let data = {
         "person": person,
         "type": 0,
+        "date": date,
         "note": note,
     }
 
@@ -181,10 +188,10 @@ $("#non-appear").on("click", function () {
 
             }
         }).catch(function (error) {
-            showAlert(error.response.data.message)
-        }).finally(function () {
-            $('#appear-actions').modal('hide')
-        });
+        showAlert(error.response.data.message)
+    }).finally(function () {
+        $('#appear-actions').modal('hide')
+    });
 
 })
 
@@ -200,23 +207,23 @@ $("#delete-non-appear").on("click", function () {
             });
 
             $('#appear-list')
-            .bootstrapTable('insertRow', {
-                index: 1,
-                row: {
-                    id: info.person_id,
-                    nombre: info.nombre,
-                    cedula: info.cedula,
-                    cargo: info.cargo,
-                    ubicacion: '',
-                    entrada: '',
-                    salida: ''
-                }
-            });
+                .bootstrapTable('insertRow', {
+                    index: 1,
+                    row: {
+                        id: info.person_id,
+                        nombre: info.nombre,
+                        cedula: info.cedula,
+                        cargo: info.cargo,
+                        ubicacion: '',
+                        entrada: '',
+                        salida: ''
+                    }
+                });
 
         }).catch(function (error) {
-            showAlert(error.response.data.message)
-        }).finally(function () {
-            $('#non-appear-actions').modal('hide')
-        });
+        showAlert(error.response.data.message)
+    }).finally(function () {
+        $('#non-appear-actions').modal('hide')
+    });
 
 })
