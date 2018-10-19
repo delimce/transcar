@@ -117,11 +117,12 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ///operative appear
         $router->group(['prefix' => 'appear'], function () use ($router) {
             $router->get('all/{entity}/{value}', 'OperativeController@getPersonsByEntity');
+            $router->get('filter/{date}', 'OperativeController@getAppearByDate');
             $router->put('save', 'OperativeController@saveAppearance');
             $router->put('saveOut', 'OperativeController@saveOutHour');
             $router->delete('non/{appear_id}', 'OperativeController@deleteNonAppear');
             $router->delete('/{person_id}/{date}', 'OperativeController@deleteAppear');
-            $router->put('/saveBatch', 'OperativeController@registerAppearBatch');
+            $router->put('/saveBatch/{date}', 'OperativeController@registerAppearBatch');
         });
 
         ///operative production

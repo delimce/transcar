@@ -227,3 +227,26 @@ $("#delete-non-appear").on("click", function () {
     });
 
 })
+
+
+$('#appear-batch').confirm({
+    title: 'Registrar asistencia masiva',
+    content: '¿Esta seguro que desea registrar la asistencia de todo el personal de esta lista?',
+    buttons: {
+        confirm: function () {
+            let date = $("#appear_date").val();
+            axios.put(api_url + 'api/appear/saveBatch/'+ date)
+                .then(function (response) {
+                    showSuccess(response.data.message, 2000)
+                    ///reload person list on date
+                    let url = 'api/appear/filter/' + date;
+                    reloadList(url, '#appear-list');
+
+                }).catch(function (error) {
+                showAlert(error.response.data.message)
+            });
+        },
+        cancel: function () {
+        }
+    }
+});

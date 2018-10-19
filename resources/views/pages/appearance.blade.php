@@ -25,6 +25,10 @@
 
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-asis" role="tabpanel" aria-labelledby="nav-asis-tab">
+
+            <button id="appear-batch" class="btn btn-warning" type="button">
+                Registrar asistencia a todo el personal
+            </button>
             <div id="appear-list-container">
                 <table id="appear-list" data-search="true" data-unique-id="id" class="table table-striped cn-grid">
                     <thead>

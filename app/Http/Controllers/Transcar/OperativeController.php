@@ -47,22 +47,10 @@ class OperativeController extends BaseController
             $myDate = Carbon::today()->setTimezone('America/Caracas')->format('Y-m-d');
         }
 
-        $persons = Person::with('table', 'line')->whereActivo(1)
-            ->leftJoin('tbl_asistencia as a', function ($join) use ($myDate) {
-                $join->on('a.empleado_id', '=', 'tbl_empleado.id');
-                $join->on("a.fecha", "=", DB::raw("'" . $myDate . "'"));
-            })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
-
-        $areas = Area::all();
-        $nonAppeareance = NonAppearance::whereFecha($myDate)->with('person')->get();
-
-        //filtering
-        $filtered = $persons->filter(function ($item) use ($nonAppeareance) {
-            return !$nonAppeareance->contains('empleado_id', $item->id);
-        });
-
+        $this->getAppearances($myDate, $filtered, $nonAppeareance);
         $personList = $this->getPersons($filtered);
         $nonAppear = $this->getNonAppear($nonAppeareance);
+        $areas = Area::all();
 
         return view(
             'pages.appearance',
@@ -73,6 +61,28 @@ class OperativeController extends BaseController
                 "nonAppear" => $nonAppear
             ]
         );
+    }
+
+    /**get appearances
+     * @param $date
+     * @param $filtered
+     * @param $nonAppeareance
+     */
+    private function getAppearances($date, &$filtered, &$nonAppeareance)
+    {
+
+        $persons = Person::with('table', 'line')->whereActivo(1)
+            ->leftJoin('tbl_asistencia as a', function ($join) use ($date) {
+                $join->on('a.empleado_id', '=', 'tbl_empleado.id');
+                $join->on("a.fecha", "=", DB::raw("'" . $date . "'"));
+            })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
+
+        $nonAppeareance = NonAppearance::whereFecha($date)->with('person')->get();
+
+        //filtering
+        $filtered = $persons->filter(function ($item) use ($nonAppeareance) {
+            return !$nonAppeareance->contains('empleado_id', $item->id);
+        });
     }
 
     public function prodIndex()
@@ -106,6 +116,15 @@ class OperativeController extends BaseController
         $personArray = $this->getPersons($persons);
         return response()->json(['status' => 'ok', 'list' => $personArray]);
 
+    }
+
+
+    public function getAppearByDate($date)
+    {
+        $this->getAppearances($date, $filtered, $nonAppeareance);
+        $personList = $this->getPersons($filtered);
+
+        return response()->json(['status' => 'ok', 'list' => $personList]);
     }
 
     /**get persons
@@ -309,7 +328,7 @@ class OperativeController extends BaseController
     }
 
 
-    public function deleteAppear($person_id,$date)
+    public function deleteAppear($person_id, $date)
     {
         Log::info($person_id);
         Log::info($date);
@@ -347,14 +366,13 @@ class OperativeController extends BaseController
     /**
      * @param $myDate
      */
-    public function registerAppearBatch($myDate)
+    public function registerAppearBatch($date)
     {
-
         ///all people less non appear
         $persons = Person::whereActivo(1)->with('role')
-            ->leftJoin('tbl_inasistencia as i', function ($join) use ($myDate) {
+            ->leftJoin('tbl_inasistencia as i', function ($join) use ($date) {
                 $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
-                $join->on("i.fecha", "=", DB::raw("'" . $myDate . "'"));
+                $join->on("i.fecha", "=", DB::raw("'" . $date . "'"));
             })->select("tbl_empleado.*")->get();
 
         ///now register appears with arrive hour and exit hour
@@ -362,12 +380,15 @@ class OperativeController extends BaseController
         try {
             DB::beginTransaction();
 
-            $persons->each(function ($item) use ($myDate) {
+            ///deleting all appearance of date
+            Appearance::whereFecha($date)->delete();
+
+            $persons->each(function ($item) use ($date) {
                 $appear = new Appearance();
-                $appear->emplaeado_id = $item->empleado_id;
+                $appear->empleado_id = $item->id;
                 $appear->cargo_id = $item->cargo_id;
                 $appear->sueldo = $item->role->sueldo;
-                $appear->fecha = $myDate;
+                $appear->fecha = $date;
                 $appear->mesa_id = $item->mesa_id;
                 $appear->linea_id = $item->linea_id;
                 $appear->hora_entrada = '07:00:00';
@@ -377,8 +398,10 @@ class OperativeController extends BaseController
                 $appear->save();
             });
             DB::commit();
+            return response()->json(['status' => 'ok', 'message' => "Registro de asistencia exitoso"]);
         } catch (Exception $e) {
             DB::rollback();
+            return response()->json(['status' => 'error', 'message' => "Falla de registro masivo"], 500);
         }
 
 
