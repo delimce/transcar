@@ -89,11 +89,13 @@ class OperativeController extends BaseController
     {
         $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
 
-        return View('pages.checkprod',
+        return View(
+            'pages.checkprod',
             [
                 "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
                 "prod" => $this->setProduction($prods)
-            ]);
+            ]
+        );
     }
 
 
@@ -135,37 +137,46 @@ class OperativeController extends BaseController
     {
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
-            $location = "N/A";
-            if (isset($item->table->titulo)) {
-                $location = $item->table->titulo;
-                if (isset($item->line->titulo)) {
-                    $location .= ', ' . $item->line->titulo;
-                }
-            }
-
-            $in = '';
-            if (isset($item->hora_entrada)) {
-                $in = $item->hora_entrada;
-            }
-
-            $out = '';
-            if (isset($item->hora_salida)) {
-                $out = $item->hora_salida;
-            }
-
-
-            $personArray[] = array(
-                "id" => $item->id,
-                "ubicacion" => $location,
-                "nombre" => $item->nombre . ' ' . $item->apellido,
-                "cedula" => $item->cedula,
-                "ingreso" => $item->fecha_ingreso,
-                "entrada" => $in,
-                "salida" => $out,
-                "cargo" => $item->role->nombre
-            );
+            $personArray[] = $this->setPerson($item);
         });
         return $personArray;
+    }
+
+    /**
+     * person info
+     */
+    private function setPerson($person)
+    {
+
+        $location = "N/A";
+        if (isset($person->table->titulo)) {
+            $location = $person->table->titulo;
+            if (isset($person->line->titulo)) {
+                $location .= ', ' . $person->line->titulo;
+            }
+        }
+
+        $in = '';
+        if (isset($person->hora_entrada)) {
+            $in = $person->hora_entrada;
+        }
+
+        $out = '';
+        if (isset($person->hora_salida)) {
+            $out = $person->hora_salida;
+        }
+
+        return array(
+            "id" => $person->id,
+            "ubicacion" => $location,
+            "nombre" => $person->nombre . ' ' . $person->apellido,
+            "cedula" => $person->cedula,
+            "ingreso" => $person->fecha_ingreso,
+            "entrada" => $in,
+            "salida" => $out,
+            "cargo" => $person->role->nombre
+        );
+
     }
 
     /**non appear
@@ -262,6 +273,7 @@ class OperativeController extends BaseController
 
                 $appear->save();
                 $action = 1;
+                $info = $this->setPerson($emp);
                 $info['entrada'] = $req->input('in_hour');
 
             } else { //non appear
@@ -270,20 +282,15 @@ class OperativeController extends BaseController
                 $non->fecha = $req->input('date');
                 $non->save();
                 $action = 0;
+                $info = $this->setPerson($emp);
                 $info['non_id'] = $non->id;
                 $info['fecha'] = Carbon::parse($non->fecha)->format("d/m/Y");
-                $info['person'] = intval($req->input('person'));
             }
 
         } catch (\PDOException $ex) {
             Log::error($ex->getMessage());
             return response()->json(['status' => 'error', 'message' => 'El empleado ya esta registrado en la lista de hoy'], 500);
         }
-
-        $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        $info['cedula'] = $emp->cedula;
-        $info['cargo'] = $emp->role->nombre;
 
         $response = array("action" => $action, "detail" => $info);
 
@@ -314,12 +321,8 @@ class OperativeController extends BaseController
         }
         $appear->save();
 
-        $info = array();
         $emp = $appear->person;
-        $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        $info['cedula'] = $emp->cedula;
-        $info['cargo'] = $emp->role->nombre;
+        $info = $this->setPerson($emp);
         $info['entrada'] = $appear->hora_entrada;
         $info['salida'] = $appear->hora_salida;
 
@@ -330,19 +333,15 @@ class OperativeController extends BaseController
 
     public function deleteAppear($person_id, $date)
     {
-        Log::info($person_id);
-        Log::info($date);
-
         $appear = Appearance::with('person')->whereEmpleadoId($person_id)->whereFecha($date)->first();
 
-        $info = array();
         $emp = $appear->person;
+        $info = $this->setPerson($emp);
         $appear->delete();
-        $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        $info['cedula'] = $emp->cedula;
-        $info['cargo'] = $emp->role->nombre;
-
+        // $info['person_id'] = $emp->id;
+        // $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
+        // $info['cedula'] = $emp->cedula;
+        // $info['cargo'] = $emp->role->nombre;
         return response()->json(['status' => 'ok', 'info' => $info]);
 
     }
@@ -354,11 +353,7 @@ class OperativeController extends BaseController
         $emp = $item->person;
         $item->delete();
 
-        $info['person_id'] = $emp->id;
-        $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        $info['cedula'] = $emp->cedula;
-        $info['cargo'] = $emp->role->nombre;
-
+        $info = $this->setPerson($emp);
         return response()->json(['status' => 'ok', 'info' => $info]);
     }
 
@@ -446,7 +441,8 @@ class OperativeController extends BaseController
             'hora' => 'required',
             'linea' => 'required|numeric',
             'cajas' => 'required|numeric',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'numeric' => 'El campo :attribute debe ser numerico',
         ]);
 

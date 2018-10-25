@@ -75,11 +75,11 @@ $("#appear-in").on("click", function () {
         .then(function (response) {
             let info = response.data.info;
             $('#appear-list').bootstrapTable('updateByUniqueId', {
-                id: info.detail.person_id, row: {
+                id: info.detail.id, row: {
                     nombre: info.detail.nombre,
                     cedula: info.detail.cedula,
                     cargo: info.detail.cargo,
-                    ubicacion: '',
+                    ubicacion: info.detail.ubicacion,
                     fecha: info.detail.fecha,
                     entrada: info.detail.entrada,
                     salida: '',
@@ -108,12 +108,13 @@ $("#appear-out").on("click", function () {
     axios.put(api_url + 'api/appear/saveOut', data)
         .then(function (response) {
             let info = response.data.info;
+            console.log(info)
             $('#appear-list').bootstrapTable('updateByUniqueId', {
-                id: info.person_id, row: {
+                id: info.id, row: {
                     nombre: info.nombre,
                     cedula: info.cedula,
                     cargo: info.cargo,
-                    ubicacion: '',
+                    ubicacion: info.ubicacion,
                     fecha: info.fecha,
                     entrada: info.entrada,
                     salida: info.salida
@@ -133,19 +134,20 @@ $("#delete-appear").on("click", function () {
     axios.delete(api_url + 'api/appear/' + person + '/' + date)
         .then(function (response) {
             let info = response.data.info;
+            console.log(info);
             $('#appear-list').bootstrapTable('updateByUniqueId', {
-                id: info.person_id, row: {
+                id: info.id, row: {
                     nombre: info.nombre,
                     cedula: info.cedula,
                     cargo: info.cargo,
-                    ubicacion: '',
+                    ubicacion: info.ubicacion,
                     fecha: info.fecha,
                     entrada: '',
                     salida: ''
                 }
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
+        showAlert("error en el servicio")
     }).finally(function () {
         $('#appear-actions').modal('hide')
     });
@@ -181,7 +183,7 @@ $("#non-appear").on("click", function () {
                             nombre: info.detail.nombre,
                             cedula: info.detail.cedula,
                             cargo: info.detail.cargo,
-                            ubicacion: '',
+                            ubicacion: info.detail.ubicacion,
                             fecha: info.detail.fecha,
                         }
                     });
@@ -210,11 +212,11 @@ $("#delete-non-appear").on("click", function () {
                 .bootstrapTable('insertRow', {
                     index: 1,
                     row: {
-                        id: info.person_id,
+                        id: info.id,
                         nombre: info.nombre,
                         cedula: info.cedula,
                         cargo: info.cargo,
-                        ubicacion: '',
+                        ubicacion: info.ubicacion,
                         entrada: '',
                         salida: ''
                     }
