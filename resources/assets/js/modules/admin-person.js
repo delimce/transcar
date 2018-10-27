@@ -40,14 +40,15 @@ const toggle_person_list = function (mode = true) {
 }
 
 ///reload select list
-const reloadRoleSelectBox = function () {
-    axios.get(api_url + "api/query/role/all")
+const reloadRoleSelectBox = function (areaId=false,roleId=false) {
+    axios.get(api_url + "api/query/role/all/"+areaId)
         .then(function (response) {
             let options = '';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
-                options += '<option value=' + data[i].id + '>' + data[i].nombre + '</option>';
+                let selected = (roleId === data[i].id) ? ' selected' : '';
+                options += '<option value=' + data[i].id + selected + '>' + data[i].nombre + '</option>';
             }
             $('.selectpickerRole').empty();
             $('.selectpickerRole').append(options);
@@ -79,6 +80,7 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
     axios.get(api_url + 'api/person/' + $element.id)
         .then(function (response) {
             const datai = response.data.person;
+            console.log(datai)
             $("#person_form input[name=nombre]").val(datai.nombre);
             $("#person_form input[name=apellido]").val(datai.apellido);
             $("#person_form input[name=cedula]").val(datai.cedula);
@@ -91,18 +93,22 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form select[name=area]").val(datai.area_id);
             $('.selectpickerArea').selectpicker('refresh');
 
-            $("#person_form select[name=cargo]").val(datai.cargo_id);
-            $('.selectpickerRole').selectpicker('refresh');
+            ////set role
+            reloadRoleSelectBox(datai.area_id,datai.cargo_id);
+
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
 
-            let typeDoc = String(datai.titular_doc).substring(0, 1);
-            let doc = String(datai.titular_doc).substring(1, datai.titular_doc.length);
-            $("#person_form input[name=titular_doc]").val(doc);
+            try{
+                let typeDoc = String(datai.titular_doc).substring(0, 1);
+                let doc = String(datai.titular_doc).substring(1, datai.titular_doc.length);
+                $("#person_form input[name=titular_doc]").val(doc);
+                $("#person_form select[name=tipo_doc]").val(typeDoc);
+                $('.selectpickerDoc').selectpicker('refresh');
+            }catch (e) {
+                console.log(e)
+            }
 
-
-            $("#person_form select[name=tipo_doc]").val(typeDoc);
-            $('.selectpickerDoc').selectpicker('refresh');
 
             $("#person_form select[name=banco]").val(datai.banco_id);
             $('.selectpickerBank').selectpicker('refresh');
@@ -114,18 +120,20 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             }
 
             ///table and line
+            console.log(datai.mesa_id );
             if (datai.mesa_id !== 0) {
                 $("#role-location").show();
                 $("#person_form select[name=mesa]").val(datai.mesa_id);
                 $('.selectpickerTable').selectpicker('refresh');
                 if (datai.linea_id !== 0) {
-                    $("#person_form select[name=linea]").val(datai.linea_id);
-                    $('.selectpickerLine').selectpicker('refresh');
+                    ///set linea
+                    getLineByTable(datai.mesa_id,datai.linea_id)
+                    // $("#person_form select[name=linea]").val(datai.linea_id);
+                    // $('.selectpickerLine').selectpicker('refresh');
                 }
             } else {
                 $("#role-location").hide();
             }
-
 
             ///append id to form
             $('<input>').attr({

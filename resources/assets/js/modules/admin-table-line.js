@@ -49,15 +49,15 @@ const toggle_line_list = function (mode = true) {
 }
 
 ///reload select list
-const reloadTableSelectBox = function (tableId=false) {
+const reloadTableSelectBox = function (tableId = false) {
     axios.get(api_url + "api/query/table/all")
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
-                let selected = (tableId === data[i].id)?' selected':'';
-                options += '<option value=' + data[i].id + selected+'>' + data[i].titulo + '</option>';
+                let selected = (tableId === data[i].id) ? ' selected' : '';
+                options += '<option value=' + data[i].id + selected + '>' + data[i].titulo + '</option>';
             }
             $('.selectpickerTable').empty();
             $('.selectpickerTable').append(options);
@@ -71,13 +71,18 @@ const reloadTableSelectBox = function (tableId=false) {
 $('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let mesa = $(this).val()
-    axios.get(api_url + "api/query/line/all/"+mesa)
+    getLineByTable(mesa)
+});
+
+const getLineByTable = function (tableId, lineId = false) {
+    axios.get(api_url + "api/query/line/all/" + tableId)
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
-                options += '<option value=' + data[i].id + '>' + data[i].titulo + '</option>';
+                let selected = (lineId === data[i].id) ? ' selected' : '';
+                options += '<option value=' + data[i].id + selected + '>' + data[i].titulo + '</option>';
             }
             $('.selectpickerLine').empty();
             $('.selectpickerLine').append(options);
@@ -85,8 +90,7 @@ $('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
         }).catch(function (error) {
         showAlert(error.response.data.message)
     });
-
-});
+}
 
 // Forms
 $("#table_form").submit(function (event) {
