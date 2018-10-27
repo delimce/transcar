@@ -30,29 +30,7 @@ const toggle_bonus_list = function (mode = true) {
 $('#tipo').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let value = String($(this).val());
-    let url = ''
-    if (value === 'empleado') {
-        url = 'api/query/person/all';
-    } else if (value === 'cargo') {
-        url = 'api/role/all';
-    } else {
-        url = 'api/area/all';
-    }
-
-    axios.get(api_url + url)
-        .then(function (response) {
-            let options = '';
-            let data = response.data.list;
-            let len = data.length;
-            for (let i = 0; i < len; i++) {
-                options += '<option value=' + data[i].id + '>' + data[i].nombre + '</option>';
-            }
-            $('.selectpickerBene').empty();
-            $('.selectpickerBene').append(options);
-            $('.selectpickerBene').selectpicker('refresh');
-        }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+    setbeneficiario(value);
 
 });
 
@@ -72,9 +50,7 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
             $("#bonus_form [name=tipo]").removeAttr('selected');
             $("#bonus_form select[name=tipo]").val(datai.tipo);
             $('.selectpickerType').selectpicker('refresh');
-            $("#bonus_form select[name=beneficiario]").val(datai.beneficiario);
-            $('.selectpickerBene').selectpicker('refresh');
-
+            setbeneficiario(datai.tipo, datai.beneficiario)
 
             ///append id to form
             $('<input>').attr({
@@ -120,3 +96,29 @@ $('#delete-bonus').confirm({
         }
     }
 });
+
+let setbeneficiario = function (tipo, beneId = false) {
+    let url = ''
+    if (tipo === 'empleado') {
+        url = 'api/query/person/all';
+    } else if (tipo === 'cargo') {
+        url = 'api/role/all';
+    } else {
+        url = 'api/area/all';
+    }
+    axios.get(api_url + url)
+        .then(function (response) {
+            let options = '';
+            let data = response.data.list;
+            let len = data.length;
+            for (let i = 0; i < len; i++) {
+                let selected = (beneId === data[i].id) ? ' selected' : '';
+                options += '<option value=' + data[i].id + selected + '>' + data[i].nombre + '</option>';
+            }
+            $('.selectpickerBene').empty();
+            $('.selectpickerBene').append(options);
+            $('.selectpickerBene').selectpicker('refresh');
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+}
