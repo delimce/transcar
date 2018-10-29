@@ -2,6 +2,7 @@
 $("#to-bonus-form").click(function () {
     $('.sub-title').html('Nuevo Bono');
     $("#bonus_form [name=tipo]").removeAttr('selected');
+    $('.selectpickerBene').empty();
     $('#bonus_form input[name=bonus_id]').remove();
     toggle_bonus_list(false);
 });
@@ -34,6 +35,7 @@ $('#tipo').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
 
 });
 
+
 //behavior
 $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element) {
     toggle_bonus_list(false);
@@ -51,6 +53,9 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
             $("#bonus_form select[name=tipo]").val(datai.tipo);
             $('.selectpickerType').selectpicker('refresh');
             setbeneficiario(datai.tipo, datai.beneficiario)
+            $('#beneficiario').on('refreshed.bs.select', function () {
+                $('.selectpickerBene').selectpicker('val',datai.beneficiario);
+            });
 
             ///append id to form
             $('<input>').attr({

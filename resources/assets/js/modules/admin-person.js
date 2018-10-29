@@ -95,6 +95,9 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
 
             ////set role
             reloadRoleSelectBox(datai.area_id,datai.cargo_id);
+            $('#cargo').on('refreshed.bs.select', function () {
+                $('.selectpickerRole').selectpicker('val',datai.cargo_id);
+            });
 
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
@@ -128,8 +131,9 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
                 if (datai.linea_id !== 0) {
                     ///set linea
                     getLineByTable(datai.mesa_id,datai.linea_id)
-                    // $("#person_form select[name=linea]").val(datai.linea_id);
-                    // $('.selectpickerLine').selectpicker('refresh');
+                    $('#linea').on('refreshed.bs.select', function () {
+                        $('.selectpickerLine').selectpicker('val',datai.linea_id);
+                    });
                 }
             } else {
                 $("#role-location").hide();
