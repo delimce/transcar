@@ -7,6 +7,7 @@
         <th class="col-2">Salario Base 50% (BS)</th>
         <th class="col-2">Bono cargo (BS)</th>
         <th class="col-2">Asistencia (BS)</th>
+        <th class="col-2">Horas extra (dias)</th>
         <th class="col-2">Horas extra (BS)</th>
         <th class="col-2">N°: Cajas/Paletas</th>
         <th class="col-2">Producción (BS)</th>
@@ -22,6 +23,7 @@
             <td class="col-sm-2">{{$res->base}}</td>
             <td class="col-sm-2">{{$res->bono_extra}}</td>
             <td class="col-sm-2">{{$res->asistencia}}</td>
+            <td class="col-sm-2">{{$res->diashe}}</td>
             <td class="col-sm-2">{{$res->extra}}</td>
             <?php
             if ($res->unidad == 'paleta') {

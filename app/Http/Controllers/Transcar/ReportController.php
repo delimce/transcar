@@ -254,10 +254,11 @@ class ReportController extends BaseController
                     round( c.sueldo / 2 ) AS base,
                     c.bono_extra,
                     IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
-                        (SELECT	sum(ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) - 8 ) 
-                    FROM tbl_asistencia a WHERE a.empleado_id = e.id and a.fecha BETWEEN '$start' And '$end' and
-                        ABS( IF ( isnull( a.hora_salida ), 16, HOUR ( a.hora_salida ) ) - HOUR ( a.hora_entrada ) ) > 8 
-                        )* c.hora_extra AS extra,
+                      -- bono horas extras
+                    (select sum(a.hora_extra) FROM tbl_asistencia a WHERE a.empleado_id = e.id 
+	                    and a.fecha BETWEEN '$start' AND '$end') as diashe, 
+                    if((select sum(a.hora_extra) FROM tbl_asistencia a WHERE a.empleado_id = e.id 
+                    and a.fecha BETWEEN '$start' AND '$end')>2,c.hora_extra,0) AS extra,
                       -- produccion
                     c.produccion_tipo as type,
                     CASE c.produccion_tipo
