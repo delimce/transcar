@@ -22,6 +22,14 @@
                         <span class="appear-subtitle"><b id="hour-desc"></b>&nbsp;<input id="my_hour" type="time" value=""></span>&nbsp;<br>
                         <span class="appear-subtitle">Nota:&nbsp;<input id="note" style="width: 300px" type="text" value=""></span>&nbsp;
                     </div>
+                     {{-- extra --}}
+                     <div class="col-sm-6 extra">
+                            <span class="appear-subtitle">¿Hizo horas extras?:</span>
+                            <span class="appear-subtitle">
+                                    &nbsp; <input name="extras" id="extras" value="1" type="checkbox">
+                            </span><br>
+                      </div>
+                        {{-- extra --}}
                 </div>
             </div>
             <div class="modal-footer">

@@ -18,6 +18,9 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#person-id').data('id', $element.id); //element id
     $('#note').val('');
 
+    let my_extra = ($element.extra === 'SI') ? true : false;
+    $('#extras').prop('checked', my_extra);
+
     //get hour
     let hour_desc = ($element.entrada) ? 'Hora de salida:' : 'Hora de entrada:';
     let hour_value = ($element.entrada) ? '16:00' : '07:00';
@@ -39,9 +42,11 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
         $("#non-appear").hide();
         $("#appear-out").show();
         $("#delete-appear").show();
+        $(".extra").show();
     } else {
         $("#appear-in").show();
         $("#non-appear").show();
+        $(".extra").hide();
         $("#appear-out").hide();
         $("#delete-appear").hide();
     }
@@ -99,11 +104,13 @@ $("#appear-out").on("click", function () {
     let hour = $('#my_hour').val(); //person id
     let note = $('#note').val(); //person id
     let date = $('#person-id').data('date'); //date
+    let extras = $('#extras').prop('checked')?1:0 //extras
     let data = {
         "person": person,
         "out_hour": hour,
         "date": date,
         "note": note,
+        "extras": extras,
     }
     axios.put(api_url + 'api/appear/saveOut', data)
         .then(function (response) {
@@ -116,6 +123,7 @@ $("#appear-out").on("click", function () {
                     cargo: info.cargo,
                     ubicacion: info.ubicacion,
                     fecha: info.fecha,
+                    extra: info.extra,
                     entrada: info.entrada,
                     salida: info.salida
                 }
@@ -143,7 +151,8 @@ $("#delete-appear").on("click", function () {
                     ubicacion: info.ubicacion,
                     fecha: info.fecha,
                     entrada: '',
-                    salida: ''
+                    salida: '',
+                    extra: ''
                 }
             });
         }).catch(function (error) {
@@ -218,7 +227,8 @@ $("#delete-non-appear").on("click", function () {
                         cargo: info.cargo,
                         ubicacion: info.ubicacion,
                         entrada: '',
-                        salida: ''
+                        salida: '',
+                        extra: ''
                     }
                 });
 
@@ -237,7 +247,7 @@ $('#appear-batch').confirm({
     buttons: {
         confirm: function () {
             let date = $("#appear_date").val();
-            axios.put(api_url + 'api/appear/saveBatch/'+ date)
+            axios.put(api_url + 'api/appear/saveBatch/' + date)
                 .then(function (response) {
                     showSuccess(response.data.message, 2000)
                     ///reload person list on date

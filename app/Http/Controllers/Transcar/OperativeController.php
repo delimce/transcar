@@ -75,7 +75,7 @@ class OperativeController extends BaseController
             ->leftJoin('tbl_asistencia as a', function ($join) use ($date) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
                 $join->on("a.fecha", "=", DB::raw("'" . $date . "'"));
-            })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida")->get();
+            })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida", "a.hora_extra")->get();
 
         $nonAppeareance = NonAppearance::whereFecha($date)->with('person')->get();
 
@@ -166,6 +166,11 @@ class OperativeController extends BaseController
             $out = $person->hora_salida;
         }
 
+        $extra = '';
+        if (isset($person->hora_extra)) {
+            $extra = ($person->hora_extra) ? 'SI' : 'NO';
+        }
+
         return array(
             "id" => $person->id,
             "ubicacion" => $location,
@@ -174,6 +179,7 @@ class OperativeController extends BaseController
             "ingreso" => $person->fecha_ingreso,
             "entrada" => $in,
             "salida" => $out,
+            "extra" => $extra,
             "cargo" => $person->role->nombre
         );
 
@@ -319,12 +325,14 @@ class OperativeController extends BaseController
         if ($req->filled('note')) {
             $appear->comentario = $req->input('note');
         }
+        $appear->hora_extra = ($req->input('extras')) ? 1 : 0;
         $appear->save();
 
         $emp = $appear->person;
         $info = $this->setPerson($emp);
         $info['entrada'] = $appear->hora_entrada;
         $info['salida'] = $appear->hora_salida;
+        $info['extra'] = ($appear->hora_extra)?'SI':'NO';
 
         return response()->json(['status' => 'ok', 'info' => $info]);
 

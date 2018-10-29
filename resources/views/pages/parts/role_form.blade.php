@@ -81,7 +81,7 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Valor Hora Extra (Bs)</label>
+                        <label for="hora_extra" class="control-label">Bono Horas Extra (Bs)</label>
                         <input type="text" class="form-control currency" id="hora_extra" name="hora_extra"
                                placeholder="">
                     </div>

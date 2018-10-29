@@ -40,6 +40,7 @@
                         <th data-field="ubicacion" data-sortable="true" scope="col">Ubicación</th>
                         <th data-field="entrada" data-sortable="true" scope="col">Entrada</th>
                         <th data-field="salida" data-sortable="true" scope="col">Salida</th>
+                        <th data-field="extra" data-sortable="true" scope="col">Horas extra</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -52,6 +53,7 @@
                             <td>{{str_limit($item['ubicacion'],40)}}</td>
                             <td>{{$item['entrada']}}</td>
                             <td>{{$item['salida']}}</td>
+                            <td>{{$item['extra']}}</td>
                         </tr>
                     @endforeach
                     </tbody>
