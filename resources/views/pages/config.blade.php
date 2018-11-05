@@ -40,13 +40,13 @@
                             </div>
                             
                             <div class="form-group required row">
-                                        <div class="col-sm-6">
+                                        {{-- <div class="col-sm-6">
                                             <label for="iva" class="control-label">impuesto</label>
                                         <input type="number" value="{{$config->iva}}" class="form-control" id="iva" name="iva"
                                                    placeholder="impuesto iva"
                                                    autocomplete="impuesto"
                                                    required>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-sm-6">
                                             <label for="cajas" class="control-label">Cajas por paleta</label>
                                             <input type="number" value="{{$config->caja_paleta}}" class="form-control" id="cajas" name="cajas"

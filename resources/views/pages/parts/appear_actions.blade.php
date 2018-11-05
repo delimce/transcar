@@ -33,9 +33,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="appear-out" type="button" class="btn badge-dark">Registrar Salida</button>&nbsp;
+                <button id="appear-out" type="button" class="btn badge-dark">Guardar</button>&nbsp;
                 <button id="delete-appear" type="button" class="btn btn-danger">Borrar horas registradas</button>&nbsp;
-                <button id="appear-in" type="button" class="btn btn-primary">Registrar Entrada</button>&nbsp;
+                <button id="appear-in" type="button" class="btn btn-primary">Guardar</button>&nbsp;
                 <button id="non-appear" type="button" class="btn btn-warning">Registrar Inasistencia</button>
             </div>
         </div>

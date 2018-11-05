@@ -1,8 +1,8 @@
-<table class="table">
+<table class="table table-striped">
     <thead>
     <tr class="d-flex">
         <th class="col-1">CI</th>
-        <th class="col-2">Empleado</th>
+        <th class="col-3">Empleado</th>
         <th class="col-2">Cargo</th>
         <th class="col-2">Salario Base 50% (BS)</th>
         <th class="col-2">Bono cargo (BS)</th>
@@ -15,16 +15,16 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($results as $res)
+    @foreach($results as $i => $res)
         <tr class="d-flex">
             <th class="col-sm-1">{{$res->cedula}}</th>
-            <th class="col-sm-2">{{$res->nombre}}</th>
+            <th class="col-sm-3">{{$res->nombre}}</th>
             <td class="col-sm-2">{{$res->cargo}}</td>
-            <td class="col-sm-2">{{$res->base}}</td>
-            <td class="col-sm-2">{{$res->bono_extra}}</td>
-            <td class="col-sm-2">{{$res->asistencia}}</td>
+            <td class="col-sm-2"><b>{{$res->base}}</b></td>
+            <td class="col-sm-2"><b>{{$res->bono_extra}}</b></td>
+            <td class="col-sm-2"><b>{{$res->asistencia}}</b></td>
             <td class="col-sm-2">{{$res->diashe}}</td>
-            <td class="col-sm-2">{{$res->extra}}</td>
+            <td class="col-sm-2"><b>{{$res->extra}}</b></td>
             <?php
             if ($res->unidad == 'paleta') {
                 $total_unity = floor($res->ncajas / $factor);
@@ -35,8 +35,7 @@
             }
             ?>
             <td class="col-sm-2">{{$total_unity}}{{ $total_unity >0 ? $unity:'' }}</td>
-            <td class="col-sm-2">
-                {{$prod = $total_unity*$res->produccion}}</td>
+            <td class="col-sm-2"><b>{{$prod = $total_unity*$res->produccion}}</b></td>
             <th class="col-sm-1" style="text-align: right">
                 {{number_format(\App\Http\Controllers\Transcar\ReportController
             ::totalSalary($res->base,$res->bono_extra,$res->asistencia,$res->extra,$prod),2)}}

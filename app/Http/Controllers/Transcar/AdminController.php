@@ -192,7 +192,6 @@ class AdminController extends BaseController
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
             'sueldo' => 'required|regex:/^\d*(\.\d{1,2})?/',
-            //  'produccion_tipo' => 'required',
             'produccion' => 'regex:/^\d*(\.\d{1,2})?/',
             'asistencia' => 'regex:/^\d*(\.\d{1,2})?/',
             'hora_extra' => 'regex:/^\d*(\.\d{1,2})?/',
@@ -217,7 +216,8 @@ class AdminController extends BaseController
             $role->asistencia = str_replace(",", "", $req->input('asistencia'));
         }
 
-        if ($req->has('produccion_tipo')) {
+        $role->produccion_tipo = null;
+        if ($req->filled('produccion_tipo')) {
             $role->produccion_tipo = $req->input('produccion_tipo');
         }
 
@@ -249,11 +249,16 @@ class AdminController extends BaseController
 
     public function deleteRoleById($role_id)
     {
-        $item = Role::findOrFail($role_id);
-        $title = $item->nombre;
-        $item->delete();
-        return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
+        try {
+            $item = Role::findOrFail($role_id);
+            $title = $item->nombre;
+            $item->delete();
+            return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
 
+        } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee registros asociados'], 500);
+        }
     }
 
 
@@ -520,10 +525,16 @@ class AdminController extends BaseController
 
     public function deletePersonById($table_id)
     {
-        $item = Person::findOrFail($table_id);
-        $title = $item->nombre;
-        $item->delete();
-        return response()->json(['status' => 'ok', 'message' => "Empleado: $title borrado con éxito"]);
+        try {
+            $item = Person::findOrFail($table_id);
+            $title = $item->nombre;
+            $item->delete();
+            return response()->json(['status' => 'ok', 'message' => "Empleado: $title borrado con éxito"]);
+
+        } catch (\PDOException $ex) {
+            Log::error($ex->getMessage());
+            return response()->json(['status' => 'error', 'message' => 'Imposible eliminar, posee registros asociados'], 500);
+        }
 
     }
 
