@@ -1,6 +1,6 @@
 <table class="table table-striped">
     <thead>
-    <tr class="d-flex">
+    <tr>
         <th class="col-1">CI</th>
         <th class="col-3">Empleado</th>
         <th class="col-2">Cargo</th>
@@ -16,10 +16,10 @@
     </thead>
     <tbody>
     @foreach($results as $i => $res)
-        <tr class="d-flex">
+        <tr>
             <th class="col-sm-1">{{$res->cedula}}</th>
-            <th class="col-sm-3">{{$res->nombre}}</th>
-            <td class="col-sm-2">{{$res->cargo}}</td>
+            <th class="col-sm-3">{{str_limit($res->nombre,40)}}</th>
+            <td class="col-sm-2">{{str_limit($res->cargo,30)}}</td>
             <td class="col-sm-2"><b>{{$res->base}}</b></td>
             <td class="col-sm-2"><b>{{$res->bono_extra}}</b></td>
             <td class="col-sm-2"><b>{{$res->asistencia}}</b></td>

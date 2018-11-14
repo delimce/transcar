@@ -52,7 +52,7 @@
 
         <table class="table table-striped" style="min-width: 900px">
             <thead>
-            <tr class="d-flex">
+            <tr>
                 <th class="col-1">CI</th>
                 <th class="col-3">Empleado</th>
                 @foreach($days as $day)
@@ -62,9 +62,9 @@
             </thead>
             <tbody>
             @foreach($results as $item)
-                <tr class="d-flex">
+                <tr>
                     <th class="col-sm-1">{{$item->cedula}}</th>
-                    <th class="col-sm-3">{{str_limit($item->nombre,30)}}</th>
+                    <th class="col-sm-2">{{str_limit($item->nombre,40)}}</th>
                     <?php
                     $mdates = explode(",", $item->fechas);
                     $mhours = explode(",", $item->horas);
@@ -79,9 +79,9 @@
                     @endforeach
                 </tr>
             @endforeach
-            <tr class="d-flex">
+            <tr>
                 <th class="col-sm-1">Total paletas</th>
-                <td class="col-sm-3">&nbsp;</td>
+                <td class="col-sm-2">&nbsp;</td>
                 @foreach($days as $day)
                     <th class="col-1">
                         {!!\App\Http\Controllers\Transcar\ReportController::
@@ -89,9 +89,9 @@
                     </th>
                 @endforeach
             </tr>
-            <tr class="d-flex">
+            <tr>
                 <th class="col-sm-1">Total Cajas</th>
-                <td class="col-sm-3">&nbsp;</td>
+                <td class="col-sm-2">&nbsp;</td>
                 @foreach($days as $day)
                     <th class="col-1">
                         {!!\App\Http\Controllers\Transcar\ReportController::
