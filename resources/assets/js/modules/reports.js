@@ -12,13 +12,12 @@ $(".det-appear").on("click", function () {
             let person = info.person;
             $('#asis_linea').html('')
             $('#asis_salida').html('')
-            $('#asis_nombre').html(person.nombre + ' ' + person.apellido);
+            $('#asis_nombre').html(String(person.nombre + ' ' + person.apellido).substr(0, 27));
             $('#asis_cedula').html(person.cedula)
             $('#asis_tlf').html(person.telefono)
             $('#asis_email').html(person.email)
             $('#asis_fecha').html(info.fecha)
             $('#asis_turno').html(info.turno)
-
             if (info.table != null)
                 $('#asis_mesa').html(info.table.titulo)
             if (info.line != null)

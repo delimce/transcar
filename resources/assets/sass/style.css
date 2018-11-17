@@ -155,3 +155,10 @@ label {
 }
 
 /*fist column fixed*/
+#nomina-table {
+    table-layout: fixed;
+}
+
+#nomina-table th{
+    width: 186px;
+}
