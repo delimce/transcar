@@ -50,27 +50,27 @@
             </span>
         </div>
 
-        <table class="table table-striped" style="min-width: 900px">
+        <table class="table table-striped">
             <thead>
             <tr>
-                <th class="col-1">CI</th>
-                <th class="col-3">Empleado</th>
+                <th>CI</th>
+                <th>Empleado</th>
                 @foreach($days as $day)
-                    <th class="col-1">{{$day["name"]}} {{$day["day"]}}</th>
+                    <th>{{$day["name"]}} {{$day["day"]}}</th>
                 @endforeach
             </tr>
             </thead>
             <tbody>
             @foreach($results as $item)
                 <tr>
-                    <th class="col-sm-1">{{$item->cedula}}</th>
-                    <th class="col-sm-2">{{str_limit($item->nombre,40)}}</th>
+                    <th>{{$item->cedula}}</th>
+                    <th>{{str_limit($item->nombre,40)}}</th>
                     <?php
                     $mdates = explode(",", $item->fechas);
                     $mhours = explode(",", $item->horas);
                     ?>
                     @foreach($days as $day)
-                        <td class="col-sm-1">
+                        <td>
                             <span class="det-appear" data-id="{{$item->id}}" data-date="{{$day["date"]}}">
                             {!!\App\Http\Controllers\Transcar\ReportController::
                             findDateinAppearance($mdates,$mhours,$day["date"])!!}
@@ -80,20 +80,20 @@
                 </tr>
             @endforeach
             <tr>
-                <th class="col-sm-1">Total paletas</th>
-                <td class="col-sm-2">&nbsp;</td>
+                <th>Total paletas</th>
+                <td>&nbsp;</td>
                 @foreach($days as $day)
-                    <th class="col-1">
+                    <th>
                         {!!\App\Http\Controllers\Transcar\ReportController::
                                findProdByDate($day["date"],$production,'tpaletas')!!}
                     </th>
                 @endforeach
             </tr>
             <tr>
-                <th class="col-sm-1">Total Cajas</th>
-                <td class="col-sm-2">&nbsp;</td>
+                <th>Total Cajas</th>
+                <td>&nbsp;</td>
                 @foreach($days as $day)
-                    <th class="col-1">
+                    <th>
                         {!!\App\Http\Controllers\Transcar\ReportController::
                                findProdByDate($day["date"],$production,'tcajas')!!}
                     </th>
