@@ -373,14 +373,14 @@ class AdminController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
-        $max = Line::whereMesaId($req->input('mesa'))->count();
-        if ($max == 2) {
-            return response()->json(['status' => 'error', 'message' => "Imposible guardar mas de 2 lineas por mesa"], 400);
-        }
-
         $line = new Line();
         if ($req->has('line_id')) {
             $line = Line::findOrFail($req->input('line_id'));
+        }else{
+            $max = Line::whereMesaId($req->input('mesa'))->count();
+            if ($max == 2) {
+                return response()->json(['status' => 'error', 'message' => "Imposible guardar mas de 2 lineas por mesa"], 400);
+            }
         }
 
         $line->titulo = $req->input('titulo');
