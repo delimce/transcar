@@ -246,6 +246,7 @@ class ReportController extends BaseController
         $query = "SELECT
                     e.id,
                    	e.cedula,
+       	            e.fecha_ingreso,
                    	e.titular,
                    	e.titular_doc,
                    	e.cuenta_bancaria,
@@ -308,6 +309,26 @@ class ReportController extends BaseController
 
         return (floatval($base) + floatval($bonus) + floatval($appear) + floatval($extra) + floatval($prod));
 
+    }
+
+
+    /**prorate salary
+     * @param $personId
+     * @param $base
+     * @param $date
+     * @return float|int
+     */
+    static function prorateSalary($personId, $base, $dateIn)
+    {
+        $date = Carbon::parse($dateIn);
+        $now = Carbon::now();
+        $diff = $date->diffInDays($now);
+        if ($diff < 15) { //less of quincena
+            $salary = ($base * 2) / 30;
+            $days = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
+            $base = $salary * $days;
+        }
+        return $base;
     }
 
 
