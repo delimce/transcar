@@ -3,7 +3,7 @@
     <tr>
         <th style="position: absolute; background: #F8FAFC">Empleado</th>
         <th></th>
-        <th>CI</th>
+        <th>Codigo</th>
         <th>Cargo</th>
         <th>Salario Base 50% (BS)</th>
         <th>Bono cargo (BS)</th>
@@ -22,7 +22,7 @@
                 {{str_limit($res->nombre,25)}}
             </td>
             <td></td>
-            <td>{{$res->cedula}}</td>
+            <td>{{$res->codigo}}</td>
             <td>{{str_limit($res->cargo,30)}}</td>
             <?php $salary = \App\Http\Controllers\Transcar\ReportController::
             prorateSalary($res->id,$res->base,$res->fecha_ingreso) ?>

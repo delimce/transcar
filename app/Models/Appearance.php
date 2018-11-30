@@ -40,7 +40,7 @@ class Appearance extends Model
 
         $query = "SELECT
                     e.id,
-                    e.cedula,
+                    e.codigo,
                     concat(e.nombre,' ',e.apellido) as nombre,
                     GROUP_CONCAT(a.fecha) as fechas,
                     GROUP_CONCAT(ABS(if(isnull(a.hora_salida),17,HOUR(a.hora_salida)) - hour(a.hora_entrada))) as horas

@@ -245,7 +245,7 @@ class ReportController extends BaseController
 
         $query = "SELECT
                     e.id,
-                   	e.cedula,
+                   	e.codigo,
        	            e.fecha_ingreso,
                    	e.titular,
                    	e.titular_doc,
