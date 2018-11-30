@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Transcar;
 
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -134,6 +135,7 @@ class UserController extends BaseController
         $user = User::findOrFail($user_id);
         $userName = $user->usuario;
         $user->delete();
+        $this->saveActivity("Ha borrado la cuenta del usuario: $user->nombre $user->apellido ");
         return response()->json(['status' => 'ok', 'message' => "Usuario: $userName borrado con éxito"]);
 
     }
@@ -157,6 +159,20 @@ class UserController extends BaseController
         $this->user->save();
         return response()->json(['status' => 'ok', 'message' => 'clave cambiada con éxito']);
 
+    }
+
+    /**
+     * saving user activity
+     */
+    public function saveActivity($activity)
+    {
+        # code...
+        $log = array(
+            "ip_acc"=>$_SERVER['REMOTE_ADDR'],
+            "info_cliente"=>$_SERVER['HTTP_USER_AGENT'],
+            "actividad"=>$activity,
+        );
+        $this->user->logs()->create($log);
     }
 
 
