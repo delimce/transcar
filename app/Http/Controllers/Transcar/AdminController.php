@@ -417,7 +417,7 @@ class AdminController extends BaseController
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
             $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula,
-                "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre, "activo" => ($item->activo) ? 'SI' : 'NO');
+            "codigo" => $item->codigo, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre, "activo" => ($item->activo) ? 'SI' : 'NO');
         });
         return response()->json(['status' => 'ok', 'list' => $personArray]);
     }
@@ -439,11 +439,13 @@ class AdminController extends BaseController
             'cargo' => 'required|numeric',
             'cedula' => 'required|min:3',
             'sexo' => 'required',
+            'codigo' => 'required',
             'fecha_nac' => 'required|date',
             'fecha_ingreso' => 'required|date',
         ], ['required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'date' => 'El campo :attribute no es una fecha correcta',
+            'unique' => 'El valor del campo :attribute ya esta registrado',
         ]);
 
         if ($validator->fails()) {
@@ -459,6 +461,7 @@ class AdminController extends BaseController
         $person->nombre = $req->input('nombre');
         $person->apellido = $req->input('apellido');
         $person->cedula = $req->input('cedula');
+        $person->codigo = $req->input('codigo');
         $person->fecha_nac = $req->input('fecha_nac');
         $person->fecha_ingreso = $req->input('fecha_ingreso');
         $person->sexo = $req->input('sexo');
@@ -517,7 +520,12 @@ class AdminController extends BaseController
             $person->banco_id = $req->input('banco');
         }
 
-        $person->save();
+        try{
+            $person->save();
+        }catch(\PDOException $e){
+            return response()->json(['status' => 'error', 'message' => "el codigo del empleado ya se encuentra en uso"], 400);
+        }
+        
 
         return response()->json(['status' => 'ok', 'message' => 'Empleado guardado con éxito']);
 

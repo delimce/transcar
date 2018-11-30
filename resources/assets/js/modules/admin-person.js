@@ -84,6 +84,7 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form input[name=nombre]").val(datai.nombre);
             $("#person_form input[name=apellido]").val(datai.apellido);
             $("#person_form input[name=cedula]").val(datai.cedula);
+            $("#person_form input[name=codigo]").val(datai.codigo);
             $("#person_form input[name=fecha_nac]").val(datai.fecha_nac);
             $("#person_form input[name=fecha_ingreso]").val(datai.fecha_ingreso);
             $("#person_form input[name=email]").val(datai.email);

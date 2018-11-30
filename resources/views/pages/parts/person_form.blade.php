@@ -89,7 +89,14 @@
                 </div>
 
                 <div class="form-group required row">
-                        <div class="col-sm-6">
+                    <div class="col-sm-6">
+                        <label for="cargo" class="control-label">Codigo servinomina</label><br>
+                        <input type="text" class="form-control" id="codigo" name="codigo"
+                               placeholder="codigo"
+                               autocomplete="my-person-cod" required>
+                    </div>     
+                    
+                    <div class="col-sm-6">
                                 <label class="control-label">Activo?</label>
                                 <div class="custom-switch">
                                     <input class="custom-switch-input btn-primary" name="activo" id="activo" value="1" type="checkbox" checked>
