@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: delimce
@@ -48,7 +49,8 @@ class UserController extends BaseController
             'password' => 'required|min:5|same:password2',
             'password2' => 'required|min:5|same:password',
             'email' => 'required|email',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'email' => 'El campo :attribute debe ser un Email bien formado',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'same' => 'los campos de clave tienen valores  diferentes',
@@ -89,7 +91,8 @@ class UserController extends BaseController
             'apellido' => 'min:3',
             'email' => 'required|email|unique:tbl_usuario,email,' . $this->user->id,
             'usuario' => 'required|min:4|unique:tbl_usuario,usuario,' . $this->user->id,
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'email' => 'El campo :attribute debe ser un Email bien formado',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'unique' => 'El valor del campo :attribute ya esta registrado',
@@ -145,7 +148,8 @@ class UserController extends BaseController
         $validator = Validator::make($req->all(), [
             'pass' => 'required|min:5|same:pass2',
             'pass2' => 'required|min:5|same:pass',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'same' => 'los campos de clave tienen valores  diferentes',
         ]);
@@ -168,11 +172,24 @@ class UserController extends BaseController
     {
         # code...
         $log = array(
-            "ip_acc"=>$_SERVER['REMOTE_ADDR'],
-            "info_cliente"=>$_SERVER['HTTP_USER_AGENT'],
-            "actividad"=>$activity,
+            "ip_acc" => $_SERVER['REMOTE_ADDR'],
+            "info_cliente" => $_SERVER['HTTP_USER_AGENT'],
+            "tipo" => 'Administrativo',
+            "actividad" => $activity,
         );
         $this->user->logs()->create($log);
+    }
+
+    static function saveUserActivity($userId, $activity, $type='Operativo')
+    {
+        $log = new UserLog();
+        $log->usuario_id = $userId;
+        $log->ip_acc = $_SERVER['REMOTE_ADDR'];
+        $log->info_cliente = $_SERVER['HTTP_USER_AGENT'];
+        $log->tipo = $type;
+        $log->actividad = $activity;
+        $log->save();
+
     }
 
 

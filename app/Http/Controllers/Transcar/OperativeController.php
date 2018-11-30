@@ -346,10 +346,7 @@ class OperativeController extends BaseController
         $emp = $appear->person;
         $info = $this->setPerson($emp);
         $appear->delete();
-        // $info['person_id'] = $emp->id;
-        // $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        // $info['cedula'] = $emp->cedula;
-        // $info['cargo'] = $emp->role->nombre;
+        UserController::saveUserActivity($this->user->id,"Borrando asistencia del dia: $appear->fecha, al empleado: $emp->nombre");
         return response()->json(['status' => 'ok', 'info' => $info]);
 
     }
@@ -376,7 +373,7 @@ class OperativeController extends BaseController
             ->leftJoin('tbl_inasistencia as i', function ($join) use ($date) {
                 $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
                 $join->on("i.fecha", "=", DB::raw("'" . $date . "'"));
-            })->select("tbl_empleado.*")->get();
+            })->select("tbl_empleado.*")->distinct()->get();
 
         ///now register appears with arrive hour and exit hour
 
@@ -400,6 +397,9 @@ class OperativeController extends BaseController
                 $appear->comentario = "Registrado por lotes";
                 $appear->save();
             });
+
+            UserController::saveUserActivity($this->user->id,"Registro de asistencia masivo para el personal");
+
             DB::commit();
             return response()->json(['status' => 'ok', 'message' => "Registro de asistencia exitoso"]);
         } catch (Exception $e) {
