@@ -32,6 +32,7 @@ mix.babel([
 //vendor libs
 mix.scripts([
     'node_modules/bootstrap-table/dist/bootstrap-table.min.js',
+    'resources/assets/js/locale/bootstrap-table-es-ES.js',
     'node_modules/jquery-confirm/dist/jquery-confirm.min.js',
     'node_modules/cleave.js/dist/cleave.min.js'
 ], 'public/js/vendor.js');
