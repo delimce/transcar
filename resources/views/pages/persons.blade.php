@@ -6,7 +6,7 @@
 
     <div id="person-list-container">
         <a id="to-person-form" href="#">[+] Crear Empleado</a>
-        <table id="person-list" data-search="true" class="table table-striped cn-grid">
+        <table id="person-list" data-pagination="true" data-search="true" class="table table-striped cn-grid">
             <thead>
             <tr>
                 <th data-field="id" data-visible="false"></th>
