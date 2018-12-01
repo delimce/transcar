@@ -31,6 +31,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/prod', 'OperativeController@prodIndex');
         $router->get('/report1', 'ReportController@report1Index');
         $router->get('/report2', 'ReportController@report2Index');
+        $router->get('/logs', 'ReportController@getLogReport');
 
     });
 

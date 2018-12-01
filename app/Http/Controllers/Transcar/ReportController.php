@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: delimce
@@ -19,6 +20,7 @@ use DB;
 use Log;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\UserLog;
 
 
 class ReportController extends BaseController
@@ -66,14 +68,18 @@ class ReportController extends BaseController
         $production = $pro->getProduction($start, $end, $table);
         $tableInfo = Table::find($table);
 
-        return view('pages.report01',
-            ["init" => $start,
+        return view(
+            'pages.report01',
+            [
+                "init" => $start,
                 "end" => $end,
                 "table" => $table,
                 "tableInfo" => $tableInfo,
                 "results" => $records,
-                "production" => json_decode(json_encode($production), True),
-                "days" => $this->getDaysBetween($start, $end)]);
+                "production" => json_decode(json_encode($production), true),
+                "days" => $this->getDaysBetween($start, $end)
+            ]
+        );
     }
 
     public function report2Index(Request $req)
@@ -382,6 +388,16 @@ class ReportController extends BaseController
         return response($header . $body, 200)
             ->header('Content-Type', 'text/plain');
 
+    }
+
+
+    /**
+     * report of users's logs
+     */
+    public function getLogReport()
+    {
+        $list = UserLog::orderBy('created_at', 'desc')->get();
+        return view('pages.reportLogs', ["list" => $list]);
     }
 
 }

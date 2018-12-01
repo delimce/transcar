@@ -42,6 +42,12 @@
                     <i class="fa fa-calculator"></i>&nbsp;
                     Cálculo de Nómina</a>
             </li>
+
+            <li>
+                <a href="{!! url('logs') !!}">
+                    <i class="fa fa-database"></i>&nbsp;
+                    Actividad de usuarios</a>
+            </li>
         @endif
 
 
