@@ -551,7 +551,14 @@ class AdminController extends BaseController
     public function getBonus()
     {
         $bonus = Bonus::all();
-        return response()->json(['status' => 'ok', 'list' => $bonus]);
+
+        $bonusArray = array();
+        $bonus->each(function ($item) use (&$bonusArray) {
+            $bonusArray[] = array("id" => $item->id, "titulo" => $item->titulo, "tipo" => $item->tipo,
+            "fecha" => $item->fecha, "monto" => $item->monto, "detail" => $item->getDetail());
+        });
+        return response()->json(['status' => 'ok', 'list' => $bonusArray]);
+
     }
 
     public function getBonusById($bonus_id)
