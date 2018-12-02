@@ -330,7 +330,7 @@ class ReportController extends BaseController
         $now = Carbon::now();
         $diff = $date->diffInDays($now);
         if ($diff < 15) { //less of quincena
-            $salary = ($base * 2) / 30;
+            $salary = number_format(($base * 2) / 30,2);
             $days = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
             $base = $salary * $days;
         }
