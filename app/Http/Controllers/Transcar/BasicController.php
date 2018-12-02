@@ -45,6 +45,7 @@ class BasicController extends BaseController
             $log->usuario_id = $user->id;
             $log->ip_acc = $_SERVER['REMOTE_ADDR'];
             $log->info_cliente = $_SERVER['HTTP_USER_AGENT'];
+            $log->tipo='Ingreso';
             $log->actividad = "Nuevo Inicio de sessión";
             $log->save();
             ///new login

@@ -60,6 +60,7 @@ class AdminController extends BaseController
         $config->iva = $req->input('iva');
         $config->caja_paleta = $req->input('cajas');
         $config->save();
+        UserController::saveUserActivity($this->user->id, "Guardando configuración del sistema:$config ","Administrativo");
         return response()->json(['status' => 'ok', 'message' => 'Configuracion guardada con éxito']);
     }
 
@@ -113,7 +114,8 @@ class AdminController extends BaseController
         $validator = Validator::make($req->all(), [
             'nombre' => 'required|min:3',
             'descripcion' => 'required|min:3',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
         ]);
 
@@ -130,6 +132,7 @@ class AdminController extends BaseController
         $area->nombre = $req->input('nombre');
         $area->descripcion = $req->input('descripcion');
         $area->save();
+        UserController::saveUserActivity($this->user->id, "Guardando datos del departamento:$area ","Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Area guardada con éxito']);
 
@@ -142,6 +145,7 @@ class AdminController extends BaseController
             $area = Area::findOrFail($area_id);
             $areaTitle = $area->titulo;
             $area->delete();
+            UserController::saveUserActivity($this->user->id, "Borrando departamento:$area->titulo","Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Area: $areaTitle borrada con éxito"]);
         } catch (\PDOException $ex) {
             Log::error($ex->getMessage());
@@ -157,12 +161,14 @@ class AdminController extends BaseController
         $roles = Role::all();
         $rolesArray = array();
         $roles->each(function ($item) use (&$rolesArray) {
-            $rolesArray[] = array("id" => $item->id,
+            $rolesArray[] = array(
+                "id" => $item->id,
                 "nombre" => $item->nombre,
                 "descripcion" => $item->descripcion,
                 "area" => $item->area->nombre,
                 "unidad" => $item->produccion_unidad,
-                "produccion" => $item->produccion_tipo);
+                "produccion" => $item->produccion_tipo
+            );
         });
         return response()->json(['status' => 'ok', 'list' => $rolesArray]);
     }
@@ -197,7 +203,8 @@ class AdminController extends BaseController
             'hora_extra' => 'regex:/^\d*(\.\d{1,2})?/',
             'bono_extra' => 'regex:/^\d*(\.\d{1,2})?/',
             'area' => 'required|numeric',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'max' => 'El campo :attribute debe ser maximo :max',
         ]);
@@ -242,6 +249,7 @@ class AdminController extends BaseController
         $role->sueldo = str_replace(",", "", $req->input('sueldo'));
         $role->area_id = $req->input('area');
         $role->save();
+        UserController::saveUserActivity($this->user->id, "Guardando datos del cargo:$role","Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Cargo guardado con éxito']);
 
@@ -253,6 +261,7 @@ class AdminController extends BaseController
             $item = Role::findOrFail($role_id);
             $title = $item->nombre;
             $item->delete();
+            UserController::saveUserActivity($this->user->id, "Borrando el cargo:$title","Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
 
         } catch (\PDOException $ex) {
@@ -291,7 +300,8 @@ class AdminController extends BaseController
         $validator = Validator::make($req->all(), [
             'titulo' => 'required|min:3',
             'ubicacion' => 'required|min:3',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
         ]);
 
@@ -308,6 +318,7 @@ class AdminController extends BaseController
         $table->titulo = $req->input('titulo');
         $table->ubicacion = $req->input('ubicacion');
         $table->activo = ($req->has('activo')) ? 1 : 0;
+        UserController::saveUserActivity($this->user->id, "Creando la mesa:$table","Administrativo");
         $table->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Mesa guardada con éxito']);
@@ -320,6 +331,7 @@ class AdminController extends BaseController
             $item = Table::findOrFail($table_id);
             $title = $item->titulo;
             $item->delete();
+            UserController::saveUserActivity($this->user->id, "Borrando la mesa:$title","Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
         } catch (\PDOException $ex) {
             Log::error($ex->getMessage());
@@ -364,7 +376,8 @@ class AdminController extends BaseController
             'titulo' => 'required|min:3',
             'descripcion' => 'required|min:3',
             'mesa' => 'required|numeric',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
         ]);
 
@@ -376,7 +389,7 @@ class AdminController extends BaseController
         $line = new Line();
         if ($req->has('line_id')) {
             $line = Line::findOrFail($req->input('line_id'));
-        }else{
+        } else {
             $max = Line::whereMesaId($req->input('mesa'))->count();
             if ($max == 2) {
                 return response()->json(['status' => 'error', 'message' => "Imposible guardar mas de 2 lineas por mesa"], 400);
@@ -387,6 +400,7 @@ class AdminController extends BaseController
         $line->descripcion = $req->input('descripcion');
         $line->mesa_id = $req->input('mesa');
         $line->activo = ($req->has('activo2')) ? 1 : 0;
+        UserController::saveUserActivity($this->user->id, "Guardando la linea:$line","Administrativo");
         $line->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
@@ -399,6 +413,7 @@ class AdminController extends BaseController
             $item = Line::findOrFail($table_id);
             $title = $item->titulo;
             $item->delete();
+            UserController::saveUserActivity($this->user->id, "Borrando la linea:$title","Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
 
         } catch (\PDOException $ex) {
@@ -416,8 +431,10 @@ class AdminController extends BaseController
         $persons = Person::all();
         $personArray = array();
         $persons->each(function ($item) use (&$personArray) {
-            $personArray[] = array("id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula,
-            "codigo" => $item->codigo, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre, "activo" => ($item->activo) ? 'SI' : 'NO');
+            $personArray[] = array(
+                "id" => $item->id, "nombre" => $item->nombre . ' ' . $item->apellido, "cedula" => $item->cedula,
+                "codigo" => $item->codigo, "ingreso" => $item->fecha_ingreso, "cargo" => $item->role->nombre, "activo" => ($item->activo) ? 'SI' : 'NO'
+            );
         });
         return response()->json(['status' => 'ok', 'list' => $personArray]);
     }
@@ -442,7 +459,8 @@ class AdminController extends BaseController
             'codigo' => 'required',
             'fecha_nac' => 'required|date',
             'fecha_ingreso' => 'required|date',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
             'date' => 'El campo :attribute no es una fecha correcta',
             'unique' => 'El valor del campo :attribute ya esta registrado',
@@ -520,12 +538,13 @@ class AdminController extends BaseController
             $person->banco_id = $req->input('banco');
         }
 
-        try{
+        try {
             $person->save();
-        }catch(\PDOException $e){
+            UserController::saveUserActivity($this->user->id, "Guardando el Empleado:$person","Administrativo");
+        } catch (\PDOException $e) {
             return response()->json(['status' => 'error', 'message' => "el codigo del empleado ya se encuentra en uso"], 400);
         }
-        
+
 
         return response()->json(['status' => 'ok', 'message' => 'Empleado guardado con éxito']);
 
@@ -554,8 +573,10 @@ class AdminController extends BaseController
 
         $bonusArray = array();
         $bonus->each(function ($item) use (&$bonusArray) {
-            $bonusArray[] = array("id" => $item->id, "titulo" => $item->titulo, "tipo" => $item->tipo,
-            "fecha" => $item->fecha, "monto" => $item->monto, "detail" => $item->getDetail());
+            $bonusArray[] = array(
+                "id" => $item->id, "titulo" => $item->titulo, "tipo" => $item->tipo,
+                "fecha" => $item->fecha, "monto" => $item->monto, "detail" => $item->getDetail()
+            );
         });
         return response()->json(['status' => 'ok', 'list' => $bonusArray]);
 
@@ -576,7 +597,8 @@ class AdminController extends BaseController
             'beneficiario' => 'required|numeric',
             'monto' => 'required|regex:/^\d*(\.\d{1,2})?/',
             'fecha' => 'required|date',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'min' => 'El campo :attribute debe ser mayor a :min',
         ]);
 
@@ -596,6 +618,7 @@ class AdminController extends BaseController
         $bonus->monto = str_replace(",", "", $req->input('monto'));
         $bonus->fecha = $req->input('fecha');
         $bonus->save();
+        UserController::saveUserActivity($this->user->id, "Guardando el Bono:$bonus","Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Bono guardado con éxito']);
 
@@ -606,6 +629,7 @@ class AdminController extends BaseController
         $item = Bonus::findOrFail($bonus_id);
         $title = $item->titulo;
         $item->delete();
+        UserController::saveUserActivity($this->user->id, "Borrando el Bono:$title","Administrativo");
         return response()->json(['status' => 'ok', 'message' => "Bono: $title borrado con éxito"]);
 
     }

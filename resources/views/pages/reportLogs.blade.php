@@ -22,9 +22,9 @@
         @foreach($list as $item)
             <tr>
                 <td>{{$item->id}}</td>
-                <td>{{str_limit($item->user->usuario,100)}}</td>
+                <td>{{str_limit($item->user->usuario,120)}}</td>
                 <td>{{str_limit($item->tipo,20)}}</td>
-                <td>{{str_limit($item->actividad,200)}}</td>
+                <td>{{str_limit($item->actividad,120)}}</td>
                 <td>{{str_limit($item->created_at,20)}}</td>
             </tr>
         @endforeach
