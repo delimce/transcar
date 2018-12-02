@@ -94,6 +94,17 @@ class QueryController extends BaseController
         return response()->json(['status' => 'ok', 'list' => $linesArray]);
     }
 
+    public function getLinesBonus()
+    {
+        $items = Line::all();
+        $linesArray = array();
+        $items->each(function ($item) use (&$linesArray) {
+            $linesArray[] = array("id" => $item->id, "nombre" => $item->titulo);
+        });
+
+        return response()->json(['status' => 'ok', 'list' => $linesArray]);
+    }
+
 
     public function getLinesByTable($table_id)
     {

@@ -16,7 +16,6 @@ class Bonus extends Model
     {
         $detail = '';
         $item = '';
-
         switch ($this->tipo) {
             case "area":
                 $detail = Area::find($this->beneficiario);
@@ -29,6 +28,10 @@ class Bonus extends Model
             case "empleado":
                 $detail = Person::find($this->beneficiario);
                 $item = $detail->nombre . ' ' . $detail->apellido;
+                break;
+            case "linea":
+                $detail = Line::find($this->beneficiario);
+                $item = $detail->titulo;
                 break;
         }
 

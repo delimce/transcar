@@ -54,7 +54,7 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
             $('.selectpickerType').selectpicker('refresh');
             setbeneficiario(datai.tipo, datai.beneficiario)
             $('#beneficiario').on('refreshed.bs.select', function () {
-                $('.selectpickerBene').selectpicker('val',datai.beneficiario);
+                $('.selectpickerBene').selectpicker('val', datai.beneficiario);
             });
 
             ///append id to form
@@ -66,8 +66,8 @@ $('#bonus-list').on('click-cell.bs.table', function (field, value, row, $element
             }).appendTo('#bonus_form');
 
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 });
 
 // Forms
@@ -78,8 +78,8 @@ $("#bonus_form").submit(function (event) {
             showSuccess(response.data.message, 2000)
             toggle_bonus_list();
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
     event.preventDefault();
 });
 
@@ -94,8 +94,8 @@ $('#delete-bonus').confirm({
                     showSuccess(response.data.message, 2000)
                     toggle_bonus_list();
                 }).catch(function (error) {
-                showAlert(error.response.data.message)
-            });
+                    showAlert(error.response.data.message)
+                });
         },
         cancel: function () {
         }
@@ -108,6 +108,8 @@ let setbeneficiario = function (tipo, beneId = false) {
         url = 'api/query/person/all';
     } else if (tipo === 'cargo') {
         url = 'api/role/all';
+    } else if (tipo === 'linea') {
+        url = 'api/query/line/bonus';
     } else {
         url = 'api/area/all';
     }
@@ -124,6 +126,6 @@ let setbeneficiario = function (tipo, beneId = false) {
             $('.selectpickerBene').append(options);
             $('.selectpickerBene').selectpicker('refresh');
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 }
