@@ -162,3 +162,7 @@ label {
 #nomina-table th{
     width: 186px;
 }
+
+.min-text-input{
+    max-width: 250px;
+}

@@ -60,7 +60,7 @@ class AdminController extends BaseController
         $config->iva = $req->input('iva');
         $config->caja_paleta = $req->input('cajas');
         $config->save();
-        UserController::saveUserActivity($this->user->id, "Guardando configuración del sistema:$config ","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Guardando configuración del sistema:$config ", "Administrativo");
         return response()->json(['status' => 'ok', 'message' => 'Configuracion guardada con éxito']);
     }
 
@@ -132,7 +132,7 @@ class AdminController extends BaseController
         $area->nombre = $req->input('nombre');
         $area->descripcion = $req->input('descripcion');
         $area->save();
-        UserController::saveUserActivity($this->user->id, "Guardando datos del departamento:$area ","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Guardando datos del departamento:$area ", "Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Area guardada con éxito']);
 
@@ -145,7 +145,7 @@ class AdminController extends BaseController
             $area = Area::findOrFail($area_id);
             $areaTitle = $area->titulo;
             $area->delete();
-            UserController::saveUserActivity($this->user->id, "Borrando departamento:$area->titulo","Administrativo");
+            UserController::saveUserActivity($this->user->id, "Borrando departamento:$area->titulo", "Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Area: $areaTitle borrada con éxito"]);
         } catch (\PDOException $ex) {
             Log::error($ex->getMessage());
@@ -249,7 +249,7 @@ class AdminController extends BaseController
         $role->sueldo = str_replace(",", "", $req->input('sueldo'));
         $role->area_id = $req->input('area');
         $role->save();
-        UserController::saveUserActivity($this->user->id, "Guardando datos del cargo:$role","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Guardando datos del cargo:$role", "Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Cargo guardado con éxito']);
 
@@ -261,7 +261,7 @@ class AdminController extends BaseController
             $item = Role::findOrFail($role_id);
             $title = $item->nombre;
             $item->delete();
-            UserController::saveUserActivity($this->user->id, "Borrando el cargo:$title","Administrativo");
+            UserController::saveUserActivity($this->user->id, "Borrando el cargo:$title", "Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Cargo: $title borrado con éxito"]);
 
         } catch (\PDOException $ex) {
@@ -318,7 +318,7 @@ class AdminController extends BaseController
         $table->titulo = $req->input('titulo');
         $table->ubicacion = $req->input('ubicacion');
         $table->activo = ($req->has('activo')) ? 1 : 0;
-        UserController::saveUserActivity($this->user->id, "Creando la mesa:$table","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Creando la mesa:$table", "Administrativo");
         $table->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Mesa guardada con éxito']);
@@ -331,7 +331,7 @@ class AdminController extends BaseController
             $item = Table::findOrFail($table_id);
             $title = $item->titulo;
             $item->delete();
-            UserController::saveUserActivity($this->user->id, "Borrando la mesa:$title","Administrativo");
+            UserController::saveUserActivity($this->user->id, "Borrando la mesa:$title", "Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Mesa: $title borrado con éxito"]);
         } catch (\PDOException $ex) {
             Log::error($ex->getMessage());
@@ -400,7 +400,7 @@ class AdminController extends BaseController
         $line->descripcion = $req->input('descripcion');
         $line->mesa_id = $req->input('mesa');
         $line->activo = ($req->has('activo2')) ? 1 : 0;
-        UserController::saveUserActivity($this->user->id, "Guardando la linea:$line","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Guardando la linea:$line", "Administrativo");
         $line->save();
 
         return response()->json(['status' => 'ok', 'message' => 'Linea guardada con éxito']);
@@ -413,7 +413,7 @@ class AdminController extends BaseController
             $item = Line::findOrFail($table_id);
             $title = $item->titulo;
             $item->delete();
-            UserController::saveUserActivity($this->user->id, "Borrando la linea:$title","Administrativo");
+            UserController::saveUserActivity($this->user->id, "Borrando la linea:$title", "Administrativo");
             return response()->json(['status' => 'ok', 'message' => "Linea: $title borrada con éxito"]);
 
         } catch (\PDOException $ex) {
@@ -487,6 +487,10 @@ class AdminController extends BaseController
         $person->cargo_id = $req->input('cargo');
         $person->activo = ($req->has('activo')) ? 1 : 0;
 
+        ///validate inactive
+        if ($person->activo === 0 && !$req->filled('reason')) {
+            return response()->json(['status' => 'error', 'message' => "debe colocar una razon para inactivar al Empleado"], 400);
+        }
 
         ///get role and validate if location matches
         $role = Role::findOrFail($person->cargo_id);
@@ -530,6 +534,8 @@ class AdminController extends BaseController
             $person->titular = $req->input('titular');
         }
 
+        $person->razon_inactivo = (!$person->activo) ? $req->input('reason') : "";
+
         if ($req->has('titular_doc')) {
             $person->titular_doc = $req->input('tipo_doc') . $req->input('titular_doc');
         }
@@ -540,7 +546,7 @@ class AdminController extends BaseController
 
         try {
             $person->save();
-            UserController::saveUserActivity($this->user->id, "Guardando el Empleado:$person","Administrativo");
+            UserController::saveUserActivity($this->user->id, "Guardando el Empleado:$person", "Administrativo");
         } catch (\PDOException $e) {
             return response()->json(['status' => 'error', 'message' => "el codigo del empleado ya se encuentra en uso"], 400);
         }
@@ -618,7 +624,7 @@ class AdminController extends BaseController
         $bonus->monto = str_replace(",", "", $req->input('monto'));
         $bonus->fecha = $req->input('fecha');
         $bonus->save();
-        UserController::saveUserActivity($this->user->id, "Guardando el Bono:$bonus","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Guardando el Bono:$bonus", "Administrativo");
 
         return response()->json(['status' => 'ok', 'message' => 'Bono guardado con éxito']);
 
@@ -629,7 +635,7 @@ class AdminController extends BaseController
         $item = Bonus::findOrFail($bonus_id);
         $title = $item->titulo;
         $item->delete();
-        UserController::saveUserActivity($this->user->id, "Borrando el Bono:$title","Administrativo");
+        UserController::saveUserActivity($this->user->id, "Borrando el Bono:$title", "Administrativo");
         return response()->json(['status' => 'ok', 'message' => "Bono: $title borrado con éxito"]);
 
     }

@@ -102,6 +102,15 @@
                                     <input class="custom-switch-input btn-primary" name="activo" id="activo" value="1" type="checkbox" checked>
                                     <label class="custom-switch-btn" for="activo"></label>
                                 </div>
+
+                                <div class="min-text-input">
+                                    <input type="text" class="form-control"
+                                    id="reason"
+                                    name="reason"
+                                    style="display:none"
+                                    placeholder="Razón inactivo"
+                                    autocomplete="activo-reason">
+                                </div>
                         </div>
                 </div>    
 

@@ -2,6 +2,7 @@
 $("#to-person-form").click(function () {
     $('.sub-title').html('Nuevo Empleado');
     $('#person_form input[name=person_id]').remove();
+    $('#reason').hide();
     $("#person_form select[name=area]").removeAttr('selected');
     $("#person_form select[name=banco]").removeAttr('selected');
     $("#person_form select[name=tipo_doc]").removeAttr('selected');
@@ -40,8 +41,8 @@ const toggle_person_list = function (mode = true) {
 }
 
 ///reload select list
-const reloadRoleSelectBox = function (areaId=false,roleId=false) {
-    axios.get(api_url + "api/query/role/all/"+areaId)
+const reloadRoleSelectBox = function (areaId = false, roleId = false) {
+    axios.get(api_url + "api/query/role/all/" + areaId)
         .then(function (response) {
             let options = '';
             let data = response.data.list;
@@ -54,8 +55,8 @@ const reloadRoleSelectBox = function (areaId=false,roleId=false) {
             $('.selectpickerRole').append(options);
             $('.selectpickerRole').selectpicker('refresh');
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 }
 
 // Forms
@@ -66,15 +67,15 @@ $("#person_form").submit(function (event) {
             showSuccess(response.data.message, 2000)
             toggle_person_list();
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
     event.preventDefault();
 });
 
 //behavior
 $('#person-list').on('click-cell.bs.table', function (field, value, row, $element) {
     toggle_person_list(false);
-   // $('#delete-person').show(); todo:deshabilitado por peticion del cliente
+    // $('#delete-person').show(); todo:deshabilitado por peticion del cliente
     $('#person_form').data('record', $element.id); //element id
     $('.sub-title').html('Editar Empleado');
     axios.get(api_url + 'api/person/' + $element.id)
@@ -89,27 +90,28 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             $("#person_form input[name=fecha_ingreso]").val(datai.fecha_ingreso);
             $("#person_form input[name=email]").val(datai.email);
             $("#person_form input[name=telefono]").val(datai.telefono);
+            $("#person_form input[name=reason]").val(datai.razon_inactivo);
 
             $("#person_form select[name=area]").removeAttr('selected');
             $("#person_form select[name=area]").val(datai.area_id);
             $('.selectpickerArea').selectpicker('refresh');
 
             ////set role
-            reloadRoleSelectBox(datai.area_id,datai.cargo_id);
+            reloadRoleSelectBox(datai.area_id, datai.cargo_id);
             $('#cargo').on('refreshed.bs.select', function () {
-                $('.selectpickerRole').selectpicker('val',datai.cargo_id);
+                $('.selectpickerRole').selectpicker('val', datai.cargo_id);
             });
 
             $("#person_form input[name=titular]").val(datai.titular);
             $("#person_form input[name=account]").val(datai.cuenta_bancaria);
 
-            try{
+            try {
                 let typeDoc = String(datai.titular_doc).substring(0, 1);
                 let doc = String(datai.titular_doc).substring(1, datai.titular_doc.length);
                 $("#person_form input[name=titular_doc]").val(doc);
                 $("#person_form select[name=tipo_doc]").val(typeDoc);
                 $('.selectpickerDoc').selectpicker('refresh');
-            }catch (e) {
+            } catch (e) {
                 console.log(e)
             }
 
@@ -119,21 +121,23 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
 
             if (datai.activo == 1) {
                 $("#person_form #activo").prop('checked', true);
+                $('#reason').hide();
             } else {
                 $("#person_form #activo").prop('checked', false);
+                $('#reason').show();
             }
 
             ///table and line
-            console.log(datai.mesa_id );
+            console.log(datai.mesa_id);
             if (datai.mesa_id !== 0) {
                 $("#role-location").show();
                 $("#person_form select[name=mesa]").val(datai.mesa_id);
                 $('.selectpickerTable').selectpicker('refresh');
                 if (datai.linea_id !== 0) {
                     ///set linea
-                    getLineByTable(datai.mesa_id,datai.linea_id)
+                    getLineByTable(datai.mesa_id, datai.linea_id)
                     $('#linea').on('refreshed.bs.select', function () {
-                        $('.selectpickerLine').selectpicker('val',datai.linea_id);
+                        $('.selectpickerLine').selectpicker('val', datai.linea_id);
                     });
                 }
             } else {
@@ -149,8 +153,8 @@ $('#person-list').on('click-cell.bs.table', function (field, value, row, $elemen
             }).appendTo('#person_form');
 
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 });
 
 $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
@@ -169,8 +173,8 @@ $('#area').on('changed.bs.select', function (e, clickedIndex, isSelected, previo
             $('.selectpickerRole').selectpicker('refresh');
             reloadPersonList('area', area)
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 
 });
 
@@ -185,8 +189,8 @@ $('#cargo').on('changed.bs.select', function (e, clickedIndex, isSelected, previ
                 $("#role-location").hide();
             }
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 
 });
 
@@ -201,10 +205,20 @@ $('#delete-person').confirm({
                     showSuccess(response.data.message, 2000)
                     toggle_person_list();
                 }).catch(function (error) {
-                showAlert(error.response.data.message)
-            });
+                    showAlert(error.response.data.message)
+                });
         },
         cancel: function () {
         }
+    }
+});
+
+$("#activo").change(function () {
+    if (!this.checked) {
+        //Do stuff
+        $('#reason').show();
+        //  $('#reason').val('');
+    } else {
+        $('#reason').hide();
     }
 });
