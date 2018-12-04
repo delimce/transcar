@@ -87,6 +87,12 @@
             </li>
 
             <li>
+                <a href="{!! url('layoff') !!}">
+                    <i class="fa fa-user-times"></i>&nbsp;
+                    Egresos de empleados</a>
+            </li>
+
+            <li>
                 <a href="{!! url('bonus') !!}">
                     <i class="fa fa-money"></i>&nbsp;
                     Bonos Especiales</a>

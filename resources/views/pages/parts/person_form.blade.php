@@ -179,13 +179,12 @@
                         </button>
                         &nbsp;
                         <button id="delete-person" class="btn btn-danger" type="button">
-                            Borrar
+                            Egresar Empleado
                         </button>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </form>
 </div>
+@include('pages.parts.doLayoff')

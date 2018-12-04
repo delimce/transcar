@@ -27,6 +27,7 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/tableLine', 'AdminController@tableLineIndex');
         $router->get('/people', 'AdminController@personIndex');
         $router->get('/bonus', 'AdminController@bonusIndex');
+        $router->get('/layoff', 'AdminController@getLayoffs');
         $router->get('/appear', 'OperativeController@appearanceIndex');
         $router->get('/prod', 'OperativeController@prodIndex');
         $router->get('/report1', 'ReportController@report1Index');
@@ -58,6 +59,12 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         $router->group(['prefix' => 'config'], function () use ($router) {
             $router->put('/', 'AdminController@saveConfig');
         });
+
+        ////layoffs
+        $router->group(['prefix' => 'layoff'], function () use ($router) {
+            $router->put('/', 'AdminController@saveLayoff');
+        });
+
 
         ////areas
         $router->group(['prefix' => 'area'], function () use ($router) {
