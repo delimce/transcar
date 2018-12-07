@@ -785,6 +785,61 @@ class AdminController extends BaseController
         return view('pages.layoffs', ["list" => $list]);
     }
 
+    public function getLayoffsAll()
+    {
+        $list = Layoff::orderBy('created_at', 'desc')->get();
+        return response()->json(['status' => 'ok', 'list' => $list]);
+    }
+
+
+    public function getLayoff($id)
+    {
+        $item = Layoff::findOrFail($id);
+
+        return response()->json(['status' => 'ok', 'info' => $item]);
+    }
+
+
+    /**
+     * @param Request $req
+     * restore layoff
+     *
+     * @return mixed
+     */
+    public function restoreLayoff(Request $req)
+    {
+        $validator = Validator::make(
+            $req->all(), [
+            'layoff_id' => 'required|numeric',
+        ], [
+                'required' => 'El campo :attribute es requerido',
+            ]
+        );
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+            $item   = Layoff::findOrFail($req->input("layoff_id"));
+            $emp = $item->empleado_id;
+            $name = $item->nombre;
+            $item->delete();
+            Person::withTrashed()->find($emp)->restore();
+            UserController::saveUserActivity($this->user->id, "Reingreso del empleado: $name");
+            DB::commit();
+            return response()->json(['status' => 'ok', 'message' => "Reingreso de personal exitoso"]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['status' => 'error', 'message' => "Falla de registro egreso"], 500);
+        }
+
+
+
+    }
+
 
     public function saveLayoff(Request $req)
     {
@@ -801,6 +856,7 @@ class AdminController extends BaseController
 
         if ($validator->fails()) {
             $error = $validator->errors()->first();
+
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 

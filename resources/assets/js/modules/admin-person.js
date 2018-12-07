@@ -197,6 +197,15 @@ $('#cargo').on('changed.bs.select', function(e, clickedIndex, isSelected, previo
 
 });
 
+$("#activo").change(function() {
+  if (!this.checked) {
+    //Do stuff
+    $('#reason').show();
+    //  $('#reason').val('');
+  } else {
+    $('#reason').hide();
+  }
+});
 
 $('#delete-person').on('click', function() {
   $("#layoff-actions").modal("show");
@@ -225,12 +234,36 @@ $("#layoff_form").submit(function(event) {
 });
 
 
-$("#activo").change(function() {
-  if (!this.checked) {
-    //Do stuff
-    $('#reason').show();
-    //  $('#reason').val('');
-  } else {
-    $('#reason').hide();
-  }
+$('#layoff-list').on('click-cell.bs.table', function(field, value, row, $element) {
+  let layoffId = $element.id;
+  axios.get(api_url + "api/layoff/" + layoffId)
+  .then(function(response) {
+
+    let info = response.data.info;
+    $("#layoff-name").html(info.nombre);
+    $("#layoff-role").html(info.cargo);
+    $("#layoff-subject").html(info.motivo);
+    $("#layoff-date").html(info.fecha);
+    $("#restore-ly").data("id", info.id);
+    $("#layoff-reverse").modal('show');
+
+  }).catch(function(error) {
+    showAlert(error.response.data.message);
+  });
+});
+
+
+$("#restore-person").on("click", function() {
+  let id = $("#restore-ly").data("id");
+  let data = {
+    "layoff_id": id
+  };
+  axios.put(api_url + "api/layoff/restore/", data)
+  .then(function(response) {
+    showSuccess(response.data.message, 2000);
+    $("#layoff-reverse").modal('hide');
+    reloadList('api/layoff/all', '#layoff-list');
+  }).catch(function(error) {
+    showAlert(error.response.data.message);
+  });
 });

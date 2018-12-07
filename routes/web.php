@@ -63,6 +63,9 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         ////layoffs
         $router->group(['prefix' => 'layoff'], function () use ($router) {
             $router->put('/', 'AdminController@saveLayoff');
+            $router->get('/all', 'AdminController@getLayoffsAll');
+            $router->get('/{id}', 'AdminController@getLayoff');
+            $router->put('/restore', 'AdminController@restoreLayoff');
         });
 
 
