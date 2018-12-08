@@ -875,7 +875,7 @@ class AdminController extends BaseController
             $layoff->save();
             //deleting person
             $emp->delete();
-            UserController::saveUserActivity($this->user->id, "Registro de Egreso del empleado: $title");
+            UserController::saveUserActivity($this->user->id, "Egreso del empleado: $title");
             DB::commit();
 
             return response()->json(['status' => 'ok', 'message' => "Registro de Egreso exitoso"]);

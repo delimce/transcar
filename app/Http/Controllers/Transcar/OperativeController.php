@@ -85,15 +85,27 @@ class OperativeController extends BaseController
         });
     }
 
-    public function prodIndex()
+    public function prodIndex(Request $req)
     {
-        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        if ($req->filled('prod_date')) {
+            $myDate = $req->input('prod_date');
+        } else {
+            $myDate = Carbon::today()->setTimezone('America/Caracas')->format('Y-m-d');
+        }
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$myDate')"))->with('line', 'table')->get();
+
+        ///load date allowed
+        if ($this->user->perfil_id != 1 && (Carbon::parse($myDate)->lessThan(Carbon::now('America/Caracas')->subDays(2))))
+            $loadDate = false;
+        else
+            $loadDate = true;
 
         return View(
             'pages.checkprod',
             [
-                "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
-                "prod" => $this->setProduction($prods)
+                "date" => $myDate,
+                "prod" => $this->setProduction($prods),
+                "loadDate" => $loadDate
             ]
         );
     }
@@ -432,9 +444,9 @@ class OperativeController extends BaseController
         return $prodArray;
     }
 
-    public function getProduction()
+    public function getProduction($date)
     {
-        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$date')"))->with('line', 'table')->get();
         return response()->json(['status' => 'ok', 'list' => $this->setProduction($prods)]);
 
     }
@@ -461,12 +473,17 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
+        ////validate wrong date
+        $my_date = $req->input('fecha') . ' ' . $req->input('hora');
+        if (Carbon::parse($my_date)->gt(Carbon::now('America/Caracas'))) {
+            return response()->json(['status' => 'error', 'message' => "La fecha y hora introducida es incorrecta"], 400);
+        }
+
         $prod = new Production();
         if ($req->has('prod_id')) {
             $prod = Production::findOrFail($req->input('prod_id'));
         }
 
-        $my_date = $req->input('fecha') . ' ' . $req->input('hora');
         $prod->fecha = $my_date;
         $prod->cajas = $req->input('cajas');
         $prod->mesa_id = $req->input('mesa');

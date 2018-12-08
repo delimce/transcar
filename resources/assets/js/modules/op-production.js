@@ -14,7 +14,8 @@ $("#to-prod-list").click(function () {
 //functions
 const toggle_prod_list = function (mode = true) {
     if (mode) {
-        reloadList('api/prod/all', '#prod-list');
+        let main_date = $("#prod_date").val();
+        reloadList('api/prod/all/' + main_date, '#prod-list');
         $("#prod-list-container").show();
         $("#prod-form").hide();
         $("#prod_form")[0].reset();
@@ -29,25 +30,25 @@ const toggle_prod_list = function (mode = true) {
 
 const getDateTimeProd = function () {
 
-    //get hour
+    function format(x) {
+        //if the day/month is smaller then 10 add a 0 in front of it (9->09)
+        return (x < 10) ? '0' + x : x;
+    }
+
+    //get date
     let d = new Date(); // for now
-    //day
-    console.log(d.getDate())
     let y = d.getFullYear();
     let mo = d.getMonth() + 1;
     let day = d.getDate();
-    mo = (mo < 10) ? "0" + String(mo) : String(mo);
-    day = (day < 10) ? "0" + String(day) : String(day);
 
     ///hour
     let h1 = d.getHours(); // => 9
     let m1 = d.getMinutes(); // =>  30
-    h1 = (h1 < 10) ? "0" + String(h1) : String(h1);
-    m1 = (m1 < 10) ? "0" + String(m1) : String(m1);
-    $('#my_hour').val(String(h1) + ':' + String(m1));
 
-    $("#prod_form input[name=fecha]").val(String(y) + '-' + String(mo) + '-' + String(day));
-    $("#prod_form input[name=hora]").val(String(h1) + ':' + String(m1));
+    //main prod form date
+    let main_date = $("#prod_date").val();
+    $("#prod_form input[name=fecha]").val(main_date);
+    $("#prod_form input[name=hora]").val(String(format(h1)) + ':' + String(format(m1)));
 
 }
 
@@ -59,31 +60,29 @@ $("#prod_form").submit(function (event) {
             showSuccess(response.data.message, 2000)
             toggle_prod_list();
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
     event.preventDefault();
 });
 
 $('#prod-list').on('click-cell.bs.table', function (field, value, row, $element) {
-
+    let main_date = $("#prod_date").val();
     $.confirm({
-        title: 'Producción de ' + $element.cajas + ' cajas, a la hora:'+$element.hora,
+        title: 'Producción de ' + $element.cajas + ' cajas, a la hora:' + $element.hora,
         content: 'Desea eliminar este registro?',
         buttons: {
             confirm: function () {
                 axios.delete(api_url + 'api/prod/' + $element.id)
                     .then(function (response) {
-                        reloadList('api/prod/all', '#prod-list');
+                        reloadList('api/prod/all/' + main_date, '#prod-list');
                     }).catch(function (error) {
-                    showAlert(error.response.data.message)
-                })
+                        showAlert(error.response.data.message)
+                    })
             },
             cancel: function () {
 
             }
         }
     });
-
-    console.log($element.id)
 
 });

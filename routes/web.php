@@ -138,7 +138,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
 
         ///operative production
         $router->group(['prefix' => 'prod'], function () use ($router) {
-            $router->get('/all', 'OperativeController@getProduction');
+            $router->get('/all/{date}', 'OperativeController@getProduction');
             $router->post('/', 'OperativeController@createOrUpdateProd');
             $router->delete('/{prod_id}', 'OperativeController@deleteProd');
         });
