@@ -400,4 +400,12 @@ class ReportController extends BaseController
         return view('pages.reportLogs', ["list" => $list]);
     }
 
+    public function getLogReportDetail($id){
+
+        $item = UserLog::findOrFail($id);
+        $detail = array("usuario"=>$item->user->info(),"ip"=>$item->ip_acc,"fecha"=>$item->created_at,"tipo"=>$item->tipo,"detalle"=>$item->actividad,"cliente"=>$item->info_cliente);
+        return response()->json(['status' => 'ok', 'detail' => $detail]);
+
+    }
+
 }

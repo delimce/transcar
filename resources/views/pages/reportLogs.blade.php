@@ -6,7 +6,6 @@
 
 <p>&nbsp&nbsp;</p>
 
-
 <div id="logs-list-container">
     <table id="log-list" data-search="true" data-pagination="true" class="table table-striped cn-grid">
         <thead>
@@ -33,6 +32,50 @@
 </div>
 
 <p>&nbsp;</p>
+
+<!-- Modal -->
+<div id="log-detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Detalle Log de Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="restore-ly" class="modal-body" data-person="">
+                    <div class="col-sm-12">
+                        <label class="control-label">Nombre</label><br>
+                        <div id="log-detail-name"></div>
+                    </div>
+                    <div class="col-sm-12">
+                            <label class="control-label">IP</label><br>
+                            <div id="log-detail-ip"></div>
+                        </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label class="control-label">tipo</label><br>
+                        <div id="log-detail-type"></div>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label class="control-label">Dispositivo</label><br>
+                       <span id="log-detail-client"></span>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label class="control-label">fecha</label><br>
+                        <span id="log-detail-date"></span>
+                    </div>
+                    <div class="col-sm-12">
+                            <label for="fecha" class="control-label">Actividad</label><br>
+                            <span id="log-detail-detail"></span>
+                        </div>
+                </div>
+        </div>
+    </div>
+</div>
 
 
 @endsection

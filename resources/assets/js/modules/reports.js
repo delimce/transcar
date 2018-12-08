@@ -65,7 +65,6 @@ $('#report-txt').on('click', function () {
         "month": $('#month').val(),
         "quincena": $("input[name='quincena']:checked").val()
     }
-
     axios({
         url: api_url + "api/reports/file",
         method: 'POST',
@@ -83,4 +82,23 @@ $('#report-txt').on('click', function () {
     });
 
 })
+
+$('#log-list').on('click-cell.bs.table', function (field, value, row, $element) {
+    let logId = $element.id;
+    axios.get(api_url + "api/reports/logs/detail/" + logId)
+        .then(function (response) {
+            let info = response.data.detail;
+            console.log(info)
+            $("#log-detail-name").html(info.usuario);
+            $("#log-detail-ip").html(info.ip);
+            $("#log-detail-date").html(info.fecha.date);
+            $("#log-detail-type").html(info.tipo);
+            $("#log-detail-client").html(info.cliente);
+            $("#log-detail-detail").html(info.detalle);
+            $("#log-detail").modal('show');
+
+        }).catch(function (error) {
+            showAlert(error.response.data.message);
+        });
+});
 

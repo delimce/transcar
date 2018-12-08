@@ -115,6 +115,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         $router->group(['prefix' => 'reports'], function () use ($router) {
             $router->post('/nomina', 'ReportController@getNominaHtml');
             $router->post('/file', 'ReportController@getReportToBank');
+            $router->get('/logs/detail/{id}', 'ReportController@getLogReportDetail');
         });
 
         ///employees

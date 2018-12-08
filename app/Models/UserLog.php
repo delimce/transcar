@@ -8,7 +8,7 @@ class UserLog extends Model
 {
     protected $table = 'tbl_usuario_log';
 
-    protected $fillable = ['ip_acc', 'info_cliente', 'tipo', 'actividad'];
+    protected $fillable = ['ip_acc', 'info_cliente', 'tipo', 'actividad','created_at'];
 
     public function user()
     {

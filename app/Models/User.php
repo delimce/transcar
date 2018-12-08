@@ -25,6 +25,10 @@ class User extends Model
         'password',
     ];
 
+    public function info(){
+        return $this->nombre.' '.$this->apellido;
+    }
+
     public function logs()
     {
         return $this->hasMany('App\Models\UserLog','usuario_id');
