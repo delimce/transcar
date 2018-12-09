@@ -16,12 +16,12 @@
             <li>
                 <a href="{!! url('appear') !!}">
                     <i class="fa fa-calendar-check-o"></i>&nbsp;
-                    Registrar Asistencia Diaria</a>
+                    Registrar Asistencia</a>
             </li>
             <li>
                 <a href="{!! url('prod') !!}">
                     <i class="fa fa-cubes"></i>&nbsp;
-                    Registrar Producción Diaria</a>
+                    Registrar Producción</a>
             </li>
         @endif
 
