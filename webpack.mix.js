@@ -10,6 +10,9 @@ let mix = require('laravel-mix');
  |
  */
 
+//version of javascript files
+const js_vers = process.env.MIX_JS_VERS;
+
 mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css').options({
     processCssUrls: false
@@ -27,7 +30,7 @@ mix.babel([
     'resources/assets/js/modules/admin-person.js',
     'resources/assets/js/modules/op-appearance.js',
     'resources/assets/js/modules/op-production.js'
-], 'public/js/modules.js');
+], 'public/js/modules_v'+js_vers+'.js');
 
 //vendor libs
 mix.scripts([
@@ -35,7 +38,7 @@ mix.scripts([
     'resources/assets/js/locale/bootstrap-table-es-ES.js',
     'node_modules/jquery-confirm/dist/jquery-confirm.min.js',
     'node_modules/cleave.js/dist/cleave.min.js'
-], 'public/js/vendor.js');
+], 'public/js/vendor_v'+js_vers+'.js');
 
 mix.copyDirectory('resources/assets/img', 'public/img', false);
 mix.copyDirectory('node_modules/font-awesome/fonts', 'public/fonts/font-awesome');
