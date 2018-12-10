@@ -200,7 +200,8 @@ class AdminController extends BaseController
                     "descripcion" => $item->descripcion,
                     "area"        => $item->area->nombre,
                     "unidad"      => $item->produccion_unidad,
-                    "produccion"  => $item->produccion_tipo
+                    "produccion"  => $item->produccion_tipo,
+                    "extra"       => $item->hora_extra_tipo
                 ];
             }
         );
@@ -275,6 +276,11 @@ class AdminController extends BaseController
         $role->produccion_tipo = null;
         if ($req->filled('produccion_tipo')) {
             $role->produccion_tipo = $req->input('produccion_tipo');
+        }
+
+        ///extra hour type
+        if ($req->filled('tipo_hora')) {
+            $role->hora_extra_tipo = $req->input('tipo_hora');
         }
 
         if ($req->has('unidad')) {

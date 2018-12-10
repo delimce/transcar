@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <label for="bono_extra" class="control-label">Tipo Ganancia</label>
+                        <label for="unidad" class="control-label">Tipo Ganancia</label>
                         <div class="custom-control custom-radio">
                             <input type="radio" id="customRadio1" value="caja" name="unidad" class="custom-control-input">
                             <label style="font-weight: lighter" class="custom-control-label" for="customRadio1">Ganacia x Caja</label>
@@ -78,14 +78,30 @@
 
                 </div>
 
+                {{--extra hours section--}}
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="hora_extra" class="control-label">Bono Horas Extra (Bs)</label>
+                        <label for="tipo_hora" class="control-label">Tipo de Hora Extra</label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio3" checked value="bono" name="tipo_hora" class="custom-control-input">
+                            <label style="font-weight: lighter" class="custom-control-label" for="customRadio3">Pagada por Bono</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio4" value="valor" name="tipo_hora" class="custom-control-input">
+                            <label style="font-weight: lighter" class="custom-control-label" for="customRadio4">Pagada por Valor/Hora</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="hora_extra" class="control-label">Hora Extra (Bs)</label>
                         <input type="text" class="form-control currency" id="hora_extra" name="hora_extra"
                                placeholder="">
                     </div>
+                </div>
+                {{--extra hours section--}}
 
+                <div class="form-group required row">
                     <div class="col-sm-6">
                         <label for="area" class="control-label">Departamento</label><br>
                         <select name="area" class="selectpickerArea" data-style="form-select" data-width="90%">

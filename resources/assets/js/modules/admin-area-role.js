@@ -138,6 +138,9 @@ $('#role-list').on('click-cell.bs.table', function (field, value, row, $element)
             $("#role_form input[name=bono_extra]").val(datai.bono_extra);
             $("#role_form [name=unidad]").removeAttr('checked');
             $("#role_form input[name=unidad][value=" + datai.produccion_unidad + "]").attr('checked', 'checked');
+            ///extra hour type
+            $("#role_form [name=tipo_hora]").removeAttr('checked');
+            $("#role_form input[name=tipo_hora][value=" + datai.hora_extra_tipo + "]").attr('checked', 'checked');
 
             $("#role_form select[name=produccion_tipo]").removeAttr('selected');
             $("#role_form select[name=produccion_tipo]").val(datai.produccion_tipo);
