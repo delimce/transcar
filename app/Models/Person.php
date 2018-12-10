@@ -43,7 +43,25 @@ class Person extends Model
 
     public function fullInfo()
     {
-        return $this->nombre . ' ' . $this->apellido.', cod:'.$this->codigo;
+        return $this->nombre . ' ' . $this->apellido . ', cod:' . $this->codigo;
+    }
+
+
+    /**person location word
+     * @return string
+     */
+    public function location()
+    {
+        $location = 'N/A';
+        if (!empty($this->mesa_id)) {
+            $table    = Table::find($this->mesa_id);
+            $location = $table->titulo;
+            if (!empty($this->linea_id)) {
+                $line     = Line::find($this->linea_id);
+                $location .= ', ' . $line->titulo;
+            }
+        }
+        return $location;
     }
 
 

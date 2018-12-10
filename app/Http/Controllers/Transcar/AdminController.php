@@ -535,7 +535,7 @@ class AdminController extends BaseController
                     "nombre"  => $item->nombre . ' ' . $item->apellido,
                     "cedula"  => $item->cedula,
                     "codigo"  => $item->codigo,
-                    "ingreso" => $item->fecha_ingreso,
+                    "ubicacion" => $item->location(),
                     "cargo"   => $item->role->nombre,
                     "activo"  => ($item->activo) ? 'SI' : 'NO'
                 ];
