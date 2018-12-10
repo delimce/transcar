@@ -7,7 +7,7 @@
     <title>Transcar - @yield('title')</title>
     <link rel="stylesheet" type="text/css" href="{{ url('css/app.css') }}">
     <script type="text/javascript" src="{{ url('js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ url('js/vendor.js') }}"></script>
+    <script type="text/javascript" src="{{ url('js/vendor_v'.env('MIX_JS_VERS').'.js') }}"></script>
 </head>
 <body>
 
@@ -49,7 +49,7 @@
 
 <!-- /#wrapper -->
 <!-- Menu Toggle Script -->
-<script type="text/javascript" src="{{ url('js/modules.js') }}"></script>
+<script type="text/javascript" src="{{ url('js/modules_v'.env('MIX_JS_VERS').'.js') }}"></script>
 <script>
     $(function () {  @stack('scripts-ready') });
 </script>
