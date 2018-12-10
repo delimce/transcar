@@ -27,10 +27,12 @@ $router->group(['namespace' => 'Transcar'], function () use ($router) {
         $router->get('/tableLine', 'AdminController@tableLineIndex');
         $router->get('/people', 'AdminController@personIndex');
         $router->get('/bonus', 'AdminController@bonusIndex');
+        $router->get('/layoff', 'AdminController@getLayoffs');
         $router->get('/appear', 'OperativeController@appearanceIndex');
         $router->get('/prod', 'OperativeController@prodIndex');
         $router->get('/report1', 'ReportController@report1Index');
         $router->get('/report2', 'ReportController@report2Index');
+        $router->get('/logs', 'ReportController@getLogReport');
 
     });
 
@@ -57,6 +59,15 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         $router->group(['prefix' => 'config'], function () use ($router) {
             $router->put('/', 'AdminController@saveConfig');
         });
+
+        ////layoffs
+        $router->group(['prefix' => 'layoff'], function () use ($router) {
+            $router->put('/', 'AdminController@saveLayoff');
+            $router->get('/all', 'AdminController@getLayoffsAll');
+            $router->get('/{id}', 'AdminController@getLayoff');
+            $router->put('/restore', 'AdminController@restoreLayoff');
+        });
+
 
         ////areas
         $router->group(['prefix' => 'area'], function () use ($router) {
@@ -104,6 +115,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
         $router->group(['prefix' => 'reports'], function () use ($router) {
             $router->post('/nomina', 'ReportController@getNominaHtml');
             $router->post('/file', 'ReportController@getReportToBank');
+            $router->get('/logs/detail/{id}', 'ReportController@getLogReportDetail');
         });
 
         ///employees
@@ -127,7 +139,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
 
         ///operative production
         $router->group(['prefix' => 'prod'], function () use ($router) {
-            $router->get('/all', 'OperativeController@getProduction');
+            $router->get('/all/{date}', 'OperativeController@getProduction');
             $router->post('/', 'OperativeController@createOrUpdateProd');
             $router->delete('/{prod_id}', 'OperativeController@deleteProd');
         });
@@ -139,6 +151,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('/role/all/{area_id}', 'QueryController@getRolesByArea');
             $router->get('/table/all', 'QueryController@getTables');
             $router->get('/line/all', 'QueryController@getLines');
+            $router->get('/line/bonus', 'QueryController@getLinesBonus');
             $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');
             $router->get('/person/all', 'QueryController@getPersons');
             $router->get('/bank/all', 'QueryController@getBanks');

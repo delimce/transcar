@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: delimce
@@ -19,6 +20,7 @@ use DB;
 use Log;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\UserLog;
 
 
 class ReportController extends BaseController
@@ -66,14 +68,18 @@ class ReportController extends BaseController
         $production = $pro->getProduction($start, $end, $table);
         $tableInfo = Table::find($table);
 
-        return view('pages.report01',
-            ["init" => $start,
+        return view(
+            'pages.report01',
+            [
+                "init" => $start,
                 "end" => $end,
                 "table" => $table,
                 "tableInfo" => $tableInfo,
                 "results" => $records,
-                "production" => json_decode(json_encode($production), True),
-                "days" => $this->getDaysBetween($start, $end)]);
+                "production" => json_decode(json_encode($production), true),
+                "days" => $this->getDaysBetween($start, $end)
+            ]
+        );
     }
 
     public function report2Index(Request $req)
@@ -245,7 +251,8 @@ class ReportController extends BaseController
 
         $query = "SELECT
                     e.id,
-                   	e.cedula,
+                   	e.codigo,
+       	            e.fecha_ingreso,
                    	e.titular,
                    	e.titular_doc,
                    	e.cuenta_bancaria,
@@ -311,6 +318,26 @@ class ReportController extends BaseController
     }
 
 
+    /**prorate salary
+     * @param $personId
+     * @param $base
+     * @param $date
+     * @return float|int
+     */
+    static function prorateSalary($personId, $base, $dateIn)
+    {
+        $date = Carbon::parse($dateIn);
+        $now = Carbon::now();
+        $diff = $date->diffInDays($now);
+        if ($diff < 15) { //less of quincena
+            $salary = number_format(($base * 2) / 30,2);
+            $days = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
+            $base = $salary * $days;
+        }
+        return $base;
+    }
+
+
     public function getReportToBank(Request $req)
     {
 
@@ -360,6 +387,24 @@ class ReportController extends BaseController
 
         return response($header . $body, 200)
             ->header('Content-Type', 'text/plain');
+
+    }
+
+
+    /**
+     * report of users's logs
+     */
+    public function getLogReport()
+    {
+        $list = UserLog::orderBy('created_at', 'desc')->get();
+        return view('pages.reportLogs', ["list" => $list]);
+    }
+
+    public function getLogReportDetail($id){
+
+        $item = UserLog::findOrFail($id);
+        $detail = array("usuario"=>$item->user->info(),"ip"=>$item->ip_acc,"fecha"=>$item->created_at,"tipo"=>$item->tipo,"detalle"=>$item->actividad,"cliente"=>$item->info_cliente);
+        return response()->json(['status' => 'ok', 'detail' => $detail]);
 
     }
 

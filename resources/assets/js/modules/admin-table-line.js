@@ -11,6 +11,7 @@ $("#to-table-list").click(function () {
 
 $("#to-line-form").click(function () {
     $('.sub-title').html('Crear Línea');
+    $('#line_form input[name=line_id]').remove();
     $('#line_form select[name=mesa]').removeAttr('selected');
     $('.selectpickerTable').selectpicker('refresh');
     toggle_line_list(false);

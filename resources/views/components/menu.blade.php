@@ -16,12 +16,12 @@
             <li>
                 <a href="{!! url('appear') !!}">
                     <i class="fa fa-calendar-check-o"></i>&nbsp;
-                    Registrar Asistencia Diaria</a>
+                    Registrar Asistencia</a>
             </li>
             <li>
                 <a href="{!! url('prod') !!}">
                     <i class="fa fa-cubes"></i>&nbsp;
-                    Registrar Producción Diaria</a>
+                    Registrar Producción</a>
             </li>
         @endif
 
@@ -41,6 +41,12 @@
                 <a href="{!! url('report2') !!}">
                     <i class="fa fa-calculator"></i>&nbsp;
                     Cálculo de Nómina</a>
+            </li>
+
+            <li>
+                <a href="{!! url('logs') !!}">
+                    <i class="fa fa-database"></i>&nbsp;
+                    Actividad de usuarios</a>
             </li>
         @endif
 
@@ -78,6 +84,12 @@
                 <a href="{!! url('people') !!}">
                     <i class="fa fa-users"></i>&nbsp;
                     Empleados</a>
+            </li>
+
+            <li>
+                <a href="{!! url('layoff') !!}">
+                    <i class="fa fa-user-times"></i>&nbsp;
+                    Egresos de empleados</a>
             </li>
 
             <li>

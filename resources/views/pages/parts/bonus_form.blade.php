@@ -22,6 +22,7 @@
                             <option value="area" title="Departamento">Departamento</option>
                             <option value="cargo" title="Cargo">Cargos por departamento</option>
                             <option value="empleado" title="Empleado">Empleado directo</option>
+                            <option value="linea" title="Línea">Línea de producción</option>
                         </select>
 
                     </div>

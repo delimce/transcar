@@ -53,7 +53,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>CI</th>
+                <th>Código</th>
                 <th>Empleado</th>
                 @foreach($days as $day)
                     <th>{{$day["name"]}} {{$day["day"]}}</th>
@@ -63,7 +63,7 @@
             <tbody>
             @foreach($results as $item)
                 <tr>
-                    <th>{{$item->cedula}}</th>
+                    <th>{{$item->codigo}}</th>
                     <th>{{str_limit($item->nombre,40)}}</th>
                     <?php
                     $mdates = explode(",", $item->fechas);
@@ -80,7 +80,7 @@
                 </tr>
             @endforeach
             <tr>
-                <th>Total paletas</th>
+                <th>TOTAL PALETAS</th>
                 <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>
@@ -90,7 +90,7 @@
                 @endforeach
             </tr>
             <tr>
-                <th>Total Cajas</th>
+                <th>TOTAL CAJAS</th>
                 <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>

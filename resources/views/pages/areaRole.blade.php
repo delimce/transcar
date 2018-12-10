@@ -42,7 +42,7 @@
         <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
             <div id="role-list-container">
                 <a id="to-role-form" href="#">[+] Crear Cargo</a>
-                <table id="role-list" data-search="true" class="table table-striped cn-grid">
+                <table id="role-list" data-pagination="true" data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
@@ -51,6 +51,7 @@
                         <th data-field="area" data-sortable="true" scope="col">Departamento</th>
                         <th data-field="produccion" data-sortable="true" scope="col">tipo producción</th>
                         <th data-field="unidad" data-sortable="true" scope="col">tipo Ganancia</th>
+                        <th data-field="extra" data-sortable="true" scope="col">tipo Hora E.</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,6 +63,7 @@
                             <td>{{str_limit($item->area->nombre,100)}}</td>
                             <td>{{str_limit($item->produccion_tipo,100)}}</td>
                             <td>{{str_limit($item->produccion_unidad,100)}}</td>
+                            <td>{{str_limit($item->hora_extra_tipo,10)}}</td>
                         </tr>
                     @endforeach
                     </tbody>

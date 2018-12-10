@@ -85,15 +85,27 @@ class OperativeController extends BaseController
         });
     }
 
-    public function prodIndex()
+    public function prodIndex(Request $req)
     {
-        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        if ($req->filled('prod_date')) {
+            $myDate = $req->input('prod_date');
+        } else {
+            $myDate = Carbon::today()->setTimezone('America/Caracas')->format('Y-m-d');
+        }
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$myDate')"))->with('line', 'table')->get();
+
+        ///load date allowed
+        if ($this->user->perfil_id != 1 && (Carbon::parse($myDate)->lessThan(Carbon::now('America/Caracas')->subDays(2))))
+            $loadDate = false;
+        else
+            $loadDate = true;
 
         return View(
             'pages.checkprod',
             [
-                "date" => Carbon::today()->setTimezone('America/Caracas')->format('d/m/Y'),
-                "prod" => $this->setProduction($prods)
+                "date" => $myDate,
+                "prod" => $this->setProduction($prods),
+                "loadDate" => $loadDate
             ]
         );
     }
@@ -281,12 +293,14 @@ class OperativeController extends BaseController
                 $action = 1;
                 $info = $this->setPerson($emp);
                 $info['entrada'] = $req->input('in_hour');
+                UserController::saveUserActivity($this->user->id, "Registrando asistencia del dia: $appear->fecha, al empleado: $emp->nombre $emp->apellido, $emp->codigo");
 
             } else { //non appear
                 $non = new NonAppearance();
                 $non->empleado_id = $req->input('person');
                 $non->fecha = $req->input('date');
                 $non->save();
+                UserController::saveUserActivity($this->user->id, "Registrando Inasistencia del dia: $non->fecha, al empleado: $emp->nombre $emp->apellido, $emp->codigo");
                 $action = 0;
                 $info = $this->setPerson($emp);
                 $info['non_id'] = $non->id;
@@ -327,12 +341,12 @@ class OperativeController extends BaseController
         }
         $appear->hora_extra = ($req->input('extras')) ? 1 : 0;
         $appear->save();
-
         $emp = $appear->person;
         $info = $this->setPerson($emp);
         $info['entrada'] = $appear->hora_entrada;
         $info['salida'] = $appear->hora_salida;
-        $info['extra'] = ($appear->hora_extra)?'SI':'NO';
+        $info['extra'] = ($appear->hora_extra) ? 'SI' : 'NO';
+        UserController::saveUserActivity($this->user->id, "Registrando Hora de salida el dia: $appear->fecha, hora:$appear->hora_salida al empleado: $emp->nombre $emp->apellido, $emp->codigo");
 
         return response()->json(['status' => 'ok', 'info' => $info]);
 
@@ -346,10 +360,7 @@ class OperativeController extends BaseController
         $emp = $appear->person;
         $info = $this->setPerson($emp);
         $appear->delete();
-        // $info['person_id'] = $emp->id;
-        // $info['nombre'] = $emp->nombre . ' ' . $emp->apellido;
-        // $info['cedula'] = $emp->cedula;
-        // $info['cargo'] = $emp->role->nombre;
+        UserController::saveUserActivity($this->user->id, "Borrando asistencia del dia: $appear->fecha, al empleado: $emp->nombre $emp->apellido, $emp->codigo");
         return response()->json(['status' => 'ok', 'info' => $info]);
 
     }
@@ -360,7 +371,7 @@ class OperativeController extends BaseController
         $info = array();
         $emp = $item->person;
         $item->delete();
-
+        UserController::saveUserActivity($this->user->id, "Borrando Inasistencia el dia: $appear->fecha al empleado: $emp->nombre $emp->apellido, $emp->codigo");
         $info = $this->setPerson($emp);
         return response()->json(['status' => 'ok', 'info' => $info]);
     }
@@ -376,7 +387,7 @@ class OperativeController extends BaseController
             ->leftJoin('tbl_inasistencia as i', function ($join) use ($date) {
                 $join->on('i.empleado_id', '!=', 'tbl_empleado.id');
                 $join->on("i.fecha", "=", DB::raw("'" . $date . "'"));
-            })->select("tbl_empleado.*")->get();
+            })->select("tbl_empleado.*")->distinct()->get();
 
         ///now register appears with arrive hour and exit hour
 
@@ -400,6 +411,9 @@ class OperativeController extends BaseController
                 $appear->comentario = "Registrado por lotes";
                 $appear->save();
             });
+
+            UserController::saveUserActivity($this->user->id, "Registro de asistencia masivo para el personal");
+
             DB::commit();
             return response()->json(['status' => 'ok', 'message' => "Registro de asistencia exitoso"]);
         } catch (Exception $e) {
@@ -430,9 +444,9 @@ class OperativeController extends BaseController
         return $prodArray;
     }
 
-    public function getProduction()
+    public function getProduction($date)
     {
-        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$this->currentdate')"))->with('line', 'table')->get();
+        $prods = Production::whereRaw(DB::raw("DATE(fecha) = DATE('$date')"))->with('line', 'table')->get();
         return response()->json(['status' => 'ok', 'list' => $this->setProduction($prods)]);
 
     }
@@ -459,18 +473,24 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => $error], 400);
         }
 
+        ////validate wrong date
+        $my_date = $req->input('fecha') . ' ' . $req->input('hora');
+        if (Carbon::parse($my_date)->gt(Carbon::now('America/Caracas'))) {
+            return response()->json(['status' => 'error', 'message' => "La fecha y hora introducida es incorrecta"], 400);
+        }
+
         $prod = new Production();
         if ($req->has('prod_id')) {
             $prod = Production::findOrFail($req->input('prod_id'));
         }
 
-        $my_date = $req->input('fecha') . ' ' . $req->input('hora');
         $prod->fecha = $my_date;
         $prod->cajas = $req->input('cajas');
         $prod->mesa_id = $req->input('mesa');
         $prod->linea_id = $req->input('linea');
         $prod->usuario_id = $req->session()->get('myUser')->id;
         $prod->save();
+        UserController::saveUserActivity($this->user->id, "Guardando datos de producción:$prod");
 
         return response()->json(['status' => 'ok', 'message' => 'Producción registrada con éxito']);
 
@@ -481,6 +501,7 @@ class OperativeController extends BaseController
 
         $item = Production::findOrFail($prod_id);
         $item->delete();
+        UserController::saveUserActivity($this->user->id, "Borrando datos de producción:$item");
         return response()->json(['status' => 'ok', 'message' => "producción borrada"]);
 
     }

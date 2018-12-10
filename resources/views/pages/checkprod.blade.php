@@ -4,12 +4,20 @@
     @component("components.pageTitle",['title' => 'Operaciones - Registrar Producción Diaria'])
     @endcomponent
 
-    <div>
-        <h4> Producción del día: {{$date}}</h4>
-    </div>
+    <div class="row" style="display: inline-block; padding-left: 20px; padding: auto; font-size: medium">
+        <form id="pr_form">
+            Producción del día: <input type="date" id="prod_date" name="prod_date" value="{{$date}}" required>
+          <button id="appear-search" class="btn btn-primary" type="submit">
+              Buscar
+          </button>
+        </form>
+      </div>
+      <br><br>
 
     <div id="prod-list-container">
-        <a id="to-prod-form" href="#">[+] Cargar producción</a>
+        @if($loadDate)
+            <a id="to-prod-form" href="#">[+] Cargar producción</a>
+        @endif
         <table id="prod-list" data-search="true" data-unique-id="id" class="table table-striped cn-grid">
             <thead>
             <tr>
