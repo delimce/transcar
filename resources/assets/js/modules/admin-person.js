@@ -4,6 +4,10 @@ $("#to-person-form").click(function() {
   $('#person_form input[name=person_id]').remove();
   $('#reason').hide();
   $("#person_form select[name=area]").removeAttr('selected');
+  $("#person_form select[name=cargo]").removeAttr('selected');
+  $('.selectpickerRole').empty();
+  $('.selectpickerRole').selectpicker('refresh');
+
   $("#person_form select[name=banco]").removeAttr('selected');
   $("#person_form select[name=tipo_doc]").removeAttr('selected');
   toggle_person_list(false);
@@ -91,6 +95,7 @@ $('#person-list').on('click-cell.bs.table', function(field, value, row, $element
     $("#person_form input[name=email]").val(datai.email);
     $("#person_form input[name=telefono]").val(datai.telefono);
     $("#person_form input[name=reason]").val(datai.razon_inactivo);
+    $("#person_form select[name=sexo]").val(datai.sexo);
 
     ///layoff form
     $("#layoff_form input[name=nombre]").val(datai.nombre + ' ' + datai.apellido);

@@ -43,6 +43,7 @@
                     <div class="col-sm-6">
                         <label for="sexo" class="control-label">Sexo</label><br>
                         <select name="sexo" data-style="form-select" class="selectpicker" data-width="90%">
+                            <option value="">Seleccione el sexo</option>
                             <option value="M">Masculino</option>
                             <option value="F">Femenino</option>
                         </select>
