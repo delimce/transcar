@@ -46,13 +46,18 @@
             <span>
                 @if(count($tableInfo)>0)
                     {{$tableInfo->showLineNames()}}
+                @else    
+                    Todas.
                 @endif
             </span>
         </div>
 
-        <table class="table table-striped">
+        <p>&nbsp;</p>
+        <input type="text" id="table-search" onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
+
+        <table id="appear-table" class="table table-striped">
             <thead>
-            <tr>
+            <tr class="header">
                 <th>Código</th>
                 <th>Empleado</th>
                 @foreach($days as $day)
@@ -63,8 +68,8 @@
             <tbody>
             @foreach($results as $item)
                 <tr>
-                    <th>{{$item->codigo}}</th>
-                    <th>{{str_limit($item->nombre,40)}}</th>
+                    <td>{{$item->codigo}}</td>
+                    <td>{{str_limit($item->nombre,40)}}</td>
                     <?php
                     $mdates = explode(",", $item->fechas);
                     $mhours = explode(",", $item->horas);
