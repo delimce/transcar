@@ -219,6 +219,7 @@ class OperativeController extends BaseController
                 "fecha" => $item->date(),
                 "nombre" => $item->person->nombre . ' ' . $item->person->apellido,
                 "cedula" => $item->person->cedula,
+                "justificada" => ($item->justificada)?'SI':'NO',
                 "ingreso" => $item->person->fecha_ingreso,
                 "cargo" => $item->person->role->nombre
             );
@@ -299,11 +300,14 @@ class OperativeController extends BaseController
                 $non = new NonAppearance();
                 $non->empleado_id = $req->input('person');
                 $non->fecha = $req->input('date');
+                $non->justificada = ($req->input('justify')) ? 1 : 0; /// justified non-appear
+                $non->comentario = $note;
                 $non->save();
                 UserController::saveUserActivity($this->user->id, "Registrando Inasistencia del dia: $non->fecha, al empleado: $emp->nombre $emp->apellido, $emp->codigo");
                 $action = 0;
                 $info = $this->setPerson($emp);
                 $info['non_id'] = $non->id;
+                $info['justificada'] = ($non->justificada)?'SI':'NO';
                 $info['fecha'] = Carbon::parse($non->fecha)->format("d/m/Y");
             }
 
@@ -371,7 +375,7 @@ class OperativeController extends BaseController
         $info = array();
         $emp = $item->person;
         $item->delete();
-        UserController::saveUserActivity($this->user->id, "Borrando Inasistencia el dia: $appear->fecha al empleado: $emp->nombre $emp->apellido, $emp->codigo");
+        UserController::saveUserActivity($this->user->id, "Borrando Inasistencia el dia: $item->fecha al empleado: $emp->nombre $emp->apellido, $emp->codigo");
         $info = $this->setPerson($emp);
         return response()->json(['status' => 'ok', 'info' => $info]);
     }

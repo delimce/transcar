@@ -53,7 +53,7 @@
         </div>
 
         <p>&nbsp;</p>
-        <input type="text" id="table-search" onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
+        <input type="text" id="table-search" class="table-search" onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
 
         <table id="appear-table" class="table table-striped">
             <thead>

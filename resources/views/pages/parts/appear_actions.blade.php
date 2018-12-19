@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div id="appear-actions" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Asistencia del día: {{ Carbon\Carbon::parse($date)->format('d/m/Y') }}</h5>
@@ -30,12 +30,22 @@
                             </span><br>
                       </div>
                         {{-- extra --}}
+
+                       {{-- justify --}}
+                     <div class="col-sm-6 justify">
+                        <span class="appear-subtitle">
+                                &nbsp; <input name="justify" id="justify" value="1" type="checkbox">
+                        </span>
+                        <span class="appear-subtitle">¿Inasistencia Justificada?:</span>
+
+                     </div>
+                         {{-- justify --}}
                 </div>
             </div>
             <div class="modal-footer">
                 <button id="appear-out" type="button" class="btn badge-dark">Guardar</button>&nbsp;
                 <button id="delete-appear" type="button" class="btn btn-danger">Borrar horas registradas</button>&nbsp;
-                <button id="appear-in" type="button" class="btn btn-primary">Guardar</button>&nbsp;
+                <button id="appear-in" type="button" class="btn btn-primary">Guardar Asistencia</button>&nbsp;
                 <button id="non-appear" type="button" class="btn btn-warning">Registrar Inasistencia</button>
             </div>
         </div>

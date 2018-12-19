@@ -72,6 +72,7 @@
                         <th data-field="cargo" data-sortable="true" scope="col">Cargo</th>
                         <th data-field="ubicacion" data-sortable="true" scope="col">Ubicación</th>
                         <th data-field="fecha" data-sortable="true" scope="col">Fecha</th>
+                        <th data-field="justificada" data-sortable="true" scope="col">Justificada</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -83,6 +84,7 @@
                             <td>{{str_limit($item['cargo'],25)}}</td>
                             <td>{{str_limit($item['ubicacion'],50)}}</td>
                             <td>{{$item['fecha']}} </td>
+                            <td>{{$item['justificada']}} </td>
                         </tr>
                     @endforeach
                     </tbody>

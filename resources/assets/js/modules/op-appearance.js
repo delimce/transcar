@@ -17,6 +17,7 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#asis_ubicacion').html($element.ubicacion);
     $('#person-id').data('id', $element.id); //element id
     $('#note').val('');
+    $('#justify').prop('checked',false);
 
     let my_extra = ($element.extra === 'SI') ? true : false;
     $('#extras').prop('checked', my_extra);
@@ -43,10 +44,12 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
         $("#appear-out").show();
         $("#delete-appear").show();
         $(".extra").show();
+        $(".justify").hide();
     } else {
         $("#appear-in").show();
         $("#non-appear").show();
         $(".extra").hide();
+        $(".justify").show();
         $("#appear-out").hide();
         $("#delete-appear").hide();
     }
@@ -59,6 +62,7 @@ $('#non-appear-list').on('click-cell.bs.table', function (field, value, row, $el
     $('#ina_nombre').html($element.nombre);
     $('#ina_cedula').html($element.cedula)
     $('#ina_cargo').html($element.cargo);
+    $('#ina_justify').html($element.justificada);
     $('#ina_ubicacion').html($element.ubicacion);
     $('#non-appear-id').data('id', $element.id); //element id
 
@@ -167,11 +171,13 @@ $("#non-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let date = $('#person-id').data('date'); //date
     let note = $('#note').val(); //person id
+    let justify = $('#justify').prop('checked')?1:0 //non-appear justified
     let data = {
         "person": person,
         "type": 0,
         "date": date,
         "note": note,
+        "justify": justify,
     }
 
     axios.put(api_url + 'api/appear/save', data)
@@ -194,6 +200,7 @@ $("#non-appear").on("click", function () {
                             cargo: info.detail.cargo,
                             ubicacion: info.detail.ubicacion,
                             fecha: info.detail.fecha,
+                            justificada: info.detail.justificada,
                         }
                     });
 

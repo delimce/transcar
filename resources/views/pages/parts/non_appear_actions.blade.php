@@ -13,10 +13,12 @@
                     <div class="col-sm-6">
                         <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="ina_nombre"></span><br>
                         <span class="appear-subtitle">Cargo:</span>&nbsp;<span  id="ina_cargo"></span><br>
+                        <span class="appear-subtitle">Justificada:</span>&nbsp;<span  id="ina_justify"></span><br>
+                        <span class="appear-subtitle">Nota:</span>&nbsp;<span id="ina_nota"></span>
                     </div>
                     <div class="col-sm-6">
                         <span class="appear-subtitle">Cédula:</span>&nbsp;<span id="ina_cedula"></span><br>
-                        <span class="appear-subtitle">Ubicación:</span>&nbsp;<span id="ina_ubicacion"></span><br>
+                        <span class="appear-subtitle">Ubicación:</span>&nbsp;<span id="ina_ubicacion"></span>
                     </div>
                 </div>
             </div>
