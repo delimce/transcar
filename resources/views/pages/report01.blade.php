@@ -60,6 +60,7 @@
             <tr class="header">
                 <th>Código</th>
                 <th>Empleado</th>
+                <th>Inasist.</th>
                 @foreach($days as $day)
                     <th>{{$day["name"]}} {{$day["day"]}}</th>
                 @endforeach
@@ -70,6 +71,7 @@
                 <tr>
                     <td>{{$item->codigo}}</td>
                     <td>{{str_limit($item->nombre,40)}}</td>
+                    <td style="text-align: center">{{$item->inasistencia}}</td>
                     <?php
                     $mdates = explode(",", $item->fechas);
                     $mhours = explode(",", $item->horas);
@@ -87,6 +89,7 @@
             <tr>
                 <th>TOTAL PALETAS</th>
                 <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>
                         {!!\App\Http\Controllers\Transcar\ReportController::
@@ -96,6 +99,7 @@
             </tr>
             <tr>
                 <th>TOTAL CAJAS</th>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>

@@ -42,11 +42,13 @@ class Appearance extends Model
                     e.id,
                     e.codigo,
                     concat(e.nombre,' ',e.apellido) as nombre,
+                    count(distinct ina.id) as inasistencia,
                     GROUP_CONCAT(a.fecha) as fechas,
                     GROUP_CONCAT(ABS(if(isnull(a.hora_salida),17,HOUR(a.hora_salida)) - hour(a.hora_entrada))) as horas
                     FROM
                     tbl_asistencia AS a
                     INNER JOIN tbl_empleado AS e ON a.empleado_id = e.id
+                    LEFT JOIN tbl_inasistencia as ina on ina.empleado_id = e.id and ina.justificada = 0 
                     where a.fecha BETWEEN :startDate and :endDate $tableFilter 
                     GROUP BY
                     e.id";
