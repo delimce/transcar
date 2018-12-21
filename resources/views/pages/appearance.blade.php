@@ -6,7 +6,7 @@
 
     <div class="row" style="display: inline-block; padding-left: 20px; padding: auto; font-size: medium">
       <form id="appear_form">
-        Asistencias del día: <input type="date" id="appear_date" name="appear_date" value="{{$date}}">
+        Actividades del día: <input type="date" id="appear_date" name="appear_date" value="{{$date}}">
         <button id="appear-search" class="btn btn-primary" type="submit">
             Buscar
         </button>
@@ -20,6 +20,8 @@
                aria-controls="nav-asis" aria-selected="true">Asistencias</a>
             <a class="nav-item nav-link" id="nav-ina-tab" data-toggle="tab" href="#nav-ina" role="tab"
                aria-controls="nav-ina" aria-selected="false">Inasistencias</a>
+            <a class="nav-item nav-link" id="nav-extra-tab" data-toggle="tab" href="#nav-extra" role="tab"
+               aria-controls="nav-extra" aria-selected="false">Producción Extra</a>
         </div>
     </nav>
 
@@ -93,6 +95,54 @@
         </div>
 
 
+        
+        <div class="tab-pane fade" id="nav-extra" role="tabpanel" aria-labelledby="nav-extra-tab">
+            <div id="extra-list-container">
+
+                <div>
+                        <div>
+                            <label for="special-table"  class="control-label">Mesa</label><br>
+                            <select id="special-table" data-style="form-select" class="selectpickerTableSpecial">
+                            </select>
+                        </div>
+                        <p>&nbsp;</p>
+                        <button id="select-extra" class="btn btn-primary" type="button">
+                                Registrar empleados para producción extra
+                        </button>
+                 </div>
+
+                <table id="extra-appear-list" 
+                data-checkbox-header="true"
+                data-click-to-select="true"
+                data-select-item-name="person"
+                 data-search="true" class="table table-striped cn-grid">
+                    <thead>
+                    <tr>
+                        <th data-field="id" data-visible="false"></th>
+                        <th data-checkbox="true"></th>
+                        <th data-field="nombre" data-sortable="true" scope="col">Nombre</th>
+                        <th data-field="cedula" data-sortable="true" scope="col">Cédula</th>
+                        <th data-field="cargo" data-sortable="true" scope="col">Cargo</th>
+                        <th data-field="ubicacion" data-sortable="true" scope="col">Ubicación</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                     @foreach($persons as $item)
+                        <tr>
+                            <td>{{$item['id']}}</td>
+                            <td>1</td>
+                            <td>{{str_limit($item['nombre'],100)}}</td>
+                            <td>{{str_limit($item['cedula'],20)}}</td>
+                            <td>{{str_limit($item['cargo'],25)}}</td>
+                            <td>{{str_limit($item['ubicacion'],50)}}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
     </div>
 
     @include('pages.parts.appear_actions',["date"=>$date])
@@ -102,7 +152,9 @@
 @push('scripts-ready')
     $('#appear-list').bootstrapTable();
     $('#non-appear-list').bootstrapTable();
+    $('#extra-appear-list').bootstrapTable();
     ///loading area list to select
     $('.selectpickerArea').selectpicker('refresh');
     $('.selectpickerRole').selectpicker('refresh');
+    reloadTableSpecialSelectBox();
 @endpush

@@ -33,7 +33,7 @@ class Appearance extends Model
 
         if ($table) {
             $params['tableID'] = $table;
-            $tableFilter = "and e.mesa_id = :tableID ";
+            $tableFilter = "and a.mesa_id = :tableID ";
         } else {
             $tableFilter = "";
         }

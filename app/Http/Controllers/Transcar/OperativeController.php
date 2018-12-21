@@ -219,7 +219,7 @@ class OperativeController extends BaseController
                 "fecha" => $item->date(),
                 "nombre" => $item->person->nombre . ' ' . $item->person->apellido,
                 "cedula" => $item->person->cedula,
-                "justificada" => ($item->justificada)?'SI':'NO',
+                "justificada" => ($item->justificada) ? 'SI' : 'NO',
                 "ingreso" => $item->person->fecha_ingreso,
                 "cargo" => $item->person->role->nombre
             );
@@ -307,7 +307,7 @@ class OperativeController extends BaseController
                 $action = 0;
                 $info = $this->setPerson($emp);
                 $info['non_id'] = $non->id;
-                $info['justificada'] = ($non->justificada)?'SI':'NO';
+                $info['justificada'] = ($non->justificada) ? 'SI' : 'NO';
                 $info['fecha'] = Carbon::parse($non->fecha)->format("d/m/Y");
             }
 
@@ -507,6 +507,58 @@ class OperativeController extends BaseController
         $item->delete();
         UserController::saveUserActivity($this->user->id, "Borrando datos de producción:$item");
         return response()->json(['status' => 'ok', 'message' => "producción borrada"]);
+
+    }
+
+
+    public function saveExtraAppearForProduction(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'date' => 'required',
+            'table' => 'required|numeric',
+            'persons' => 'required',
+        ], ['required' => 'El campo :attribute es requerido',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            ///deleting all extra appearance of date
+            $date = $req->input('date');
+            $table = $req->input('table');
+            $persons = $req->input('persons');
+            Appearance::whereFecha($date)->whereMesaId($table)->delete();
+           
+            foreach($persons as $item){
+                $appear = new Appearance();
+                $person = Person::find($item["id"]);
+                $appear->empleado_id = $person->id;
+                $appear->cargo_id = $person->role->id;
+                $appear->sueldo = $person->role->sueldo;
+                $appear->fecha = $date;
+                $appear->mesa_id = $table;
+                $appear->hora_entrada =  Carbon::now('America/Caracas')->format("H:i:s");
+                $appear->hora_salida = Carbon::now('America/Caracas')->addHours(3)->format("H:i:s");
+                $appear->turno = $this->getTurn($appear->hora_entrada);
+                $appear->comentario = "Registrado para producción extra especial";
+                $appear->save();
+            }
+         
+            UserController::saveUserActivity($this->user->id, "Registro de asistencia masivo para produccion extra el dia: $date");
+
+            DB::commit();
+            return response()->json(['status' => 'ok', 'message' => "Registro de asistencia para producción extra exitoso"]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['status' => 'error', 'message' => "Falla de registro masivo de asistencia para extra produccion"], 500);
+        }
+
+
 
     }
 

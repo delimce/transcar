@@ -82,6 +82,13 @@ class QueryController extends BaseController
 
     }
 
+    public function getTableSpecial()
+    {
+        $tables = Table::whereActivo(1)->whereEspecial(1)->get();
+        return response()->json(['status' => 'ok', 'list' => $tables]);
+
+    }
+
 
     public function getLines()
     {
