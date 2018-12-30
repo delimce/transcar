@@ -70,10 +70,10 @@ class OperativeController extends BaseController
      */
     private function getAppearances($date, &$filtered, &$nonAppeareance)
     {
-
         $persons = Person::with('table', 'line')->whereActivo(1)
             ->leftJoin('tbl_asistencia as a', function ($join) use ($date) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
+                $join->on('a.especial', '=', DB::raw("0"));
                 $join->on("a.fecha", "=", DB::raw("'" . $date . "'"));
             })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida", "a.hora_extra")->get();
 
@@ -399,7 +399,7 @@ class OperativeController extends BaseController
             DB::beginTransaction();
 
             ///deleting all appearance of date
-            Appearance::whereFecha($date)->delete();
+            Appearance::whereFecha($date)->whereEspecial(0)->delete();
 
             $persons->each(function ($item) use ($date) {
                 $appear = new Appearance();
@@ -511,13 +511,19 @@ class OperativeController extends BaseController
     }
 
 
+    /**
+     * register especial appear
+     */
     public function saveExtraAppearForProduction(Request $req)
     {
         $validator = Validator::make($req->all(), [
             'date' => 'required',
             'table' => 'required|numeric',
+            'hour_init' => 'required|date_format:H:i',
+            'hour_end' => 'required|date_format:H:i',
             'persons' => 'required',
         ], ['required' => 'El campo :attribute es requerido',
+            'time' => 'El campo :attribute No es una hora válida',
         ]);
 
         if ($validator->fails()) {
@@ -531,6 +537,8 @@ class OperativeController extends BaseController
             ///deleting all extra appearance of date
             $date = $req->input('date');
             $table = $req->input('table');
+            $init = $req->input('hour_init');
+            $end = $req->input('hour_end');
             $persons = $req->input('persons');
             Appearance::whereFecha($date)->whereMesaId($table)->delete();
            
@@ -542,8 +550,9 @@ class OperativeController extends BaseController
                 $appear->sueldo = $person->role->sueldo;
                 $appear->fecha = $date;
                 $appear->mesa_id = $table;
-                $appear->hora_entrada =  Carbon::now('America/Caracas')->format("H:i:s");
-                $appear->hora_salida = Carbon::now('America/Caracas')->addHours(3)->format("H:i:s");
+                $appear->hora_entrada = $init;
+                $appear->hora_salida = $end;
+                $appear->especial = 1;
                 $appear->turno = $this->getTurn($appear->hora_entrada);
                 $appear->comentario = "Registrado para producción extra especial";
                 $appear->save();

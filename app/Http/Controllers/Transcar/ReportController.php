@@ -29,15 +29,18 @@ class ReportController extends BaseController
     private $user;
     private $currentdate;
 
+
     public function __construct(Request $req)
     {
         $this->middleware('profiles:1|3'); ///perfiles requeridos
         $myUser = $req->session()->get("myUser");
-        if (!is_null($myUser))
+        if (!is_null($myUser)) {
             $this->user = User::findOrFail($myUser->id);
+        }
         $this->currentdate = Carbon::today();
 
     }
+
 
     public function report1Index(Request $req)
     {
@@ -62,35 +65,36 @@ class ReportController extends BaseController
             $table = '';
         }
 
-        $ap = new Appearance();
-        $pro = new Production();
-        $records = $ap->getAppearance($start, $end, $table);
+        $ap         = new Appearance();
+        $pro        = new Production();
+        $records    = $ap->getAppearance($start, $end, $table);
         $production = $pro->getProduction($start, $end, $table);
-        $tableInfo = Table::find($table);
+        $tableInfo  = Table::find($table);
 
         return view(
             'pages.report01',
             [
-                "init" => $start,
-                "end" => $end,
-                "table" => $table,
-                "tableInfo" => $tableInfo,
-                "results" => $records,
+                "init"       => $start,
+                "end"        => $end,
+                "table"      => $table,
+                "tableInfo"  => $tableInfo,
+                "results"    => $records,
                 "production" => json_decode(json_encode($production), true),
-                "days" => $this->getDaysBetween($start, $end)
+                "days"       => $this->getDaysBetween($start, $end)
             ]
         );
     }
 
+
     public function report2Index(Request $req)
     {
 
-        $now = Carbon::now();
-        $end = Carbon::parse($now->format('Y-m-d'))->daysInMonth;
-        $months = array();
-        $months[] = array("number" => $now->month, "name" => self::nameOfMonth($now->month));
+        $now        = Carbon::now();
+        $end        = Carbon::parse($now->format('Y-m-d'))->daysInMonth;
+        $months     = [];
+        $months[]   = ["number" => $now->month, "name" => self::nameOfMonth($now->month)];
         $last_month = $now->subMonth();
-        $months[] = array("number" => $last_month->month, "name" => self::nameOfMonth($last_month->month));
+        $months[]   = ["number" => $last_month->month, "name" => self::nameOfMonth($last_month->month)];
 
 
         return view('pages.report02', ["months" => $months, "days" => $end]);
@@ -99,24 +103,37 @@ class ReportController extends BaseController
 
     static function findDateinAppearance($dates, $hours, $date)
     {
-        $index = array_search($date, $dates);
-        return ($index === false) ? '<b>NO</b>' : $hours[$index] . 'h';
+        $thours = 0; //hours of work
+        foreach ($dates as $i => $dateIn) {
+            if ($dateIn == $date) {
+                $thours += $hours[$i];
+            }
+        }
+        return ($thours == 0) ? '<b>NO</b>' : $thours . 'h';
     }
+
 
     static function findProdByDate($date, $production, $key)
     {
         $index = array_search($date, array_column($production, 'fecha'));
+
         return ($index === false) ? '' : $production[$index][$key];
     }
+
 
     private function getDaysBetween($initDate, $endDate)
     {
         $dateInit = Carbon::parse("$initDate 00:00:00");
-        $dateEnd = Carbon::parse("$endDate 00:00:00");
-        $dates = array();
+        $dateEnd  = Carbon::parse("$endDate 00:00:00");
+        $dates    = [];
 
         while (!$dateInit->gt($dateEnd)) {
-            $temp = array("number" => $dateInit->dayOfWeekIso, "name" => self::nameOfDay($dateInit->dayOfWeek), "date" => $dateInit->format('Y-m-d'), "day" => $dateInit->day);
+            $temp    = [
+                "number" => $dateInit->dayOfWeekIso,
+                "name"   => self::nameOfDay($dateInit->dayOfWeek),
+                "date"   => $dateInit->format('Y-m-d'),
+                "day"    => $dateInit->day
+            ];
             $dates[] = $temp;
             $dateInit->addDays(1);
         }
@@ -128,28 +145,28 @@ class ReportController extends BaseController
     public function getNominaHtml(Request $req)
     {
 
-        $month = $req->input("month");
-        $type = intval($req->input("quincena")); ///quincena
-        $dt = Carbon::now();
+        $month     = $req->input("month");
+        $type      = intval($req->input("quincena")); ///quincena
+        $dt        = Carbon::now();
         $dt->month = $month; // would force month
 
         if ($type == 1) {
             $dt->day = 1;
-            $start = Carbon::parse($dt->format('Y-m-d'));
+            $start   = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = 15;
-            $end = Carbon::parse($dt->format('Y-m-d'));
+            $end     = Carbon::parse($dt->format('Y-m-d'));
         } else {
             $dt->day = 15;
-            $start = Carbon::parse($dt->format('Y-m-d'));
+            $start   = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
-            $end = Carbon::parse($dt->format('Y-m-d'));
+            $end     = Carbon::parse($dt->format('Y-m-d'));
         }
 
         Log::info($start);
         Log::info($end);
 
         $results = $this->getNominaResult($start, $end);
-        $factor = Config::select("caja_paleta")->first();
+        $factor  = Config::select("caja_paleta")->first();
 
         return view('pages.parts.nomina_detail', ["results" => $results, "factor" => $factor->caja_paleta]);
 
@@ -184,6 +201,7 @@ class ReportController extends BaseController
                 break;
         }
     }
+
 
     static function nameOfMonth($month)
     {
@@ -228,6 +246,7 @@ class ReportController extends BaseController
         }
     }
 
+
     static function getTypeOfDocument($type)
     {
         switch ($type) {
@@ -244,10 +263,11 @@ class ReportController extends BaseController
         }
     }
 
+
     private function getNominaResult($start, $end)
     {
         $start .= ' 00:00:00';
-        $end .= ' 23:59:59';
+        $end   .= ' 23:59:59';
 
         $query = "SELECT
                     e.id,
@@ -310,6 +330,7 @@ class ReportController extends BaseController
         return DB::select(DB::raw($query));
     }
 
+
     static function totalSalary($base, $bonus, $appear, $extra, $prod)
     {
 
@@ -319,21 +340,24 @@ class ReportController extends BaseController
 
 
     /**prorate salary
+     *
      * @param $personId
      * @param $base
      * @param $date
+     *
      * @return float|int
      */
     static function prorateSalary($personId, $base, $dateIn)
     {
         $date = Carbon::parse($dateIn);
-        $now = Carbon::now();
+        $now  = Carbon::now();
         $diff = $date->diffInDays($now);
         if ($diff < 15) { //less of quincena
-            $salary = number_format(($base * 2) / 30,2);
-            $days = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
-            $base = $salary * $days;
+            $salary = number_format(($base * 2) / 30, 2);
+            $days   = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
+            $base   = $salary * $days;
         }
+
         return $base;
     }
 
@@ -341,49 +365,54 @@ class ReportController extends BaseController
     public function getReportToBank(Request $req)
     {
 
-        $month = $req->input("month");
-        $type = intval($req->input("quincena")); ///quincena
-        $dt = Carbon::now();
+        $month     = $req->input("month");
+        $type      = intval($req->input("quincena")); ///quincena
+        $dt        = Carbon::now();
         $dt->month = $month; // would force month
 
         if ($type == 1) {
             $dt->day = 1;
-            $start = Carbon::parse($dt->format('Y-m-d'));
+            $start   = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = 15;
-            $end = Carbon::parse($dt->format('Y-m-d'));
-            $ref = $dt->format('Ym') . '1';
+            $end     = Carbon::parse($dt->format('Y-m-d'));
+            $ref     = $dt->format('Ym') . '1';
         } else {
             $dt->day = 15;
-            $start = Carbon::parse($dt->format('Y-m-d'));
+            $start   = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
-            $end = Carbon::parse($dt->format('Y-m-d'));
-            $ref = $dt->format('Ym') . '2';
+            $end     = Carbon::parse($dt->format('Y-m-d'));
+            $ref     = $dt->format('Ym') . '2';
         }
 
-        $nomina = $this->getNominaResult($start, $end);
+        $nomina   = $this->getNominaResult($start, $end);
         $settings = Config::find(1);
-        $body = '';
-        $n = 0;
-        $TOTAL = 0;
+        $body     = '';
+        $n        = 0;
+        $TOTAL    = 0;
         foreach ($nomina as $item) {
             $n++;
-            if ($item->unidad == 'paleta')
+            if ($item->unidad == 'paleta') {
                 $total_unity = floor($item->ncajas / $settings->caja_paleta);
-            else
+            } else {
                 $total_unity = $item->ncajas;
+            }
 
-            $prod = $total_unity * $item->produccion;
+            $prod     = $total_unity * $item->produccion;
             $doc_type = Str::substr($item->titular_doc, 0, 1); //type of document, V, P, E
-            $doc = Str::substr($item->titular_doc, 1); //document
+            $doc      = Str::substr($item->titular_doc, 1); //document
 
             $total = self::totalSalary($item->base, $item->bono_extra, $item->asistencia, $item->extra, $prod);
             $TOTAL += $total;
-            $body .= self::getTypeOfDocument($doc_type) . ';' . $doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
-            $body .= PHP_EOL;
+            $body  .= self::getTypeOfDocument(
+                    $doc_type
+                ) . ';' . $doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
+            $body  .= PHP_EOL;
         }
 
-        $date = $end->format('d/m/Y');
-        $header = $settings->empresa_rif . ';' . $settings->empresa_cuenta . ';' . count($nomina) . ';' . $TOTAL . ';' . $date . ';' . $ref . PHP_EOL;
+        $date   = $end->format('d/m/Y');
+        $header = $settings->empresa_rif . ';' . $settings->empresa_cuenta . ';' . count(
+                $nomina
+            ) . ';' . $TOTAL . ';' . $date . ';' . $ref . PHP_EOL;
 
         return response($header . $body, 200)
             ->header('Content-Type', 'text/plain');
@@ -397,13 +426,24 @@ class ReportController extends BaseController
     public function getLogReport()
     {
         $list = UserLog::orderBy('created_at', 'desc')->get();
+
         return view('pages.reportLogs', ["list" => $list]);
     }
 
-    public function getLogReportDetail($id){
 
-        $item = UserLog::findOrFail($id);
-        $detail = array("usuario"=>$item->user->info(),"ip"=>$item->ip_acc,"fecha"=>$item->created_at,"tipo"=>$item->tipo,"detalle"=>$item->actividad,"cliente"=>$item->info_cliente);
+    public function getLogReportDetail($id)
+    {
+
+        $item   = UserLog::findOrFail($id);
+        $detail = [
+            "usuario" => $item->user->info(),
+            "ip"      => $item->ip_acc,
+            "fecha"   => $item->created_at,
+            "tipo"    => $item->tipo,
+            "detalle" => $item->actividad,
+            "cliente" => $item->info_cliente
+        ];
+
         return response()->json(['status' => 'ok', 'detail' => $detail]);
 
     }

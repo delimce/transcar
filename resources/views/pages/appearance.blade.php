@@ -100,11 +100,23 @@
             <div id="extra-list-container">
 
                 <div>
-                        <div>
-                            <label for="special-table"  class="control-label">Mesa</label><br>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label for="special-table"  class="control-label">Mesa</label><br>
                             <select id="special-table" data-style="form-select" class="selectpickerTableSpecial">
                             </select>
+        
+                            </div>
+                            <div class="col-sm-6">
+                                <b>Hora inicio y fin de producción:</b><br><br>
+                                <label for="hour_init" class="control-label">Hora Inicio</label>
+                                <input id="hour_init" type="time" value=""></span>&nbsp;<br>
+                                <label for="hour_end" class="control-label">Hora Final</label>&nbsp;
+                                <input id="hour_end" type="time" value=""></span>
+                            </div>
                         </div>
+
+
                         <p>&nbsp;</p>
                         <button id="select-extra" class="btn btn-primary" type="button">
                                 Registrar empleados para producción extra

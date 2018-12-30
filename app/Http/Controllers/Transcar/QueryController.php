@@ -138,7 +138,7 @@ class QueryController extends BaseController
     public function getAppearDetail(Request $req)
     {
         $detail = Appearance::whereEmpleadoId($req->input('person'))
-            ->whereFecha($req->input('date'))->with('person', 'table', 'line')->first();
+            ->whereFecha($req->input('date'))->with('person', 'table', 'line')->get();
         if ($detail->count() > 0) {
             return response()->json(['status' => 'ok', 'info' => $detail]);
         } else {

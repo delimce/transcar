@@ -277,20 +277,24 @@ $("#select-extra").on("click", function () {
     } else { ///is all right
         let date = $("#appear_date").val();
         let table = $("#special-table").val();
+        let init = $("#hour_init").val();
+        let end = $("#hour_end").val();
         data = {
             "date": date,
             "table": table,
-            "persons": persons
+            "persons": persons,
+            "hour_init": init,
+            "hour_end": end
         }
 
-        axios.put(api_url + 'api/appear/saveExtraBatch',data)
-        .then(function (response) {
-            showSuccess(response.data.message, 2000)
-            ///reload person list on date
-          
-        }).catch(function (error) {
-            showAlert(error.response.data.message)
-        });
+        axios.put(api_url + 'api/appear/saveExtraBatch', data)
+            .then(function (response) {
+                showSuccess(response.data.message, 2000)
+                ///reload person list on date
+
+            }).catch(function (error) {
+                showAlert(error.response.data.message)
+            });
 
 
     }

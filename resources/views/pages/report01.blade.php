@@ -128,7 +128,7 @@
                                 <span class="appear-subtitle">Telefono:</span>&nbsp;<span  id="asis_tlf"></span><br>
                                 <span class="appear-subtitle">Fecha:</span>&nbsp;<span  id="asis_fecha"></span><br>
                                 <span class="appear-subtitle">Mesa:</span>&nbsp;<span  id="asis_mesa"></span><br>
-                                <span class="appear-subtitle">hora llegada:</span>&nbsp;<span  id="asis_llegada"></span><br>
+                                <span class="appear-subtitle">hora inicio:</span>&nbsp;<span  id="asis_llegada"></span><br>
                                 <span class="appear-subtitle">Notas:</span>&nbsp;<span  id="asis_nota"></span><br>
                             </div>
                             <div class="col-sm-6">
@@ -136,7 +136,7 @@
                                 <span class="appear-subtitle">Email:</span>&nbsp;<span id="asis_email"></span><br>
                                 <span class="appear-subtitle">Turno:</span>&nbsp;<span  id="asis_turno"></span><br>
                                 <span class="appear-subtitle">Linea:</span>&nbsp;<span  id="asis_linea"></span><br>
-                                <span class="appear-subtitle">hora salida:</span>&nbsp;<span id="asis_salida"></span><br>
+                                <span class="appear-subtitle">hora Fin:</span>&nbsp;<span id="asis_salida"></span><br>
                             </div>
                         </div>
                     </div>
