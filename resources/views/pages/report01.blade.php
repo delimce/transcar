@@ -46,14 +46,15 @@
             <span>
                 @if(count($tableInfo)>0)
                     {{$tableInfo->showLineNames()}}
-                @else    
+                @else
                     Todas.
                 @endif
             </span>
         </div>
 
         <p>&nbsp;</p>
-        <input type="text" id="table-search" class="table-search" onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
+        <input type="text" id="table-search" class="table-search"
+               onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
 
         <table id="appear-table" class="table table-striped">
             <thead>
@@ -78,7 +79,8 @@
                     ?>
                     @foreach($days as $day)
                         <td>
-                            <span class="det-appear" data-id="{{$item->id}}" data-date="{{$day["date"]}}">
+                            <span class="det-appear" data-id="{{$item->id}}" data-date="{{$day["date"]}}"
+                                  data-table="{{$table}}">
                             {!!\App\Http\Controllers\Transcar\ReportController::
                             findDateinAppearance($mdates,$mhours,$day["date"])!!}
                             </span>
@@ -112,7 +114,8 @@
         </table>
 
         <!-- Modal -->
-        <div id="appear-detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div id="appear-detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -122,21 +125,23 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div style="padding: 10px" class="row" id="person-id" data-id="">
-                            <div class="col-sm-6">
-                                <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
-                                <span class="appear-subtitle">Telefono:</span>&nbsp;<span  id="asis_tlf"></span><br>
-                                <span class="appear-subtitle">Fecha:</span>&nbsp;<span  id="asis_fecha"></span><br>
-                                <span class="appear-subtitle">Mesa:</span>&nbsp;<span  id="asis_mesa"></span><br>
-                                <span class="appear-subtitle">hora inicio:</span>&nbsp;<span  id="asis_llegada"></span><br>
-                                <span class="appear-subtitle">Notas:</span>&nbsp;<span  id="asis_nota"></span><br>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
-                                <span class="appear-subtitle">Email:</span>&nbsp;<span id="asis_email"></span><br>
-                                <span class="appear-subtitle">Turno:</span>&nbsp;<span  id="asis_turno"></span><br>
-                                <span class="appear-subtitle">Linea:</span>&nbsp;<span  id="asis_linea"></span><br>
-                                <span class="appear-subtitle">hora Fin:</span>&nbsp;<span id="asis_salida"></span><br>
+                        <div id="appear-det2">
+                            <div style="padding: 10px" class="row" id="person-id" data-id="">
+                                <div class="col-sm-6">
+                                    <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
+                                    <span class="appear-subtitle">Telefono:</span>&nbsp;<span id="asis_tlf"></span><br>
+                                    <span class="appear-subtitle">Fecha:</span>&nbsp;<span id="asis_fecha"></span><br>
+                                    <span class="appear-subtitle">Mesa:</span>&nbsp;<span id="asis_mesa"></span><br>
+                                    <span class="appear-subtitle">hora inicio:</span>&nbsp;<span id="asis_llegada"></span><br>
+                                    <span class="appear-subtitle">Notas:</span>&nbsp;<span id="asis_nota"></span><br>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
+                                    <span class="appear-subtitle">Email:</span>&nbsp;<span id="asis_email"></span><br>
+                                    <span class="appear-subtitle">Turno:</span>&nbsp;<span id="asis_turno"></span><br>
+                                    <span class="appear-subtitle">Linea:</span>&nbsp;<span id="asis_linea"></span><br>
+                                    <span class="appear-subtitle">hora Fin:</span>&nbsp;<span id="asis_salida"></span><br>
+                                </div>
                             </div>
                         </div>
                     </div>
