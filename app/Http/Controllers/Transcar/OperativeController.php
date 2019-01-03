@@ -518,9 +518,9 @@ class OperativeController extends BaseController
     {
         $validator = Validator::make($req->all(), [
             'date' => 'required',
-            'table' => 'required|numeric',
-            'hour_init' => 'required|date_format:H:i',
-            'hour_end' => 'required|date_format:H:i',
+            'mesa' => 'required|numeric',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i',
             'persons' => 'required',
         ], ['required' => 'El campo :attribute es requerido',
             'time' => 'El campo :attribute No es una hora válida',
@@ -536,9 +536,9 @@ class OperativeController extends BaseController
 
             ///deleting all extra appearance of date
             $date = $req->input('date');
-            $table = $req->input('table');
-            $init = $req->input('hour_init');
-            $end = $req->input('hour_end');
+            $table = $req->input('mesa');
+            $init = $req->input('hora_inicio');
+            $end = $req->input('hora_fin');
             $persons = $req->input('persons');
             Appearance::whereFecha($date)->whereMesaId($table)->delete();
            

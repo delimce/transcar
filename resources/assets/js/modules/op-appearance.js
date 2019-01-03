@@ -281,10 +281,10 @@ $("#select-extra").on("click", function () {
         let end = $("#hour_end").val();
         data = {
             "date": date,
-            "table": table,
+            "mesa": table,
             "persons": persons,
-            "hour_init": init,
-            "hour_end": end
+            "hora_inicio": init,
+            "hora_fin": end
         }
 
         axios.put(api_url + 'api/appear/saveExtraBatch', data)
