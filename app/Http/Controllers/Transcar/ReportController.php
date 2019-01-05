@@ -188,13 +188,16 @@ class ReportController extends BaseController
 
         foreach ($results as $i => $res) {
 
+              //total n# boxes + special boxes
+            $ncajas = intval($res->ncajas) + intval($res->ncajas_especial);
             if ($res->unidad == 'paleta') {
-                $total_unity = floor($res->ncajas / $factor->caja_paleta);
+                $total_unity = floor($ncajas / $factor->caja_paleta);
                 $unity = 'P';
             } else {
-                $total_unity = $res->ncajas;
+                $total_unity = $ncajas;
                 $unity = 'C';
             }
+            $unity = ($total_unity > 0) ? $unity : '';
 
             $salary = self::prorateSalary($res->id, $res->base, $res->fecha_ingreso);
             $prod = $total_unity * $res->produccion;
@@ -204,14 +207,14 @@ class ReportController extends BaseController
                 "codigo" => $res->codigo,
                 "cedula" => $res->cedula,
                 "cargo" => str_limit($res->cargo, 30),
-                "salario" => '<b>'.$salary.'</b>',
-                "bono_cargo" => '<b>'.$res->bono_extra.'</b>',
-                "bono_asistencia" => '<b>'.$res->asistencia.'</b>',
+                "salario" => '<b>' . $salary . '</b>',
+                "bono_cargo" => '<b>' . $res->bono_extra . '</b>',
+                "bono_asistencia" => '<b>' . $res->asistencia . '</b>',
                 "horas_ex_dias" => $res->diashe,
-                "horas_ex_costo" => '<b>'.number_format($res->extra,2).'</b>',
-                "n_cajas" => $total_unity . $total_unity > 0 ? $unity : '',
-                "produccion" => '<b>'.number_format($prod,2).'</b>',
-                "total" => '<b>'.number_format(self::totalSalary($salary, $res->bono_extra, $res->asistencia, $res->extra, $prod), 2).'</b>'
+                "horas_ex_costo" => '<b>' . number_format($res->extra, 2) . '</b>',
+                "n_cajas" => $total_unity . $unity,
+                "produccion" => '<b>' . number_format($prod, 2) . '</b>',
+                "total" => '<b>' . number_format(self::totalSalary($salary, $res->bono_extra, $res->asistencia, $res->extra, $prod), 2) . '</b>'
             );
 
             $data_nomina[] = $temp;
@@ -343,7 +346,7 @@ class ReportController extends BaseController
                             sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id
                             and p.fecha BETWEEN '$start' and '$end'
@@ -352,7 +355,7 @@ class ReportController extends BaseController
                             (SELECT	sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id and p.mesa_id = e.mesa_id
                             and p.fecha BETWEEN '$start' and '$end'
@@ -361,13 +364,23 @@ class ReportController extends BaseController
                             (SELECT	sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id and p.mesa_id = e.mesa_id and p.linea_id = e.linea_id
                             and p.fecha BETWEEN '$start' and '$end'
                             and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))	
                         ELSE 0	
                     END as ncajas,
+                    -- cajas produccion especial
+                    (SELECT	sum(p.cajas)
+                            FROM
+                            tbl_asistencia AS a
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 1
+                            WHERE
+                            a.empleado_id = e.id and p.mesa_id = a.mesa_id
+                            and p.fecha BETWEEN '$start' and '$end'
+                        and time(p.fecha) BETWEEN a.hora_entrada and a.hora_salida
+                            ) as ncajas_especial,
                     c.produccion,
                     c.produccion_unidad as unidad
                     -- produccion
@@ -407,7 +420,7 @@ class ReportController extends BaseController
             $base = $salary * $days;
         }
 
-        return number_format($base,2);
+        return number_format($base, 2);
     }
 
 
