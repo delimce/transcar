@@ -148,8 +148,8 @@
                  data-search="true" class="table table-striped cn-grid">
                     <thead>
                     <tr>
-                        <th data-field="id" data-visible="false"></th>
                         <th data-checkbox="true"></th>
+                        <th data-field="id" data-visible="false"></th>
                         <th data-field="nombre" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="cedula" data-sortable="true" scope="col">Cédula</th>
                         <th data-field="cargo" data-sortable="true" scope="col">Cargo</th>
@@ -159,8 +159,8 @@
                     <tbody>
                      @foreach($persons as $item)
                         <tr>
-                            <td>{{$item['id']}}</td>
                             <td>1</td>
+                            <td>{{$item['id']}}</td>
                             <td>{{str_limit($item['nombre'],100)}}</td>
                             <td>{{str_limit($item['cedula'],20)}}</td>
                             <td>{{str_limit($item['cargo'],25)}}</td>
@@ -182,7 +182,7 @@
 @push('scripts-ready')
     $('#appear-list').bootstrapTable();
     $('#non-appear-list').bootstrapTable();
-    $('#extra-appear-list').bootstrapTable();
+    $('#extra-appear-list').bootstrapTable().bootstrapTable('uncheckAll');
     ///loading area list to select
     $('.selectpickerArea').selectpicker('refresh');
     $('.selectpickerRole').selectpicker('refresh');
