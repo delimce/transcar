@@ -197,19 +197,21 @@ class ReportController extends BaseController
             }
 
             $salary = self::prorateSalary($res->id, $res->base, $res->fecha_ingreso);
+            $prod = $total_unity * $res->produccion;
 
             $temp = array(
                 "nombre" => str_limit($res->nombre, 25),
                 "codigo" => $res->codigo,
+                "cedula" => $res->cedula,
                 "cargo" => str_limit($res->cargo, 30),
                 "salario" => '<b>'.$salary.'</b>',
                 "bono_cargo" => '<b>'.$res->bono_extra.'</b>',
                 "bono_asistencia" => '<b>'.$res->asistencia.'</b>',
                 "horas_ex_dias" => $res->diashe,
-                "horas_ex_costo" => $res->extra,
+                "horas_ex_costo" => '<b>'.number_format($res->extra,2).'</b>',
                 "n_cajas" => $total_unity . $total_unity > 0 ? $unity : '',
-                "produccion" => $prod = $total_unity * $res->produccion,
-                "total" => number_format(self::totalSalary($salary, $res->bono_extra, $res->asistencia, $res->extra, $prod), 2)
+                "produccion" => '<b>'.number_format($prod,2).'</b>',
+                "total" => '<b>'.number_format(self::totalSalary($salary, $res->bono_extra, $res->asistencia, $res->extra, $prod), 2).'</b>'
             );
 
             $data_nomina[] = $temp;
@@ -318,6 +320,7 @@ class ReportController extends BaseController
         $query = "SELECT
                     e.id,
                    	e.codigo,
+                    e.cedula,
        	            e.fecha_ingreso,
                    	e.titular,
                    	e.titular_doc,
@@ -404,7 +407,7 @@ class ReportController extends BaseController
             $base = $salary * $days;
         }
 
-        return $base;
+        return number_format($base,2);
     }
 
 

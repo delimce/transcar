@@ -43,12 +43,16 @@
 
     <p>&nbsp</p>
 
-    <table id="nomina-table" data-search="true" class="table table-striped">
+    <table id="nomina-table" 
+    data-search="true" 
+    data-striped="true"
+    data-height="640">
     <thead>
     <tr>
-        <th  data-field="nombre" data-sortable="true">Empleado</th>
-        <th  data-field="codigo" data-sortable="true">Codigo</th>
-        <th  data-field="cargo">Cargo</th>
+        <th  data-width="235px"  data-field="nombre" data-sortable="true">Empleado</th>
+        <th  data-width="110px" data-field="codigo" data-sortable="true">Código</th>
+        <th  data-width="110px" data-field="cedula" data-sortable="true">Cédula</th>
+        <th  data-width="235px" data-field="cargo" data-sortable="true">Cargo</th>
         <th  data-field="salario">Salario Base 50% (BS)</th>
         <th  data-field="bono_cargo">Bono cargo (BS)</th>
         <th  data-field="bono_asistencia">Asistencia (BS)</th>
@@ -56,7 +60,7 @@
         <th  data-field="horas_ex_costo">Horas extra (BS)</th>
         <th  data-field="n_cajas">N°: Cajas/Paletas</th>
         <th  data-field="produccion">Producción (BS)</th>
-        <th  data-field="total">TOTAL</th>
+        <th  data-field="total" data-sortable="true">TOTAL</th>
     </tr>
     </thead>
         <tbody>
@@ -64,14 +68,15 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
-                        <td><b></b></td>
                         <td></td>
-                        <td><b></b></td>
                         <td></td>
-                        <td><b></b></td>
-                        <td style="text-align: right"> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
              </tr>
         </tbody>
     </table>
