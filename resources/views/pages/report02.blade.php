@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <button id="report-det" style="margin-top: 27px" class="btn btn-primary" type="button">
-                    Ver detalle
+                    Generar Reporte
                 </button>
                 <span>&nbsp;&nbsp;</span>
                 <button id="report-txt" style="margin-top: 27px" class="btn btn-dark" type="button">
@@ -41,9 +41,44 @@
 
     </form>
 
-    <p>&nbsp&nbsp;</p>
+    <p>&nbsp</p>
 
-    <div id="nomina-det" class="report">
-    </div>
+    <table id="nomina-table" data-search="true" class="table table-striped">
+    <thead>
+    <tr>
+        <th  data-field="nombre" data-sortable="true">Empleado</th>
+        <th  data-field="codigo" data-sortable="true">Codigo</th>
+        <th  data-field="cargo">Cargo</th>
+        <th  data-field="salario">Salario Base 50% (BS)</th>
+        <th  data-field="bono_cargo">Bono cargo (BS)</th>
+        <th  data-field="bono_asistencia">Asistencia (BS)</th>
+        <th  data-field="horas_ex_dias">Horas extra (dias)</th>
+        <th  data-field="horas_ex_costo">Horas extra (BS)</th>
+        <th  data-field="n_cajas">N°: Cajas/Paletas</th>
+        <th  data-field="produccion">Producción (BS)</th>
+        <th  data-field="total">TOTAL</th>
+    </tr>
+    </thead>
+        <tbody>
+            <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b></b></td>
+                        <td><b></b></td>
+                        <td><b></b></td>
+                        <td></td>
+                        <td><b></b></td>
+                        <td></td>
+                        <td><b></b></td>
+                        <td style="text-align: right"> </td>
+             </tr>
+        </tbody>
+    </table>
+
 
 @endsection
+
+@push('scripts-ready')
+    $('#nomina-table').bootstrapTable();
+@endpush
