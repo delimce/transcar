@@ -51,6 +51,10 @@ class OperativeController extends BaseController
         $personList = $this->getPersons($filtered);
         $nonAppear = $this->getNonAppear($nonAppeareance);
         $areas = Area::all();
+        $extras = Appearance::groupBy('mesa_id')
+            ->where("especial", 1)
+            ->where("fecha", $myDate)
+            ->select('mesa_id', 'hora_entrada', 'hora_salida', DB::raw('count(*) as total'))->get();
 
         return view(
             'pages.appearance',
@@ -58,7 +62,8 @@ class OperativeController extends BaseController
                 "persons" => $personList,
                 "areas" => $areas,
                 "date" => $myDate,
-                "nonAppear" => $nonAppear
+                "nonAppear" => $nonAppear,
+                "extras" => $extras
             ]
         );
     }
@@ -522,7 +527,8 @@ class OperativeController extends BaseController
             'hora_inicio' => 'required|date_format:H:i',
             'hora_fin' => 'required|date_format:H:i',
             'persons' => 'required',
-        ], ['required' => 'El campo :attribute es requerido',
+        ], [
+            'required' => 'El campo :attribute es requerido',
             'time' => 'El campo :attribute No es una hora válida',
         ]);
 
@@ -540,9 +546,9 @@ class OperativeController extends BaseController
             $init = $req->input('hora_inicio');
             $end = $req->input('hora_fin');
             $persons = $req->input('persons');
-            Appearance::whereFecha($date)->whereMesaId($table)->delete();
-           
-            foreach($persons as $item){
+            Appearance::whereFecha($date)->whereMesaId($table)->whereEspecial(1)->delete();
+
+            foreach ($persons as $item) {
                 $appear = new Appearance();
                 $person = Person::find($item["id"]);
                 $appear->empleado_id = $person->id;
@@ -557,7 +563,7 @@ class OperativeController extends BaseController
                 $appear->comentario = "Registrado para producción extra especial";
                 $appear->save();
             }
-         
+
             UserController::saveUserActivity($this->user->id, "Registro de asistencia masivo para produccion extra el dia: $date");
 
             DB::commit();
@@ -568,6 +574,20 @@ class OperativeController extends BaseController
         }
 
 
+
+    }
+
+    /**
+     * delete extra appear for production
+     */
+    public function deleteExtraAppear($date)
+    {
+        try {
+            Appearance::whereFecha($date)->whereEspecial(1)->delete();
+            return response()->json(['status' => 'ok', 'message' => "Borrado de asistencia para producción extra exitoso"]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => "Falla de borrado de asistencia para extra produccion"], 500);
+        }
 
     }
 

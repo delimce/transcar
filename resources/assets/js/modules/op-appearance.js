@@ -143,7 +143,7 @@ $("#appear-out").on("click", function () {
 $("#delete-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let date = $('#person-id').data('date'); //date
-    axios.delete(api_url + 'api/appear/' + person + '/' + date)
+    axios.delete(api_url + 'api/appear/simple/' + person + '/' + date)
         .then(function (response) {
             let info = response.data.info;
             console.log(info);
@@ -291,13 +291,35 @@ $("#select-extra").on("click", function () {
             .then(function (response) {
                 showSuccess(response.data.message, 2000)
                 ///reload person list on date
+                $("#extra-resume").show();
+                $("#extra-detail").hide();
 
             }).catch(function (error) {
                 showAlert(error.response.data.message)
             });
-
-
     }
 
 
+})
+
+$("#delete-extra").on("click", function () {
+    let date = $("#appear_date").val();
+    $.confirm({
+        title: 'Eliminar carga de asistencia extra con fecha: ' + date,
+        content: 'Desea eliminar esta carga?',
+        buttons: {
+            confirm: function () {
+                axios.delete(api_url + 'api/appear/extra/' + date)
+                    .then(function (response) {
+                        $("#extra-resume").hide();
+                        showSuccess(response.data.message, 2000)                        
+                    }).catch(function (error) {
+                        showAlert(error.response.data.message)
+                    })
+            },
+            cancel: function () {
+
+            }
+        }
+    });
 })

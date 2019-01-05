@@ -123,8 +123,26 @@
                         </button>
                  </div>
 
+                 <br>
+                 <div id="extra-resume" class="card" @if (count($extras)==0) style="display:none"  @endif>
+                        <div class="card-body">
+                          <h5 class="card-title">Carga de producción extra para la fecha: {{$date}}</h5>
+                          <span id="extra-detail">
+                          @foreach ($extras as $item)
+                                Mesa de trabajo: <b>{{$item->table->titulo}}</b> 
+                                total de empleados: <b>{{$item->total}}</b> 
+                                hora inicio: <b>{{$item->hora_entrada}}</b>, 
+                                hora fin: <b>{{$item->hora_salida}}</b> <br>
+                          @endforeach
+                          </span>
+                          <p class="card-text"><small class="text-muted">
+                            Si lo desea, puede efectuar una nueva carga para la misma fecha y asi sustituir la anterior con la hora de inicio, hora fin y los empleados que desee. 
+                            </small></p>
+                            <a href="#" id="delete-extra" class="btn btn-danger">Borrar Carga Extra</a>
+                        </div>
+                 </div>
+
                 <table id="extra-appear-list" 
-                data-checkbox-header="true"
                 data-click-to-select="true"
                 data-select-item-name="person"
                  data-search="true" class="table table-striped cn-grid">
