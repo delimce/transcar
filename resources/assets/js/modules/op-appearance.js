@@ -59,11 +59,13 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
 $('#non-appear-list').on('click-cell.bs.table', function (field, value, row, $element) {
     $('#non-appear-actions').modal('show');
 
+    console.log($element)
     $('#ina_nombre').html($element.nombre);
     $('#ina_cedula').html($element.cedula)
     $('#ina_cargo').html($element.cargo);
     $('#ina_justify').html($element.justificada);
     $('#ina_ubicacion').html($element.ubicacion);
+    $('#ina_nota').html($element.comentario);
     $('#non-appear-id').data('id', $element.id); //element id
 
 });
@@ -201,6 +203,7 @@ $("#non-appear").on("click", function () {
                             ubicacion: info.detail.ubicacion,
                             fecha: info.detail.fecha,
                             justificada: info.detail.justificada,
+                            comentario:String(note)
                         }
                     });
 

@@ -69,6 +69,7 @@
                     <thead>
                     <tr>
                         <th data-field="id" data-visible="false"></th>
+                        <th data-field="comentario" data-visible="false"></th>
                         <th data-field="nombre" data-sortable="true" scope="col">Nombre</th>
                         <th data-field="cedula" data-sortable="true" scope="col">Cédula</th>
                         <th data-field="cargo" data-sortable="true" scope="col">Cargo</th>
@@ -81,6 +82,7 @@
                     @foreach($nonAppear as $item)
                         <tr>
                             <td>{{$item['id']}}</td>
+                            <td>{{$item['comentario']}}</td>
                             <td>{{str_limit($item['nombre'],100)}}</td>
                             <td>{{str_limit($item['cedula'],20)}}</td>
                             <td>{{str_limit($item['cargo'],25)}}</td>

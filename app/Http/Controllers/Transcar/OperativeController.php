@@ -224,6 +224,7 @@ class OperativeController extends BaseController
                 "fecha" => $item->date(),
                 "nombre" => $item->person->nombre . ' ' . $item->person->apellido,
                 "cedula" => $item->person->cedula,
+                "comentario" => $item->comentario,
                 "justificada" => ($item->justificada) ? 'SI' : 'NO',
                 "ingreso" => $item->person->fecha_ingreso,
                 "cargo" => $item->person->role->nombre
