@@ -21,6 +21,7 @@ use Log;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Models\UserLog;
+use App\Models\Bonus;
 
 
 class ReportController extends BaseController
@@ -184,12 +185,15 @@ class ReportController extends BaseController
 
         $results = $this->getNominaResult($start, $end);
         $factor = Config::select("caja_paleta")->first();
+        $bonus = Bonus::whereBetween('fecha', [$start, $end])->get(); //get bonus
         $data_nomina = array();
 
         foreach ($results as $i => $res) {
 
               //total n# boxes + special boxes
             $ncajas = intval($res->ncajas) + intval($res->ncajas_especial);
+            //special bonus
+            $special_bonus = $this->getSpecialBonus($bonus,$res->area_id,$res->cargo_id,$res->id,$res->linea_id);
             if ($res->unidad == 'paleta') {
                 $total_unity = floor($ncajas / $factor->caja_paleta);
                 $unity = 'P';
@@ -201,20 +205,22 @@ class ReportController extends BaseController
 
             $salary = self::prorateSalary($res->id, $res->base, $res->fecha_ingreso);
             $prod = $total_unity * $res->produccion;
+            $bonus_total = $special_bonus+$res->bono_extra; //total of bonus everything...
 
             $temp = array(
                 "nombre" => str_limit($res->nombre, 25),
                 "codigo" => $res->codigo,
                 "cedula" => $res->cedula,
                 "cargo" => str_limit($res->cargo, 30),
-                "salario" => '<b>' . $salary . '</b>',
-                "bono_cargo" => '<b>' . $res->bono_extra . '</b>',
+                "salario" => '<b>' . number_format($salary,2) . '</b>',
+                "bonificacion" => '<b>' . number_format($special_bonus,2) . '</b>',
+                "bono_cargo" => '<b>' . number_format($res->bono_extra,2) . '</b>',
                 "bono_asistencia" => '<b>' . $res->asistencia . '</b>',
                 "horas_ex_dias" => $res->diashe,
                 "horas_ex_costo" => '<b>' . number_format($res->extra, 2) . '</b>',
                 "n_cajas" => $total_unity . $unity,
                 "produccion" => '<b>' . number_format($prod, 2) . '</b>',
-                "total" => '<b>' . number_format(self::totalSalary($salary, $res->bono_extra, $res->asistencia, $res->extra, $prod), 2) . '</b>'
+                "total" => '<b>' . number_format(self::totalSalary($salary, $bonus_total, $res->asistencia, $res->extra, $prod), 2) . '</b>'
             );
 
             $data_nomina[] = $temp;
@@ -330,6 +336,9 @@ class ReportController extends BaseController
                    	e.cuenta_bancaria,
 	                concat(e.nombre,' ',e.apellido) as nombre,
 	                c.nombre as cargo,
+                    c.area_id,
+                    e.cargo_id,
+                    e.linea_id,
                     round( c.sueldo / 2 ) AS base,
                     c.bono_extra,
                     IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.justificada = 0 AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
@@ -420,7 +429,31 @@ class ReportController extends BaseController
             $base = $salary * $days;
         }
 
-        return number_format($base, 2);
+        return $base;
+    }
+
+    private function getSpecialBonus($bonus, $areaId, $roleId, $personId, $lineId)
+    {
+
+        $total = 0;
+        $bonus->each(function ($item) use ($areaId, $roleId, $personId, $lineId, &$total) {
+            switch ($item->tipo) {
+                case "area":
+                    if ($item->beneficiario == $areaId) $total += $item->monto;
+                    break;
+                case "cargo":
+                if ($item->beneficiario == $roleId) $total += $item->monto;
+                    break;
+                case "empleado":
+                if ($item->beneficiario == $personId) $total += $item->monto;
+                    break;
+                case "linea":
+                if ($item->beneficiario == $lineId) $total += $item->monto;
+                    break;
+            }
+        });
+
+        return $total;
     }
 
 

@@ -103,7 +103,7 @@ class QueryController extends BaseController
 
     public function getLinesBonus()
     {
-        $items = Line::all();
+        $items = Line::whereEspecial(0)->get();
         $linesArray = array();
         $items->each(function ($item) use (&$linesArray) {
             $linesArray[] = array("id" => $item->id, "nombre" => $item->titulo);

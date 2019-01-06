@@ -54,6 +54,7 @@
         <th  data-width="110px" data-field="cedula" data-sortable="true">Cédula</th>
         <th  data-width="235px" data-field="cargo" data-sortable="true">Cargo</th>
         <th  data-field="salario">Salario Base 50% (BS)</th>
+        <th  data-field="bonificacion">Bono Especial (BS)</th>
         <th  data-field="bono_cargo">Bono cargo (BS)</th>
         <th  data-field="bono_asistencia">Asistencia (BS)</th>
         <th  data-field="horas_ex_dias">Horas extra (dias)</th>
@@ -65,6 +66,7 @@
     </thead>
         <tbody>
             <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
