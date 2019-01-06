@@ -21,6 +21,7 @@ use Log;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Models\UserLog;
+use App\Models\Bonus;
 
 
 class ReportController extends BaseController
@@ -29,15 +30,18 @@ class ReportController extends BaseController
     private $user;
     private $currentdate;
 
+
     public function __construct(Request $req)
     {
         $this->middleware('profiles:1|3'); ///perfiles requeridos
         $myUser = $req->session()->get("myUser");
-        if (!is_null($myUser))
+        if (!is_null($myUser)) {
             $this->user = User::findOrFail($myUser->id);
+        }
         $this->currentdate = Carbon::today();
 
     }
+
 
     public function report1Index(Request $req)
     {
@@ -82,41 +86,75 @@ class ReportController extends BaseController
         );
     }
 
+
     public function report2Index(Request $req)
     {
 
         $now = Carbon::now();
         $end = Carbon::parse($now->format('Y-m-d'))->daysInMonth;
-        $months = array();
-        $months[] = array("number" => $now->month, "name" => self::nameOfMonth($now->month));
+        $months = [];
+        $months[] = ["number" => $now->month, "name" => self::nameOfMonth($now->month)];
         $last_month = $now->subMonth();
-        $months[] = array("number" => $last_month->month, "name" => self::nameOfMonth($last_month->month));
+        $months[] = ["number" => $last_month->month, "name" => self::nameOfMonth($last_month->month)];
 
 
-        return view('pages.report02', ["months" => $months, "days" => $end]);
+        $month = 12;
+        $type = 1; ///quincena
+        $dt = Carbon::now();
+        $dt->month = $month; // would force month
+
+        if ($type == 1) {
+            $dt->day = 1;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = 15;
+            $end2 = Carbon::parse($dt->format('Y-m-d'));
+        } else {
+            $dt->day = 15;
+            $start = Carbon::parse($dt->format('Y-m-d'));
+            $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
+            $end2 = Carbon::parse($dt->format('Y-m-d'));
+        }
+
+        $results = $this->getNominaResult($start, $end2);
+        $factor = Config::select("caja_paleta")->first();
+
+        return view('pages.report02', ["months" => $months, "days" => $end, "factor" => $factor, "results" => $results]);
     }
 
 
     static function findDateinAppearance($dates, $hours, $date)
     {
-        $index = array_search($date, $dates);
-        return ($index === false) ? '<b>NO</b>' : $hours[$index] . 'h';
+        $thours = 0; //hours of work
+        foreach ($dates as $i => $dateIn) {
+            if ($dateIn == $date) {
+                $thours += $hours[$i];
+            }
+        }
+        return ($thours == 0) ? '<b>NO</b>' : $thours . 'h';
     }
+
 
     static function findProdByDate($date, $production, $key)
     {
         $index = array_search($date, array_column($production, 'fecha'));
+
         return ($index === false) ? '' : $production[$index][$key];
     }
+
 
     private function getDaysBetween($initDate, $endDate)
     {
         $dateInit = Carbon::parse("$initDate 00:00:00");
         $dateEnd = Carbon::parse("$endDate 00:00:00");
-        $dates = array();
+        $dates = [];
 
         while (!$dateInit->gt($dateEnd)) {
-            $temp = array("number" => $dateInit->dayOfWeekIso, "name" => self::nameOfDay($dateInit->dayOfWeek), "date" => $dateInit->format('Y-m-d'), "day" => $dateInit->day);
+            $temp = [
+                "number" => $dateInit->dayOfWeekIso,
+                "name" => self::nameOfDay($dateInit->dayOfWeek),
+                "date" => $dateInit->format('Y-m-d'),
+                "day" => $dateInit->day
+            ];
             $dates[] = $temp;
             $dateInit->addDays(1);
         }
@@ -145,14 +183,50 @@ class ReportController extends BaseController
             $end = Carbon::parse($dt->format('Y-m-d'));
         }
 
-        Log::info($start);
-        Log::info($end);
-
         $results = $this->getNominaResult($start, $end);
         $factor = Config::select("caja_paleta")->first();
+        $bonus = Bonus::whereBetween('fecha', [$start, $end])->get(); //get bonus
+        $data_nomina = array();
 
-        return view('pages.parts.nomina_detail', ["results" => $results, "factor" => $factor->caja_paleta]);
+        foreach ($results as $i => $res) {
 
+              //total n# boxes + special boxes
+            $ncajas = intval($res->ncajas) + intval($res->ncajas_especial);
+            //special bonus
+            $special_bonus = $this->getSpecialBonus($bonus,$res->area_id,$res->cargo_id,$res->id,$res->linea_id);
+            if ($res->unidad == 'paleta') {
+                $total_unity = floor($ncajas / $factor->caja_paleta);
+                $unity = 'P';
+            } else {
+                $total_unity = $ncajas;
+                $unity = 'C';
+            }
+            $unity = ($total_unity > 0) ? $unity : '';
+
+            $salary = self::prorateSalary($res->id, $res->base, $res->fecha_ingreso);
+            $prod = $total_unity * $res->produccion;
+            $bonus_total = $special_bonus+$res->bono_extra; //total of bonus everything...
+
+            $temp = array(
+                "nombre" => str_limit($res->nombre, 25),
+                "codigo" => $res->codigo,
+                "cedula" => $res->cedula,
+                "cargo" => str_limit($res->cargo, 30),
+                "salario" => '<b>' . number_format($salary,2) . '</b>',
+                "bonificacion" => '<b>' . number_format($special_bonus,2) . '</b>',
+                "bono_cargo" => '<b>' . number_format($res->bono_extra,2) . '</b>',
+                "bono_asistencia" => '<b>' . $res->asistencia . '</b>',
+                "horas_ex_dias" => $res->diashe,
+                "horas_ex_costo" => '<b>' . number_format($res->extra, 2) . '</b>',
+                "n_cajas" => $total_unity . $unity,
+                "produccion" => '<b>' . number_format($prod, 2) . '</b>',
+                "total" => '<b>' . number_format(self::totalSalary($salary, $bonus_total, $res->asistencia, $res->extra, $prod), 2) . '</b>'
+            );
+
+            $data_nomina[] = $temp;
+        }
+
+        return response()->json(['status' => 'ok', 'detail' => $data_nomina]);
 
     }
 
@@ -184,6 +258,7 @@ class ReportController extends BaseController
                 break;
         }
     }
+
 
     static function nameOfMonth($month)
     {
@@ -228,6 +303,7 @@ class ReportController extends BaseController
         }
     }
 
+
     static function getTypeOfDocument($type)
     {
         switch ($type) {
@@ -244,6 +320,7 @@ class ReportController extends BaseController
         }
     }
 
+
     private function getNominaResult($start, $end)
     {
         $start .= ' 00:00:00';
@@ -252,15 +329,19 @@ class ReportController extends BaseController
         $query = "SELECT
                     e.id,
                    	e.codigo,
+                    e.cedula,
        	            e.fecha_ingreso,
                    	e.titular,
                    	e.titular_doc,
                    	e.cuenta_bancaria,
 	                concat(e.nombre,' ',e.apellido) as nombre,
 	                c.nombre as cargo,
+                    c.area_id,
+                    e.cargo_id,
+                    e.linea_id,
                     round( c.sueldo / 2 ) AS base,
                     c.bono_extra,
-                    IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
+                    IF	(	( SELECT count( * ) FROM tbl_inasistencia i WHERE i.empleado_id = e.id AND i.justificada = 0 AND i.fecha BETWEEN '$start' And '$end' ),0,c.asistencia) AS asistencia,
                       -- bono horas extras
                     (select sum(a.hora_extra) FROM tbl_asistencia a WHERE a.empleado_id = e.id 
 	                    and a.fecha BETWEEN '$start' AND '$end') as diashe, 
@@ -274,7 +355,7 @@ class ReportController extends BaseController
                             sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id
                             and p.fecha BETWEEN '$start' and '$end'
@@ -283,7 +364,7 @@ class ReportController extends BaseController
                             (SELECT	sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id and p.mesa_id = e.mesa_id
                             and p.fecha BETWEEN '$start' and '$end'
@@ -292,13 +373,23 @@ class ReportController extends BaseController
                             (SELECT	sum(p.cajas)
                             FROM
                             tbl_asistencia AS a
-                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha)
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 0
                             WHERE
                             a.empleado_id = e.id and p.mesa_id = e.mesa_id and p.linea_id = e.linea_id
                             and p.fecha BETWEEN '$start' and '$end'
                             and time(p.fecha) BETWEEN a.hora_entrada and IFNULL(a.hora_salida,'16:00'))	
                         ELSE 0	
                     END as ncajas,
+                    -- cajas produccion especial
+                    (SELECT	sum(p.cajas)
+                            FROM
+                            tbl_asistencia AS a
+                            INNER JOIN tbl_produccion AS p ON a.fecha = date(p.fecha) and a.especial = 1
+                            WHERE
+                            a.empleado_id = e.id and p.mesa_id = a.mesa_id
+                            and p.fecha BETWEEN '$start' and '$end'
+                        and time(p.fecha) BETWEEN a.hora_entrada and a.hora_salida
+                            ) as ncajas_especial,
                     c.produccion,
                     c.produccion_unidad as unidad
                     -- produccion
@@ -310,6 +401,7 @@ class ReportController extends BaseController
         return DB::select(DB::raw($query));
     }
 
+
     static function totalSalary($base, $bonus, $appear, $extra, $prod)
     {
 
@@ -319,9 +411,11 @@ class ReportController extends BaseController
 
 
     /**prorate salary
+     *
      * @param $personId
      * @param $base
      * @param $date
+     *
      * @return float|int
      */
     static function prorateSalary($personId, $base, $dateIn)
@@ -330,11 +424,36 @@ class ReportController extends BaseController
         $now = Carbon::now();
         $diff = $date->diffInDays($now);
         if ($diff < 15) { //less of quincena
-            $salary = number_format(($base * 2) / 30,2);
+            $salary = number_format(($base * 2) / 30, 2);
             $days = Appearance::whereEmpleadoId($personId)->where("fecha", ">=", $dateIn)->count();
             $base = $salary * $days;
         }
+
         return $base;
+    }
+
+    private function getSpecialBonus($bonus, $areaId, $roleId, $personId, $lineId)
+    {
+
+        $total = 0;
+        $bonus->each(function ($item) use ($areaId, $roleId, $personId, $lineId, &$total) {
+            switch ($item->tipo) {
+                case "area":
+                    if ($item->beneficiario == $areaId) $total += $item->monto;
+                    break;
+                case "cargo":
+                if ($item->beneficiario == $roleId) $total += $item->monto;
+                    break;
+                case "empleado":
+                if ($item->beneficiario == $personId) $total += $item->monto;
+                    break;
+                case "linea":
+                if ($item->beneficiario == $lineId) $total += $item->monto;
+                    break;
+            }
+        });
+
+        return $total;
     }
 
 
@@ -367,10 +486,11 @@ class ReportController extends BaseController
         $TOTAL = 0;
         foreach ($nomina as $item) {
             $n++;
-            if ($item->unidad == 'paleta')
+            if ($item->unidad == 'paleta') {
                 $total_unity = floor($item->ncajas / $settings->caja_paleta);
-            else
+            } else {
                 $total_unity = $item->ncajas;
+            }
 
             $prod = $total_unity * $item->produccion;
             $doc_type = Str::substr($item->titular_doc, 0, 1); //type of document, V, P, E
@@ -378,12 +498,16 @@ class ReportController extends BaseController
 
             $total = self::totalSalary($item->base, $item->bono_extra, $item->asistencia, $item->extra, $prod);
             $TOTAL += $total;
-            $body .= self::getTypeOfDocument($doc_type) . ';' . $doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
+            $body .= self::getTypeOfDocument(
+                $doc_type
+            ) . ';' . $doc . ';' . $item->titular . ';' . $item->cuenta_bancaria . ';' . $total . ';' . $ref . $n;
             $body .= PHP_EOL;
         }
 
         $date = $end->format('d/m/Y');
-        $header = $settings->empresa_rif . ';' . $settings->empresa_cuenta . ';' . count($nomina) . ';' . $TOTAL . ';' . $date . ';' . $ref . PHP_EOL;
+        $header = $settings->empresa_rif . ';' . $settings->empresa_cuenta . ';' . count(
+            $nomina
+        ) . ';' . $TOTAL . ';' . $date . ';' . $ref . PHP_EOL;
 
         return response($header . $body, 200)
             ->header('Content-Type', 'text/plain');
@@ -397,13 +521,24 @@ class ReportController extends BaseController
     public function getLogReport()
     {
         $list = UserLog::orderBy('created_at', 'desc')->get();
+
         return view('pages.reportLogs', ["list" => $list]);
     }
 
-    public function getLogReportDetail($id){
+
+    public function getLogReportDetail($id)
+    {
 
         $item = UserLog::findOrFail($id);
-        $detail = array("usuario"=>$item->user->info(),"ip"=>$item->ip_acc,"fecha"=>$item->created_at,"tipo"=>$item->tipo,"detalle"=>$item->actividad,"cliente"=>$item->info_cliente);
+        $detail = [
+            "usuario" => $item->user->info(),
+            "ip" => $item->ip_acc,
+            "fecha" => $item->created_at,
+            "tipo" => $item->tipo,
+            "detalle" => $item->actividad,
+            "cliente" => $item->info_cliente
+        ];
+
         return response()->json(['status' => 'ok', 'detail' => $detail]);
 
     }

@@ -133,8 +133,10 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->put('save', 'OperativeController@saveAppearance');
             $router->put('saveOut', 'OperativeController@saveOutHour');
             $router->delete('non/{appear_id}', 'OperativeController@deleteNonAppear');
-            $router->delete('/{person_id}/{date}', 'OperativeController@deleteAppear');
+            $router->delete('/simple/{person_id}/{date}', 'OperativeController@deleteAppear');
+            $router->delete('/extra/{date}', 'OperativeController@deleteExtraAppear');
             $router->put('/saveBatch/{date}', 'OperativeController@registerAppearBatch');
+            $router->put('/saveExtraBatch', 'OperativeController@saveExtraAppearForProduction');
         });
 
         ///operative production
@@ -150,6 +152,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('/role/all', 'QueryController@getRoles');
             $router->get('/role/all/{area_id}', 'QueryController@getRolesByArea');
             $router->get('/table/all', 'QueryController@getTables');
+            $router->get('/table/special/all', 'QueryController@getTableSpecial');
             $router->get('/line/all', 'QueryController@getLines');
             $router->get('/line/bonus', 'QueryController@getLinesBonus');
             $router->get('line/all/{table_id}', 'QueryController@getLinesByTable');

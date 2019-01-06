@@ -82,6 +82,13 @@ class QueryController extends BaseController
 
     }
 
+    public function getTableSpecial()
+    {
+        $tables = Table::whereActivo(1)->whereEspecial(1)->get();
+        return response()->json(['status' => 'ok', 'list' => $tables]);
+
+    }
+
 
     public function getLines()
     {
@@ -96,7 +103,7 @@ class QueryController extends BaseController
 
     public function getLinesBonus()
     {
-        $items = Line::all();
+        $items = Line::whereEspecial(0)->get();
         $linesArray = array();
         $items->each(function ($item) use (&$linesArray) {
             $linesArray[] = array("id" => $item->id, "nombre" => $item->titulo);
@@ -130,8 +137,16 @@ class QueryController extends BaseController
 
     public function getAppearDetail(Request $req)
     {
-        $detail = Appearance::whereEmpleadoId($req->input('person'))
-            ->whereFecha($req->input('date'))->with('person', 'table', 'line')->first();
+
+        if($req->filled('table')){ //only one
+            $detail = Appearance::whereEmpleadoId($req->input('person'))
+                                ->whereFecha($req->input('date'))
+                                ->whereMesaId($req->input('table'))->with('person', 'table', 'line')->get();
+        }else{ //multiple ... possibly
+            $detail = Appearance::whereEmpleadoId($req->input('person'))
+                                ->whereFecha($req->input('date'))->with('person', 'table', 'line')->get();
+        }
+
         if ($detail->count() > 0) {
             return response()->json(['status' => 'ok', 'info' => $detail]);
         } else {

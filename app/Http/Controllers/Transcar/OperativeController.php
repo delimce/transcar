@@ -51,6 +51,10 @@ class OperativeController extends BaseController
         $personList = $this->getPersons($filtered);
         $nonAppear = $this->getNonAppear($nonAppeareance);
         $areas = Area::all();
+        $extras = Appearance::groupBy('mesa_id')
+            ->where("especial", 1)
+            ->where("fecha", $myDate)
+            ->select('mesa_id', 'hora_entrada', 'hora_salida', DB::raw('count(*) as total'))->get();
 
         return view(
             'pages.appearance',
@@ -58,7 +62,8 @@ class OperativeController extends BaseController
                 "persons" => $personList,
                 "areas" => $areas,
                 "date" => $myDate,
-                "nonAppear" => $nonAppear
+                "nonAppear" => $nonAppear,
+                "extras" => $extras
             ]
         );
     }
@@ -70,10 +75,10 @@ class OperativeController extends BaseController
      */
     private function getAppearances($date, &$filtered, &$nonAppeareance)
     {
-
         $persons = Person::with('table', 'line')->whereActivo(1)
             ->leftJoin('tbl_asistencia as a', function ($join) use ($date) {
                 $join->on('a.empleado_id', '=', 'tbl_empleado.id');
+                $join->on('a.especial', '=', DB::raw("0"));
                 $join->on("a.fecha", "=", DB::raw("'" . $date . "'"));
             })->select("tbl_empleado.*", "a.hora_entrada", "a.hora_salida", "a.hora_extra")->get();
 
@@ -219,6 +224,8 @@ class OperativeController extends BaseController
                 "fecha" => $item->date(),
                 "nombre" => $item->person->nombre . ' ' . $item->person->apellido,
                 "cedula" => $item->person->cedula,
+                "comentario" => $item->comentario,
+                "justificada" => ($item->justificada) ? 'SI' : 'NO',
                 "ingreso" => $item->person->fecha_ingreso,
                 "cargo" => $item->person->role->nombre
             );
@@ -299,11 +306,14 @@ class OperativeController extends BaseController
                 $non = new NonAppearance();
                 $non->empleado_id = $req->input('person');
                 $non->fecha = $req->input('date');
+                $non->justificada = ($req->input('justify')) ? 1 : 0; /// justified non-appear
+                $non->comentario = $note;
                 $non->save();
                 UserController::saveUserActivity($this->user->id, "Registrando Inasistencia del dia: $non->fecha, al empleado: $emp->nombre $emp->apellido, $emp->codigo");
                 $action = 0;
                 $info = $this->setPerson($emp);
                 $info['non_id'] = $non->id;
+                $info['justificada'] = ($non->justificada) ? 'SI' : 'NO';
                 $info['fecha'] = Carbon::parse($non->fecha)->format("d/m/Y");
             }
 
@@ -371,7 +381,7 @@ class OperativeController extends BaseController
         $info = array();
         $emp = $item->person;
         $item->delete();
-        UserController::saveUserActivity($this->user->id, "Borrando Inasistencia el dia: $appear->fecha al empleado: $emp->nombre $emp->apellido, $emp->codigo");
+        UserController::saveUserActivity($this->user->id, "Borrando Inasistencia el dia: $item->fecha al empleado: $emp->nombre $emp->apellido, $emp->codigo");
         $info = $this->setPerson($emp);
         return response()->json(['status' => 'ok', 'info' => $info]);
     }
@@ -395,7 +405,7 @@ class OperativeController extends BaseController
             DB::beginTransaction();
 
             ///deleting all appearance of date
-            Appearance::whereFecha($date)->delete();
+            Appearance::whereFecha($date)->whereEspecial(0)->delete();
 
             $persons->each(function ($item) use ($date) {
                 $appear = new Appearance();
@@ -503,6 +513,82 @@ class OperativeController extends BaseController
         $item->delete();
         UserController::saveUserActivity($this->user->id, "Borrando datos de producción:$item");
         return response()->json(['status' => 'ok', 'message' => "producción borrada"]);
+
+    }
+
+
+    /**
+     * register especial appear
+     */
+    public function saveExtraAppearForProduction(Request $req)
+    {
+        $validator = Validator::make($req->all(), [
+            'date' => 'required',
+            'mesa' => 'required|numeric',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i',
+            'persons' => 'required',
+        ], [
+            'required' => 'El campo :attribute es requerido',
+            'time' => 'El campo :attribute No es una hora válida',
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json(['status' => 'error', 'message' => $error], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            ///deleting all extra appearance of date
+            $date = $req->input('date');
+            $table = $req->input('mesa');
+            $init = $req->input('hora_inicio');
+            $end = $req->input('hora_fin');
+            $persons = $req->input('persons');
+            Appearance::whereFecha($date)->whereMesaId($table)->whereEspecial(1)->delete();
+
+            foreach ($persons as $item) {
+                $appear = new Appearance();
+                $person = Person::find($item["id"]);
+                $appear->empleado_id = $person->id;
+                $appear->cargo_id = $person->role->id;
+                $appear->sueldo = $person->role->sueldo;
+                $appear->fecha = $date;
+                $appear->mesa_id = $table;
+                $appear->hora_entrada = $init;
+                $appear->hora_salida = $end;
+                $appear->especial = 1;
+                $appear->turno = $this->getTurn($appear->hora_entrada);
+                $appear->comentario = "Registrado para producción extra especial";
+                $appear->save();
+            }
+
+            UserController::saveUserActivity($this->user->id, "Registro de asistencia masivo para produccion extra el dia: $date");
+
+            DB::commit();
+            return response()->json(['status' => 'ok', 'message' => "Registro de asistencia para producción extra exitoso"]);
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json(['status' => 'error', 'message' => "Falla de registro masivo de asistencia para extra produccion"], 500);
+        }
+
+
+
+    }
+
+    /**
+     * delete extra appear for production
+     */
+    public function deleteExtraAppear($date)
+    {
+        try {
+            Appearance::whereFecha($date)->whereEspecial(1)->delete();
+            return response()->json(['status' => 'ok', 'message' => "Borrado de asistencia para producción extra exitoso"]);
+        } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => "Falla de borrado de asistencia para extra produccion"], 500);
+        }
 
     }
 

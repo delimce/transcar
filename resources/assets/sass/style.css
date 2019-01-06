@@ -137,6 +137,11 @@ label {
 .extra{
     background-color: aqua;
     font-weight: bold;
+    padding: 25px;
+}
+
+.justify{
+    padding-top: 45px;
 }
 
 #home-panel .card h1{
@@ -166,3 +171,11 @@ label {
 .min-text-input{
     max-width: 250px;
 }
+
+/* report input search */
+.table-search {
+    width: 100%; /* Full-width */
+    padding: 9px 20px 9px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+  }

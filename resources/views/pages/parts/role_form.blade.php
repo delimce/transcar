@@ -64,7 +64,7 @@
                 <div class="form-group required row">
 
                     <div class="col-sm-6">
-                        <label for="produccion" class="control-label">Bono x Caja/Paleta (Bs)</label>
+                        <label for="produccion" class="control-label">valor x Caja/Paleta (Bs)</label>
                         <input type="text" class="form-control currency" id="produccion" name="produccion"
                                placeholder="">
                     </div>

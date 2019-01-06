@@ -69,6 +69,29 @@ const reloadTableSelectBox = function (tableId = false) {
     });
 }
 
+/**
+ * select box for special tables
+ * @param {*} tableId 
+ */
+const reloadTableSpecialSelectBox = function (tableId = false) {
+    axios.get(api_url + "api/query/table/special/all")
+        .then(function (response) {
+            let options = '<option value="">Seleccione</option>';
+            let data = response.data.list;
+            let len = data.length;
+            for (let i = 0; i < len; i++) {
+                let selected = (tableId === data[i].id) ? ' selected' : '';
+                options += '<option value=' + data[i].id + selected + '>' + data[i].titulo + '</option>';
+            }
+            $('.selectpickerTableSpecial').empty();
+            $('.selectpickerTableSpecial').append(options);
+            $('.selectpickerTableSpecial').selectpicker('refresh');
+        }).catch(function (error) {
+        showAlert(error.response.data.message)
+    });
+}
+
+
 $('#mesa').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
     // do something...
     let mesa = $(this).val()

@@ -46,15 +46,22 @@
             <span>
                 @if(count($tableInfo)>0)
                     {{$tableInfo->showLineNames()}}
+                @else
+                    Todas.
                 @endif
             </span>
         </div>
 
-        <table class="table table-striped">
+        <p>&nbsp;</p>
+        <input type="text" id="table-search" class="table-search"
+               onkeyup="findOnTableByNames('table-search','appear-table',1)" placeholder="Buscar por empleado...">
+
+        <table id="appear-table" class="table table-striped">
             <thead>
-            <tr>
+            <tr class="header">
                 <th>Código</th>
                 <th>Empleado</th>
+                <th>Inasist.</th>
                 @foreach($days as $day)
                     <th>{{$day["name"]}} {{$day["day"]}}</th>
                 @endforeach
@@ -63,15 +70,17 @@
             <tbody>
             @foreach($results as $item)
                 <tr>
-                    <th>{{$item->codigo}}</th>
-                    <th>{{str_limit($item->nombre,40)}}</th>
+                    <td>{{$item->codigo}}</td>
+                    <td>{{str_limit($item->nombre,40)}}</td>
+                    <td style="text-align: center">{{$item->inasistencia}}</td>
                     <?php
                     $mdates = explode(",", $item->fechas);
                     $mhours = explode(",", $item->horas);
                     ?>
                     @foreach($days as $day)
                         <td>
-                            <span class="det-appear" data-id="{{$item->id}}" data-date="{{$day["date"]}}">
+                            <span class="det-appear" data-id="{{$item->id}}" data-date="{{$day["date"]}}"
+                                  data-table="{{$table}}">
                             {!!\App\Http\Controllers\Transcar\ReportController::
                             findDateinAppearance($mdates,$mhours,$day["date"])!!}
                             </span>
@@ -82,6 +91,7 @@
             <tr>
                 <th>TOTAL PALETAS</th>
                 <td>&nbsp;</td>
+                <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>
                         {!!\App\Http\Controllers\Transcar\ReportController::
@@ -91,6 +101,7 @@
             </tr>
             <tr>
                 <th>TOTAL CAJAS</th>
+                <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 @foreach($days as $day)
                     <th>
@@ -103,8 +114,9 @@
         </table>
 
         <!-- Modal -->
-        <div id="appear-detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div id="appear-detail" class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Detalle de asistencia</h5>
@@ -113,21 +125,23 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div style="padding: 10px" class="row" id="person-id" data-id="">
-                            <div class="col-sm-6">
-                                <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
-                                <span class="appear-subtitle">Telefono:</span>&nbsp;<span  id="asis_tlf"></span><br>
-                                <span class="appear-subtitle">Fecha:</span>&nbsp;<span  id="asis_fecha"></span><br>
-                                <span class="appear-subtitle">Mesa:</span>&nbsp;<span  id="asis_mesa"></span><br>
-                                <span class="appear-subtitle">hora llegada:</span>&nbsp;<span  id="asis_llegada"></span><br>
-                                <span class="appear-subtitle">Notas:</span>&nbsp;<span  id="asis_nota"></span><br>
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
-                                <span class="appear-subtitle">Email:</span>&nbsp;<span id="asis_email"></span><br>
-                                <span class="appear-subtitle">Turno:</span>&nbsp;<span  id="asis_turno"></span><br>
-                                <span class="appear-subtitle">Linea:</span>&nbsp;<span  id="asis_linea"></span><br>
-                                <span class="appear-subtitle">hora salida:</span>&nbsp;<span id="asis_salida"></span><br>
+                        <div id="appear-det2">
+                            <div style="padding: 10px" class="row" id="person-id" data-id="">
+                                <div class="col-sm-6">
+                                    <span class="appear-subtitle">Nombre:</span>&nbsp;<span id="asis_nombre"></span><br>
+                                    <span class="appear-subtitle">Telefono:</span>&nbsp;<span id="asis_tlf"></span><br>
+                                    <span class="appear-subtitle">Fecha:</span>&nbsp;<span id="asis_fecha"></span><br>
+                                    <span class="appear-subtitle">Mesa:</span>&nbsp;<span id="asis_mesa"></span><br>
+                                    <span class="appear-subtitle">hora inicio:</span>&nbsp;<span id="asis_llegada"></span><br>
+                                    <span class="appear-subtitle">Notas:</span>&nbsp;<span id="asis_nota"></span><br>
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="appear-subtitle">Cedula:</span>&nbsp;<span id="asis_cedula"></span><br>
+                                    <span class="appear-subtitle">Email:</span>&nbsp;<span id="asis_email"></span><br>
+                                    <span class="appear-subtitle">Turno:</span>&nbsp;<span id="asis_turno"></span><br>
+                                    <span class="appear-subtitle">Linea:</span>&nbsp;<span id="asis_linea"></span><br>
+                                    <span class="appear-subtitle">hora Fin:</span>&nbsp;<span id="asis_salida"></span><br>
+                                </div>
                             </div>
                         </div>
                     </div>

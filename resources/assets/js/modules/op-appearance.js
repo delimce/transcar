@@ -17,6 +17,7 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
     $('#asis_ubicacion').html($element.ubicacion);
     $('#person-id').data('id', $element.id); //element id
     $('#note').val('');
+    $('#justify').prop('checked', false);
 
     let my_extra = ($element.extra === 'SI') ? true : false;
     $('#extras').prop('checked', my_extra);
@@ -43,10 +44,12 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
         $("#appear-out").show();
         $("#delete-appear").show();
         $(".extra").show();
+        $(".justify").hide();
     } else {
         $("#appear-in").show();
         $("#non-appear").show();
         $(".extra").hide();
+        $(".justify").show();
         $("#appear-out").hide();
         $("#delete-appear").hide();
     }
@@ -56,10 +59,13 @@ $('#appear-list').on('click-cell.bs.table', function (field, value, row, $elemen
 $('#non-appear-list').on('click-cell.bs.table', function (field, value, row, $element) {
     $('#non-appear-actions').modal('show');
 
+    console.log($element)
     $('#ina_nombre').html($element.nombre);
     $('#ina_cedula').html($element.cedula)
     $('#ina_cargo').html($element.cargo);
+    $('#ina_justify').html($element.justificada);
     $('#ina_ubicacion').html($element.ubicacion);
+    $('#ina_nota').html($element.comentario);
     $('#non-appear-id').data('id', $element.id); //element id
 
 });
@@ -91,10 +97,10 @@ $("#appear-in").on("click", function () {
                 }
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 
 })
 
@@ -104,7 +110,7 @@ $("#appear-out").on("click", function () {
     let hour = $('#my_hour').val(); //person id
     let note = $('#note').val(); //person id
     let date = $('#person-id').data('date'); //date
-    let extras = $('#extras').prop('checked')?1:0 //extras
+    let extras = $('#extras').prop('checked') ? 1 : 0 //extras
     let data = {
         "person": person,
         "out_hour": hour,
@@ -129,17 +135,17 @@ $("#appear-out").on("click", function () {
                 }
             });
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 })
 
 
 $("#delete-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let date = $('#person-id').data('date'); //date
-    axios.delete(api_url + 'api/appear/' + person + '/' + date)
+    axios.delete(api_url + 'api/appear/simple/' + person + '/' + date)
         .then(function (response) {
             let info = response.data.info;
             console.log(info);
@@ -156,10 +162,10 @@ $("#delete-appear").on("click", function () {
                 }
             });
         }).catch(function (error) {
-        showAlert("error en el servicio")
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert("error en el servicio")
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 })
 
 
@@ -167,11 +173,13 @@ $("#non-appear").on("click", function () {
     let person = $('#person-id').data('id'); //person id
     let date = $('#person-id').data('date'); //date
     let note = $('#note').val(); //person id
+    let justify = $('#justify').prop('checked') ? 1 : 0 //non-appear justified
     let data = {
         "person": person,
         "type": 0,
         "date": date,
         "note": note,
+        "justify": justify,
     }
 
     axios.put(api_url + 'api/appear/save', data)
@@ -194,15 +202,17 @@ $("#non-appear").on("click", function () {
                             cargo: info.detail.cargo,
                             ubicacion: info.detail.ubicacion,
                             fecha: info.detail.fecha,
+                            justificada: info.detail.justificada,
+                            comentario:String(note)
                         }
                     });
 
             }
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#appear-actions').modal('hide')
+        });
 
 })
 
@@ -233,10 +243,10 @@ $("#delete-non-appear").on("click", function () {
                 });
 
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    }).finally(function () {
-        $('#non-appear-actions').modal('hide')
-    });
+            showAlert(error.response.data.message)
+        }).finally(function () {
+            $('#non-appear-actions').modal('hide')
+        });
 
 })
 
@@ -255,10 +265,64 @@ $('#appear-batch').confirm({
                     reloadList(url, '#appear-list');
 
                 }).catch(function (error) {
-                showAlert(error.response.data.message)
-            });
+                    showAlert(error.response.data.message)
+                });
         },
         cancel: function () {
         }
     }
 });
+
+$("#select-extra").on("click", function () {
+    let persons = $("#extra-appear-list").bootstrapTable('getSelections');
+    if (persons.length == 0) {
+        showAlert("debe seleccionar al menos un empleado");
+    } else { ///is all right
+        let date = $("#appear_date").val();
+        let table = $("#special-table").val();
+        let init = $("#hour_init").val();
+        let end = $("#hour_end").val();
+        data = {
+            "date": date,
+            "mesa": table,
+            "persons": persons,
+            "hora_inicio": init,
+            "hora_fin": end
+        }
+
+        axios.put(api_url + 'api/appear/saveExtraBatch', data)
+            .then(function (response) {
+                showSuccess(response.data.message, 2000)
+                ///reload person list on date
+                $("#extra-resume").show();
+                $("#extra-detail").hide();
+
+            }).catch(function (error) {
+                showAlert(error.response.data.message)
+            });
+    }
+
+
+})
+
+$("#delete-extra").on("click", function () {
+    let date = $("#appear_date").val();
+    $.confirm({
+        title: 'Eliminar carga de asistencia extra con fecha: ' + date,
+        content: 'Desea eliminar esta carga?',
+        buttons: {
+            confirm: function () {
+                axios.delete(api_url + 'api/appear/extra/' + date)
+                    .then(function (response) {
+                        $("#extra-resume").hide();
+                        showSuccess(response.data.message, 2000)                        
+                    }).catch(function (error) {
+                        showAlert(error.response.data.message)
+                    })
+            },
+            cancel: function () {
+
+            }
+        }
+    });
+})
