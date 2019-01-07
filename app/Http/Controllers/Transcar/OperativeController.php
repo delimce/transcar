@@ -574,8 +574,6 @@ class OperativeController extends BaseController
             return response()->json(['status' => 'error', 'message' => "Falla de registro masivo de asistencia para extra produccion"], 500);
         }
 
-
-
     }
 
     /**
@@ -585,6 +583,7 @@ class OperativeController extends BaseController
     {
         try {
             Appearance::whereFecha($date)->whereEspecial(1)->delete();
+            UserController::saveUserActivity($this->user->id, "Borrando Registro de asistencia masivo para produccion extra el dia: $date");
             return response()->json(['status' => 'ok', 'message' => "Borrado de asistencia para producción extra exitoso"]);
         } catch (Exception $e) {
             return response()->json(['status' => 'error', 'message' => "Falla de borrado de asistencia para extra produccion"], 500);

@@ -157,8 +157,8 @@ class QueryController extends BaseController
 
     public function getDaysOfMonth($month)
     {
-        $now = Carbon::now();
-        $days = Carbon::parse($now->format("Y-$month"))->daysInMonth;
+        $dt = Carbon::createFromFormat("Y-m-d", $month.'-01');
+        $days = $dt->daysInMonth;
         return response()->json(['status' => 'ok', 'days' => $days]);
     }
 

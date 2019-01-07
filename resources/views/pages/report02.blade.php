@@ -11,7 +11,7 @@
                 <label for="month" class="control-label">Mes a pagar:</label>
                 <select id="month"  name="month" data-style="form-select" class="selectpicker" data-width="90%">
                     @foreach($months as $month)
-                        <option value="{{$month['number']}}">{{$month['name']}}</option>
+                        <option value="{{$month['month']}}">{{$month['name']}}</option>
                     @endforeach
                 </select>
             </div>

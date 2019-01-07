@@ -89,36 +89,14 @@ class ReportController extends BaseController
 
     public function report2Index(Request $req)
     {
-
         $now = Carbon::now();
         $end = Carbon::parse($now->format('Y-m-d'))->daysInMonth;
         $months = [];
-        $months[] = ["number" => $now->month, "name" => self::nameOfMonth($now->month)];
+        $months[] = ["month" => $now->format('Y-m'), "name" => self::nameOfMonth($now->month)];
         $last_month = $now->subMonth();
-        $months[] = ["number" => $last_month->month, "name" => self::nameOfMonth($last_month->month)];
+        $months[] = ["month" => $last_month->format('Y-m'), "name" => self::nameOfMonth($last_month->month)];
 
-
-        $month = 12;
-        $type = 1; ///quincena
-        $dt = Carbon::now();
-        $dt->month = $month; // would force month
-
-        if ($type == 1) {
-            $dt->day = 1;
-            $start = Carbon::parse($dt->format('Y-m-d'));
-            $dt->day = 15;
-            $end2 = Carbon::parse($dt->format('Y-m-d'));
-        } else {
-            $dt->day = 15;
-            $start = Carbon::parse($dt->format('Y-m-d'));
-            $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
-            $end2 = Carbon::parse($dt->format('Y-m-d'));
-        }
-
-        $results = $this->getNominaResult($start, $end2);
-        $factor = Config::select("caja_paleta")->first();
-
-        return view('pages.report02', ["months" => $months, "days" => $end, "factor" => $factor, "results" => $results]);
+        return view('pages.report02', ["months" => $months, "days" => $end]);
     }
 
 
@@ -168,20 +146,23 @@ class ReportController extends BaseController
 
         $month = $req->input("month");
         $type = intval($req->input("quincena")); ///quincena
-        $dt = Carbon::now();
-        $dt->month = $month; // would force month
+
+        $dt = Carbon::createFromFormat("Y-m-d", $month.'-01');
 
         if ($type == 1) {
             $dt->day = 1;
             $start = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = 15;
-            $end = Carbon::parse($dt->format('Y-m-d'));
+            $end = Carbon::parse($dt->format('Y-m-d 23:59:59'));
         } else {
             $dt->day = 15;
             $start = Carbon::parse($dt->format('Y-m-d'));
             $dt->day = Carbon::parse($dt->format('Y-m-d'))->daysInMonth;
-            $end = Carbon::parse($dt->format('Y-m-d'));
+            $end = Carbon::parse($dt->format('Y-m-d 23:59:59'));
         }
+
+        Log::info("start:".$start);
+        Log::info("end:".$end);
 
         $results = $this->getNominaResult($start, $end);
         $factor = Config::select("caja_paleta")->first();
@@ -190,7 +171,7 @@ class ReportController extends BaseController
 
         foreach ($results as $i => $res) {
 
-              //total n# boxes + special boxes
+            //total n# boxes + special boxes
             $ncajas = intval($res->ncajas) + intval($res->ncajas_especial);
             //special bonus
             $special_bonus = $this->getSpecialBonus($bonus,$res->area_id,$res->cargo_id,$res->id,$res->linea_id);
@@ -323,10 +304,7 @@ class ReportController extends BaseController
 
     private function getNominaResult($start, $end)
     {
-        $start .= ' 00:00:00';
-        $end .= ' 23:59:59';
-
-        $query = "SELECT
+         $query = "SELECT
                     e.id,
                    	e.codigo,
                     e.cedula,
