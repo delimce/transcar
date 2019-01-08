@@ -154,5 +154,5 @@
 @endsection
 
 @push('scripts-ready')
-    reloadTableSelectBox({{$table}});
+    reloadTableSelectBox('{{$table}}',2);
 @endpush

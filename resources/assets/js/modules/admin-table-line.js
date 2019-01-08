@@ -50,14 +50,15 @@ const toggle_line_list = function (mode = true) {
 }
 
 ///reload select list
-const reloadTableSelectBox = function (tableId = false) {
-    axios.get(api_url + "api/query/table/all")
+const reloadTableSelectBox = function (tableId = false, type = 1) {
+    let route = (type == 1) ? "api/query/table/all" : "api/query/table2/all";
+    axios.get(api_url + route)
         .then(function (response) {
             let options = '<option value="">Seleccione</option>';
             let data = response.data.list;
             let len = data.length;
             for (let i = 0; i < len; i++) {
-                let selected = (tableId === data[i].id) ? ' selected' : '';
+                let selected = (tableId === String(data[i].id)) ? ' selected' : '';
                 options += '<option value=' + data[i].id + selected + '>' + data[i].titulo + '</option>';
             }
             $('.selectpickerTable').empty();
@@ -65,8 +66,8 @@ const reloadTableSelectBox = function (tableId = false) {
             $('.selectpickerTable').selectpicker('refresh');
             $('.selectpickerLine').selectpicker('refresh');
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 }
 
 /**
@@ -87,8 +88,8 @@ const reloadTableSpecialSelectBox = function (tableId = false) {
             $('.selectpickerTableSpecial').append(options);
             $('.selectpickerTableSpecial').selectpicker('refresh');
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 }
 
 
@@ -112,8 +113,8 @@ const getLineByTable = function (tableId, lineId = false) {
             $('.selectpickerLine').append(options);
             $('.selectpickerLine').selectpicker('refresh');
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 }
 
 // Forms
@@ -125,8 +126,8 @@ $("#table_form").submit(function (event) {
             reloadTableSelectBox();
             toggle_table_list();
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
     event.preventDefault();
 });
 
@@ -138,8 +139,8 @@ $("#line_form").submit(function (event) {
             showSuccess(response.data.message, 2000)
             toggle_line_list();
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
     event.preventDefault();
 });
 
@@ -170,8 +171,8 @@ $('#table-list').on('click-cell.bs.table', function (field, value, row, $element
             }).appendTo('#table_form');
 
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 });
 
 $('#line-list').on('click-cell.bs.table', function (field, value, row, $element) {
@@ -201,8 +202,8 @@ $('#line-list').on('click-cell.bs.table', function (field, value, row, $element)
             }).appendTo('#line_form');
 
         }).catch(function (error) {
-        showAlert(error.response.data.message)
-    });
+            showAlert(error.response.data.message)
+        });
 });
 
 
@@ -217,8 +218,8 @@ $('#delete-table').confirm({
                     showSuccess(response.data.message, 2000)
                     toggle_table_list();
                 }).catch(function (error) {
-                showAlert(error.response.data.message)
-            });
+                    showAlert(error.response.data.message)
+                });
         },
         cancel: function () {
         }
@@ -236,8 +237,8 @@ $('#delete-line').confirm({
                     showSuccess(response.data.message, 2000)
                     toggle_line_list();
                 }).catch(function (error) {
-                showAlert(error.response.data.message)
-            });
+                    showAlert(error.response.data.message)
+                });
         },
         cancel: function () {
         }

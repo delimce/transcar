@@ -152,6 +152,7 @@ $router->group(['prefix' => 'api', 'namespace' => 'Transcar'], function () use (
             $router->get('/role/all', 'QueryController@getRoles');
             $router->get('/role/all/{area_id}', 'QueryController@getRolesByArea');
             $router->get('/table/all', 'QueryController@getTables');
+            $router->get('/table2/all', 'QueryController@getTables2');
             $router->get('/table/special/all', 'QueryController@getTableSpecial');
             $router->get('/line/all', 'QueryController@getLines');
             $router->get('/line/bonus', 'QueryController@getLinesBonus');

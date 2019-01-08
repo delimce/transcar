@@ -28,7 +28,7 @@ class Appearance extends Model
     {
         $date_start = $start.' 00:00:00';
         $date_end = $end.' 23:59:59';
-        if ($table) {
+        if ($table!=='') {
             $tableFilter = "and a.mesa_id = $table ";
         } else {
             $tableFilter = "";

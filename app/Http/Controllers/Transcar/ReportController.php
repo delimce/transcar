@@ -302,6 +302,7 @@ class ReportController extends BaseController
     }
 
 
+    //TODO:get extra hours
     private function getNominaResult($start, $end)
     {
          $query = "SELECT
