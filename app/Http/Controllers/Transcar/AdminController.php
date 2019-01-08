@@ -624,16 +624,15 @@ class AdminController extends BaseController
                 return response()->json(['status' => 'error', 'message' => "debe ingresar una mesa"], 400);
             }
         } else if ($role->produccion_tipo == "linea") {
-            if ($req->filled('linea')) {
+            if ($req->filled('linea') && $req->filled('mesa')) {
                 $person->mesa_id  = $req->input('mesa');
                 $person->linea_id = $req->input('linea');
             } else {
-                return response()->json(['status' => 'error', 'message' => "debe ingresar una linea"], 400);
+                return response()->json(['status' => 'error', 'message' => "debe ingresar una mesa y una linea"], 400);
             }
         } else {
             $person->mesa_id  = '';
             $person->linea_id = '';
-            Log::info("nada");
         }
         ///end validation
 
