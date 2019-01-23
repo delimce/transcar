@@ -11,7 +11,7 @@
                 <label for="month" class="control-label">Mes a pagar:</label>
                 <select id="month"  name="month" data-style="form-select" class="selectpicker" data-width="90%">
                     @foreach($months as $month)
-                        <option value="{{$month['number']}}">{{$month['name']}}</option>
+                        <option value="{{$month['month']}}">{{$month['name']}}</option>
                     @endforeach
                 </select>
             </div>
@@ -57,8 +57,9 @@
         <th  data-field="bonificacion">Bono Especial (BS)</th>
         <th  data-field="bono_cargo">Bono cargo (BS)</th>
         <th  data-field="bono_asistencia">Asistencia (BS)</th>
-        <th  data-field="horas_ex_dias">Horas extra (dias)</th>
-        <th  data-field="horas_ex_costo">Horas extra (BS)</th>
+        <th  data-field="hora_extra_tipo">Tipo ganancia H.E.</th>
+        <th  data-field="horas_ex_dias">Cantidad H.E. (dias/horas)</th>
+        <th  data-field="horas_ex_costo">Valor H.E. (BS)</th>
         <th  data-field="n_cajas">N°: Cajas/Paletas</th>
         <th  data-field="produccion">Producción (BS)</th>
         <th  data-field="total" data-sortable="true">TOTAL</th>
@@ -66,6 +67,7 @@
     </thead>
         <tbody>
             <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

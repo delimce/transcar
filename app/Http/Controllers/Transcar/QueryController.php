@@ -76,9 +76,20 @@ class QueryController extends BaseController
 
     public function getTables()
     {
-
         $tables = Table::whereActivo(1)->get();
         return response()->json(['status' => 'ok', 'list' => $tables]);
+    }
+
+    public function getTables2()
+    {
+
+        $tables = Table::whereActivo(1)->get();
+        $my_table = array();
+        $my_table[] = array('id' => 0, 'titulo' => 'N/A');
+        $tables->each(function ($item, $key) use(&$my_table) {
+           $my_table[] = array('id' => $item->id, 'titulo' =>$item->titulo);
+        });
+        return response()->json(['status' => 'ok', 'list' => $my_table]);
 
     }
 
@@ -157,8 +168,8 @@ class QueryController extends BaseController
 
     public function getDaysOfMonth($month)
     {
-        $now = Carbon::now();
-        $days = Carbon::parse($now->format("Y-$month"))->daysInMonth;
+        $dt = Carbon::createFromFormat("Y-m-d", $month.'-01');
+        $days = $dt->daysInMonth;
         return response()->json(['status' => 'ok', 'days' => $days]);
     }
 
