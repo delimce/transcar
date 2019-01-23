@@ -57,8 +57,9 @@
         <th  data-field="bonificacion">Bono Especial (BS)</th>
         <th  data-field="bono_cargo">Bono cargo (BS)</th>
         <th  data-field="bono_asistencia">Asistencia (BS)</th>
-        <th  data-field="horas_ex_dias">Horas extra (dias)</th>
-        <th  data-field="horas_ex_costo">Horas extra (BS)</th>
+        <th  data-field="hora_extra_tipo">Tipo ganancia H.E.</th>
+        <th  data-field="horas_ex_dias">Cantidad H.E. (dias/horas)</th>
+        <th  data-field="horas_ex_costo">Valor H.E. (BS)</th>
         <th  data-field="n_cajas">N°: Cajas/Paletas</th>
         <th  data-field="produccion">Producción (BS)</th>
         <th  data-field="total" data-sortable="true">TOTAL</th>
@@ -66,6 +67,7 @@
     </thead>
         <tbody>
             <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
